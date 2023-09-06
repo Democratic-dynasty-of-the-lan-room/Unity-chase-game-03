@@ -1,19 +1,21 @@
+using System;
 using UnityEngine;
 
 namespace Code.Scripts.SampleScene
 {
     public class FlashLight : MonoBehaviour
     {
-    
+
 
         bool flash = false;
 
         private Light Torchlight;
 
-        // private float testLightIntensity = 1;
+        //private float testLightIntensity = 1;
 
         [SerializeField] double MaxLightRange = 0.001;
         [SerializeField] double MinLightRange = -0.001;
+        [SerializeField] float DefaultLightIntensity = 2;
 
         // Start is called before the first frame update
         void Start()
@@ -47,18 +49,26 @@ namespace Code.Scripts.SampleScene
                 Torchlight.spotAngle --;
                 Torchlight.range++;          
 
-                Debug.Log("MouseWheel");
+                Debug.Log("MouseWheel");             
             }
             if (scrollInput < 0 && Torchlight.range > MinLightRange)
             {
                 Torchlight.spotAngle++;
-                Torchlight.range--;
-
-                // Torchlight.intensity = testLightIntensity + 0.1;
+                Torchlight.range--;               
+            }          
+            if (Torchlight.range > 80 && scrollInput > 0 || Torchlight.range < 30 && scrollInput < 0 && Torchlight.range < MaxLightRange && Torchlight.range > MinLightRange)
+            {
+                
+                Torchlight.intensity -= Mathf.Lerp(0.04f, 0f, 0f);
             }
-
-
-        
+            else if (Torchlight.range > 80 && scrollInput < 0 || Torchlight.range < 30 && scrollInput > 0)
+            {
+                Torchlight.intensity += Mathf.Lerp(0.04f, 0f, 0f);
+            }
+            else if (Torchlight.range < 80 && Torchlight.range > 30)
+            {
+                Torchlight.intensity = DefaultLightIntensity;
+            }
         }
 
         //Onfunction
