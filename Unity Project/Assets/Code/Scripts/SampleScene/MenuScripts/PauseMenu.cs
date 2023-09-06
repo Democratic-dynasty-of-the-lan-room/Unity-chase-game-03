@@ -50,7 +50,6 @@ namespace Code.Scripts.SampleScene.MenuScripts
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
             GameIsPaused = false;
-
             InventoryScript.SetActive(true);
         }
 
