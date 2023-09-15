@@ -7,6 +7,8 @@ public class PlayerMovment : MonoBehaviour
 {
     [Header("Movment")]
     public float moveSpeed;
+    public float GroundMovement;
+
 
     public float groundDrag;
 
@@ -15,6 +17,10 @@ public class PlayerMovment : MonoBehaviour
     public float airMultiplier;
     bool readyToJump;
 
+    [Header("AirSpeed")]
+    public float AirMovement;
+    public float LimitSpeed;
+
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
@@ -22,6 +28,10 @@ public class PlayerMovment : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
+
+    
+    
+    
 
     public Transform orientation;
 
@@ -60,9 +70,17 @@ public class PlayerMovment : MonoBehaviour
 
         // handle drag
         if (grounded)
+        {
             rb.drag = groundDrag;
+            moveSpeed = GroundMovement;
+        }
         else
+        {
             rb.drag = 0;
+
+            moveSpeed = AirMovement;
+        } 
+        
 
     
     }
@@ -80,7 +98,7 @@ public class PlayerMovment : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -110,12 +128,24 @@ public class PlayerMovment : MonoBehaviour
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         // limit velocity if needed
-        if (flatVel.magnitude > moveSpeed) 
+        if (flatVel.magnitude > LimitSpeed) 
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            Debug.Log("speed went over");
+
+
+            Vector3 limitedVel = flatVel.normalized * LimitSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
+
+    /*private void SpeedLimiter()
+    {
+        if (rb.velocity.magnitude > LimitSpeed)
+        {
+            Debug.Log("speed went over Groundmovement");
+        }
+    }*/
+
 
     private void Jump()
     {
