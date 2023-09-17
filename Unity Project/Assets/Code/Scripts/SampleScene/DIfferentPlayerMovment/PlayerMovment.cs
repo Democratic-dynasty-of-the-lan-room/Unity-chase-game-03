@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+using UnityEngine.Animations;
+
 public class PlayerMovment : MonoBehaviour
 {
     [Header("Movment")]
-    public float moveSpeed;
+    private float moveSpeed;
     public float GroundMovement;
+    public float SprintSpeed;
+    public float CrouchDrag;
+    public float ChrouchMovement;
 
 
     public float groundDrag;
@@ -20,6 +25,7 @@ public class PlayerMovment : MonoBehaviour
     [Header("AirSpeed")]
     public float AirMovement;
     public float LimitSpeed;
+    public float SprintLimit;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -29,8 +35,8 @@ public class PlayerMovment : MonoBehaviour
     public LayerMask whatIsGround;
     bool grounded;
 
-    
-    
+
+    public bool SpeedLimitType;
     
 
     public Transform orientation;
@@ -42,10 +48,13 @@ public class PlayerMovment : MonoBehaviour
 
     Rigidbody rb;
 
-    
+    private Animation anim;
+
+
 
     private void Start()
-    {     
+    {
+        anim = gameObject.GetComponent<Animation>();
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -57,7 +66,7 @@ public class PlayerMovment : MonoBehaviour
 
     private void Update()
     {
-        MyInput();
+        MyInput();    
     } 
 
     private void LateUpdate()
@@ -66,10 +75,15 @@ public class PlayerMovment : MonoBehaviour
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
         MyInput();
-        SpeedControl();
+        SpeedLimiting();
 
         // handle drag
-        if (grounded)
+        if (grounded && Input.GetKey(KeyCode.LeftControl))
+        {
+            rb.drag = CrouchDrag;
+            moveSpeed = ChrouchMovement;
+        }        
+        else if (grounded)
         {
             rb.drag = groundDrag;
             moveSpeed = GroundMovement;
@@ -88,6 +102,15 @@ public class PlayerMovment : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer();
+
+        Sprint();
+
+        Crouch();
+    }
+
+    private void Statesetter()
+    {
+
     }
 
    
@@ -123,29 +146,51 @@ public class PlayerMovment : MonoBehaviour
 
     }
 
-    private void SpeedControl()
+    private void SpeedLimiting()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // limit velocity if needed
-        if (flatVel.magnitude > LimitSpeed) 
+        if (SpeedLimitType == false || !grounded)
         {
-            Debug.Log("speed went over");
+            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
+            // limit velocity if needed
+            if (flatVel.magnitude > LimitSpeed)
+            {
+                Debug.Log("speed went over");
 
-            Vector3 limitedVel = flatVel.normalized * LimitSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+                Vector3 limitedVel = flatVel.normalized * LimitSpeed;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
+        }
+        else if (SpeedLimitType == true)
+        {
+            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            // limit velocity if needed
+            if (flatVel.magnitude > SprintLimit)
+            {
+                Debug.Log("speed went over");
+
+                Vector3 limitedVel = flatVel.normalized * SprintLimit;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
         }
     }
 
-    /*private void SpeedLimiter()
+    private void Sprint()
     {
-        if (rb.velocity.magnitude > LimitSpeed)
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
         {
-            Debug.Log("speed went over Groundmovement");
-        }
-    }*/
+            SpeedLimitType = true;
 
+            Debug.Log("Sprint");
+            
+            rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
+        }
+        else
+        {
+            SpeedLimitType = false;
+        }
+    }    
 
     private void Jump()
     {
@@ -153,6 +198,16 @@ public class PlayerMovment : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void Crouch()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            Debug.Log("Crouch");
+
+            anim.Play("CrouchingHitBoxAnimation");
+        }
     }
 
     private void ResetJump()
