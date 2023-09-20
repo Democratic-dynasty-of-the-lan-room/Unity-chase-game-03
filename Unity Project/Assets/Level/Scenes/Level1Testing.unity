@@ -2427,7 +2427,6 @@ GameObject:
   - component: {fileID: 1739770361}
   - component: {fileID: 1739770362}
   - component: {fileID: 1739770363}
-  - component: {fileID: 1739770364}
   m_Layer: 0
   m_Name: PlayerFootCollider
   m_TagString: Player
@@ -2472,7 +2471,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739770360}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b271e5b74575d2a4283ca41ab428a134, type: 2}
   m_CullingMode: 0
@@ -2485,21 +2484,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!111 &1739770364
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739770360}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: a14488bfd4decf249be4e3da22a1c065, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &1765049313
 GameObject:
   m_ObjectHideFlags: 0
@@ -6100,6 +6084,7 @@ MonoBehaviour:
     m_Bits: 8
   SpeedLimitType: 0
   orientation: {fileID: 5173293618267304008}
+  PlayerFootCollider: {fileID: 1739770360}
 --- !u!114 &5173293617685718045
 MonoBehaviour:
   m_ObjectHideFlags: 0
