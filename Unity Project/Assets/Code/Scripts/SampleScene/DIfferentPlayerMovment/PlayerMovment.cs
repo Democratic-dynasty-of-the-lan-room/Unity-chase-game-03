@@ -38,6 +38,8 @@ public class PlayerMovment : MonoBehaviour
 
     public bool SpeedLimitType;
     
+    
+
 
     public Transform orientation;
 
@@ -48,13 +50,14 @@ public class PlayerMovment : MonoBehaviour
 
     Rigidbody rb;
 
-    private Animation anim;
+    private Animator anim;
 
+    public GameObject PlayerFootCollider;
 
 
     private void Start()
     {
-        anim = gameObject.GetComponent<Animation>();
+        anim = PlayerFootCollider.GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -66,13 +69,16 @@ public class PlayerMovment : MonoBehaviour
 
     private void Update()
     {
-        MyInput();    
+        MyInput();
+
+        Crouch();
     } 
 
     private void LateUpdate()
     {
-        // ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        // ground check      
+            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+       
 
         MyInput();
         SpeedLimiting();
@@ -105,7 +111,7 @@ public class PlayerMovment : MonoBehaviour
 
         Sprint();
 
-        Crouch();
+        
     }
 
     private void Statesetter()
@@ -202,11 +208,19 @@ public class PlayerMovment : MonoBehaviour
 
     private void Crouch()
     {
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             Debug.Log("Crouch");
 
-            anim.Play("CrouchingHitBoxAnimation");
+            anim.SetTrigger("trCrouch");
+
+            playerHeight = 0.5f;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            anim.SetTrigger("trUncrouch");
+
+            playerHeight = 2f;
         }
     }
 
