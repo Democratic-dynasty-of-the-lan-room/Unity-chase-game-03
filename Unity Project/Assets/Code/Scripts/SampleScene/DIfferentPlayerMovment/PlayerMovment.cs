@@ -5,26 +5,36 @@ using UnityEngine;
 
 using UnityEngine.Animations;
 
+
+
 public class PlayerMovment : MonoBehaviour
 {
-    [Header("Movment")]
+    [Header("Ghost")]
+
+    [Header("Walk")]
     private float moveSpeed;
     public float GroundMovement;
-    public float SprintSpeed;
-    public float CrouchDrag;
-    public float ChrouchMovement;
-
-
+    public float WalkLimit;
     public float groundDrag;
 
+    [Header("Jump/Fall")]
     public float jumpForce;
     public float jumpCooldown;
-    public float airMultiplier;
     bool readyToJump;
+    public float airMultiplier;
+
+    [Header("Crouch")]
+    public float ChrouchMovement;
+    public float CrouchDrag;
 
     [Header("AirSpeed")]
     public float AirMovement;
-    public float LimitSpeed;
+
+    [Header("Sprint")]
+    public float SprintSpeed;
+
+
+
     public float SprintLimit;
 
     [Header("Keybinds")]
@@ -34,9 +44,6 @@ public class PlayerMovment : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
-
-
-    public bool SpeedLimitType;
     
     
 
@@ -71,7 +78,6 @@ public class PlayerMovment : MonoBehaviour
     {
         MyInput();
 
-        Crouch();
     } 
 
     private void LateUpdate()
@@ -79,15 +85,14 @@ public class PlayerMovment : MonoBehaviour
         // ground check      
             grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
        
-
-        MyInput();
+      
         SpeedLimiting();
 
         // handle drag
         if (grounded && Input.GetKey(KeyCode.LeftControl))
         {
             rb.drag = CrouchDrag;
-            moveSpeed = ChrouchMovement;
+            moveSpeed = ChrouchMovement;         
         }        
         else if (grounded)
         {
@@ -99,27 +104,15 @@ public class PlayerMovment : MonoBehaviour
             rb.drag = 0;
 
             moveSpeed = AirMovement;
-        } 
-        
-
-    
+        }   
     }
 
     private void FixedUpdate()
     {
         MovePlayer();
 
-        Sprint();
-
-        
+        Sprint();   
     }
-
-    private void Statesetter()
-    {
-
-    }
-
-   
 
     private void MyInput()
     {
@@ -132,6 +125,8 @@ public class PlayerMovment : MonoBehaviour
             readyToJump = false;
 
             Jump();
+
+            Crouch();
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -149,36 +144,19 @@ public class PlayerMovment : MonoBehaviour
         //in air
         else if(!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-
     }
 
     private void SpeedLimiting()
     {
-        if (SpeedLimitType == false || !grounded)
+        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        // limit velocity if needed
+        if (flatVel.magnitude > SprintLimit)
         {
-            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            Debug.Log("speed went over");
 
-            // limit velocity if needed
-            if (flatVel.magnitude > LimitSpeed)
-            {
-                Debug.Log("speed went over");
-
-                Vector3 limitedVel = flatVel.normalized * LimitSpeed;
-                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-            }
-        }
-        else if (SpeedLimitType == true)
-        {
-            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-            // limit velocity if needed
-            if (flatVel.magnitude > SprintLimit)
-            {
-                Debug.Log("speed went over");
-
-                Vector3 limitedVel = flatVel.normalized * SprintLimit;
-                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-            }
+            Vector3 limitedVel = flatVel.normalized * SprintLimit;
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
 
@@ -186,16 +164,12 @@ public class PlayerMovment : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
         {
-            SpeedLimitType = true;
+            
 
             Debug.Log("Sprint");
             
             rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
-        }
-        else
-        {
-            SpeedLimitType = false;
-        }
+        }    
     }    
 
     private void Jump()
