@@ -44,8 +44,11 @@ public class PlayerMovment : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     bool grounded;
-    
-    
+    public float SphereCastRadius;
+    public float SphereCastDistance;
+
+
+
 
 
     public Transform orientation;
@@ -77,15 +80,30 @@ public class PlayerMovment : MonoBehaviour
     private void Update()
     {
         MyInput();
-
     } 
 
     private void LateUpdate()
     {
-        // ground check      
-            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        RaycastHit hit;
+
+        // ground check       
+        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
+
+        if (hit.transform == true)
+        {
+            print(hit.distance);
+            Debug.Log("Spherecast check");
+            grounded = true;
+            rb.useGravity = false;
+        }
+        else 
+        {
+            grounded = false;
+            Debug.Log("Spherecast Not grounded");
+            rb.useGravity = true;
+        }
        
-      
         SpeedLimiting();
 
         // handle drag
@@ -201,5 +219,22 @@ public class PlayerMovment : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, SphereCastRadius);
+
+        RaycastHit hitInfo;
+        if (Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hitInfo, SphereCastDistance))
+        {
+            Gizmos.DrawLine(transform.position, hitInfo.point);
+        }
+        else
+        {
+            // Draw the sphere cast line up to the maximum distance
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * SphereCastDistance);
+        }
     }
 }
