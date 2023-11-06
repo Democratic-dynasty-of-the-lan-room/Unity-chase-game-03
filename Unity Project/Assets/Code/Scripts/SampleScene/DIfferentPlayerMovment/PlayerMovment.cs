@@ -22,6 +22,9 @@ public class PlayerMovment : MonoBehaviour
     public float jumpCooldown;
     bool readyToJump;
     public float airMultiplier;
+    public bool jumped;
+    bool isJumping = false;
+    float jumpStartTime = 0f;
 
     [Header("Crouch")]
     public float ChrouchMovement;
@@ -67,7 +70,7 @@ public class PlayerMovment : MonoBehaviour
 
     private void Start()
     {
-        anim = PlayerFootCollider.GetComponent<Animator>();
+        //anim = PlayerFootCollider.GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -80,6 +83,7 @@ public class PlayerMovment : MonoBehaviour
     private void Update()
     {
         MyInput();
+         
     } 
 
     private void LateUpdate()
@@ -90,20 +94,30 @@ public class PlayerMovment : MonoBehaviour
         //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
 
-        if (hit.transform == true)
+        if (hit.transform == true && isJumping == false)
         {
             print(hit.distance);
             Debug.Log("Spherecast check");
             grounded = true;
             rb.useGravity = false;
-        }
-        else 
+            
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        }   
+        else
         {
             grounded = false;
             Debug.Log("Spherecast Not grounded");
             rb.useGravity = true;
         }
-       
+
+        if (isJumping && Time.time - jumpStartTime > 0.5f)
+        {
+            isJumping = false;
+        }
+
+
+
+
         SpeedLimiting();
 
         // handle drag
@@ -140,6 +154,9 @@ public class PlayerMovment : MonoBehaviour
         // when to jump
         if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
         {
+            isJumping = true;
+            jumpStartTime = Time.time;
+
             readyToJump = false;
 
             Jump();
@@ -196,6 +213,9 @@ public class PlayerMovment : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+        
+        jumped = true;
     }
 
     private void Crouch()

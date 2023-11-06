@@ -11,13 +11,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - WhatIsGround
+  - 
   - Water
   - UI
-  - 
-  - 
+  - PlayerLayer
+  - Test layer
   - Layer8
-  - 
+  - WhatIsGround
   - 
   - 
   - 
