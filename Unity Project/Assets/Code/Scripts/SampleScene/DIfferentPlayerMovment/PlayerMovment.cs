@@ -49,6 +49,11 @@ public class PlayerMovment : MonoBehaviour
     bool grounded;
     public float SphereCastRadius;
     public float SphereCastDistance;
+    public float DesiredHeight;
+    public float interpolationTime = 0.1f;
+    private float CurrentHeight;
+    public float HeightOffset;
+
 
 
 
@@ -78,12 +83,19 @@ public class PlayerMovment : MonoBehaviour
         ResetJump();
 
         readyToJump = true;
+
+        CurrentHeight = transform.position.y;
     }
 
     private void Update()
     {
+
+
         MyInput();
-         
+
+        
+
+
     } 
 
     private void LateUpdate()
@@ -94,13 +106,23 @@ public class PlayerMovment : MonoBehaviour
         //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
 
-        if (hit.transform == true && isJumping == false)
+        if (hit.distance < 0.003 == true && isJumping == false)
         {
             print(hit.distance);
             Debug.Log("Spherecast check");
             grounded = true;
-            rb.useGravity = false;
-            
+            rb.useGravity = false;           
+
+            Vector3 newPosition = transform.position;
+            newPosition.y = CurrentHeight;
+            transform.position = newPosition;
+
+
+
+
+            DesiredHeight = hit.point.y + HeightOffset;
+
+
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }   
         else
@@ -115,8 +137,9 @@ public class PlayerMovment : MonoBehaviour
             isJumping = false;
         }
 
+       
 
-
+        CurrentHeight = Mathf.Lerp(CurrentHeight, DesiredHeight, interpolationTime);
 
         SpeedLimiting();
 
