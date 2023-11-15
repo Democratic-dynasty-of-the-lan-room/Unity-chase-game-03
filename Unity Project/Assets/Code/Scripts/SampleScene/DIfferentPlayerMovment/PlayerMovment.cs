@@ -53,6 +53,7 @@ public class PlayerMovment : MonoBehaviour
     public float interpolationTime = 0.1f;
     private float CurrentHeight;
     public float HeightOffset;
+    public float GroundedHeight;
 
 
 
@@ -89,57 +90,21 @@ public class PlayerMovment : MonoBehaviour
 
     private void Update()
     {
-
-
         MyInput();
-
-        
-
-
-    } 
+    }
 
     private void LateUpdate()
     {
-        RaycastHit hit;
-
-        // ground check       
-        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
-
-        if (hit.distance < 0.003 == true && isJumping == false)
-        {
-            print(hit.distance);
-            Debug.Log("Spherecast check");
-            grounded = true;
-            rb.useGravity = false;           
-
-            Vector3 newPosition = transform.position;
-            newPosition.y = CurrentHeight;
-            transform.position = newPosition;
-
-
-
-
-            DesiredHeight = hit.point.y + HeightOffset;
-
-
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        }   
-        else
-        {
-            grounded = false;
-            Debug.Log("Spherecast Not grounded");
-            rb.useGravity = true;
-        }
+       
 
         if (isJumping && Time.time - jumpStartTime > 0.5f)
         {
             isJumping = false;
         }
 
-       
 
-        CurrentHeight = Mathf.Lerp(CurrentHeight, DesiredHeight, interpolationTime);
+
+
 
         SpeedLimiting();
 
@@ -147,8 +112,8 @@ public class PlayerMovment : MonoBehaviour
         if (grounded && Input.GetKey(KeyCode.LeftControl))
         {
             rb.drag = CrouchDrag;
-            moveSpeed = ChrouchMovement;         
-        }        
+            moveSpeed = ChrouchMovement;
+        }
         else if (grounded)
         {
             rb.drag = groundDrag;
@@ -159,14 +124,16 @@ public class PlayerMovment : MonoBehaviour
             rb.drag = 0;
 
             moveSpeed = AirMovement;
-        }   
+        }
     }
 
     private void FixedUpdate()
     {
         MovePlayer();
 
-        Sprint();   
+        MovementTesting();
+
+        Sprint();
     }
 
     private void MyInput()
@@ -196,11 +163,11 @@ public class PlayerMovment : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // on ground
-        if(grounded)
+        if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
         //in air
-        else if(!grounded)
+        else if (!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
@@ -222,13 +189,58 @@ public class PlayerMovment : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
         {
-            
+
 
             Debug.Log("Sprint");
-            
+
             rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
-        }    
-    }    
+        }
+    }
+
+    private void MovementTesting()
+    {
+        RaycastHit hit;
+
+        // ground check       
+        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
+
+        Debug.Log(CurrentHeight);
+
+        // This runs when you hit the ground
+        if (hit.distance < GroundedHeight == true && isJumping == false && hit.distance != 0)
+        {
+            // desired height to ground
+            DesiredHeight = hit.point.y + HeightOffset;
+
+            CurrentHeight = Mathf.Lerp(transform.position.y, DesiredHeight, interpolationTime);
+
+            // .. and increase the t interpolater
+            //interpolationTime += 0.5f * Time.deltaTime;
+
+            //print(hit.distance);
+            //Debug.Log("Spherecast check");
+            grounded = true;
+            rb.useGravity = false;
+
+            Vector3 newPosition = transform.position;
+            newPosition.y = CurrentHeight;
+            transform.position = newPosition;
+
+
+
+
+
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        }
+        else
+        {
+            grounded = false;
+            Debug.Log("Spherecast Not grounded");
+            rb.useGravity = true;
+        }
+
+    }
 
     private void Jump()
     {

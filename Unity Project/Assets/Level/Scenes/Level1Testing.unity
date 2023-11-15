@@ -2681,7 +2681,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565930267}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.3, y: 10.43, z: 82.41}
+  m_LocalPosition: {x: 75.29, y: 10.43, z: 75.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6587,10 +6587,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 520
   SphereCastRadius: 0.49
-  SphereCastDistance: 0.6
+  SphereCastDistance: 10
   DesiredHeight: 10
   interpolationTime: 0.1
   HeightOffset: 1
+  GroundedHeight: 0.52
   orientation: {fileID: 5173293618267304008}
   PlayerFootCollider: {fileID: 0}
 --- !u!114 &5173293617685718045
