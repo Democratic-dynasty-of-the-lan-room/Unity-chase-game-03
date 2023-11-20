@@ -46,7 +46,8 @@ public class PlayerMovment : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    public LayerMask PlayerLayer;
+    public bool grounded;
     public float SphereCastRadius;
     public float SphereCastDistance;
     public float DesiredHeight;
@@ -102,10 +103,6 @@ public class PlayerMovment : MonoBehaviour
             isJumping = false;
         }
 
-
-
-
-
         SpeedLimiting();
 
         // handle drag
@@ -135,7 +132,7 @@ public class PlayerMovment : MonoBehaviour
 
         Sprint();
     }
-
+    
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -205,7 +202,7 @@ public class PlayerMovment : MonoBehaviour
         //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
         Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
 
-        Debug.Log(CurrentHeight);
+        Debug.Log(hit.distance);
 
         // This runs when you hit the ground
         if (hit.distance < GroundedHeight == true && isJumping == false && hit.distance != 0)
@@ -213,12 +210,14 @@ public class PlayerMovment : MonoBehaviour
             // desired height to ground
             DesiredHeight = hit.point.y + HeightOffset;
 
+
+
             CurrentHeight = Mathf.Lerp(transform.position.y, DesiredHeight, interpolationTime);
 
             // .. and increase the t interpolater
             //interpolationTime += 0.5f * Time.deltaTime;
 
-            //print(hit.distance);
+            
             //Debug.Log("Spherecast check");
             grounded = true;
             rb.useGravity = false;
@@ -227,9 +226,8 @@ public class PlayerMovment : MonoBehaviour
             newPosition.y = CurrentHeight;
             transform.position = newPosition;
 
-
-
-
+            // what is ground and player layer don't collide
+            Physics.IgnoreLayerCollision(6, 9, true);
 
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
@@ -238,8 +236,10 @@ public class PlayerMovment : MonoBehaviour
             grounded = false;
             Debug.Log("Spherecast Not grounded");
             rb.useGravity = true;
-        }
 
+            // what is ground and player layer do collide
+            Physics.IgnoreLayerCollision(6, 9, false);
+        }
     }
 
     private void Jump()

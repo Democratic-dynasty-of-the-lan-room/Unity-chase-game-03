@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 62551535}
   - component: {fileID: 62551534}
   - component: {fileID: 62551533}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ramp (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 214249416}
   - component: {fileID: 214249415}
   - component: {fileID: 214249414}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: ramp (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6586,12 +6586,16 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 520
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  grounded: 0
   SphereCastRadius: 0.49
   SphereCastDistance: 10
   DesiredHeight: 10
   interpolationTime: 0.1
   HeightOffset: 1
-  GroundedHeight: 0.52
+  GroundedHeight: 0.54
   orientation: {fileID: 5173293618267304008}
   PlayerFootCollider: {fileID: 0}
 --- !u!114 &5173293617685718045
