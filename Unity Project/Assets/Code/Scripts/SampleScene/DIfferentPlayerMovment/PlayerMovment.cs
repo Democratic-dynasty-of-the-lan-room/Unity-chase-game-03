@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ using UnityEngine.Animations;
 
 public class PlayerMovment : MonoBehaviour
 {
+    RaycastHit hit;
+
     [Header("Ghost")]
 
     [Header("Walk")]
@@ -56,6 +59,12 @@ public class PlayerMovment : MonoBehaviour
     public float HeightOffset;
     public float GroundedHeight;
 
+    [Header("SlopeMovement")]
+    //private Vector3 SurfaceNormal;
+    public float MaxSlopeAngle;
+    //private Vector3 SlopeMoveDirection;
+    private RaycastHit SlopeHit;
+
 
 
 
@@ -66,7 +75,7 @@ public class PlayerMovment : MonoBehaviour
     float horizontalInput;
     float verticalInput;
 
-    Vector3 moveDirection;
+    Vector3 moveDirection;  
 
     Rigidbody rb;
 
@@ -131,6 +140,10 @@ public class PlayerMovment : MonoBehaviour
         MovementTesting();
 
         Sprint();
+
+        //Debug.Log("Surface Normal: " + SlopeHit.normal);
+
+        //Debug.DrawLine(transform.position, SlopeHit.normal, Color.red);
     }
     
     private void MyInput()
@@ -159,13 +172,33 @@ public class PlayerMovment : MonoBehaviour
         // calculate movment direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        // on ground
-        if (grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        // if on slope
+        if (OnSlope())
+        {           
+            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
 
-        //in air
+            Debug.Log("GetSlopeMoveDirection one" + GetSlopeMoveDirection());
+
+            //Debug.Log("OnSlopeCheck");
+
+            //if (rb.velocity.y > 0)
+               //rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }       // on ground
+        else if (grounded)
+        {
+            //Debug.Log("Grounded");
+
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        }//in air
         else if (!grounded)
+        {
+            //Debug.Log("Not Grounded");
+
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
+
+        //turn gravity off while on slope
+        rb.useGravity = !OnSlope();
     }
 
     private void SpeedLimiting()
@@ -186,31 +219,35 @@ public class PlayerMovment : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
         {
-
+             
 
             Debug.Log("Sprint");
 
-            rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
+            if (OnSlope())
+            {
+                rb.AddForce(GetSlopeMoveDirection() * SprintSpeed, ForceMode.Force);
+            }
+            else if (!OnSlope())
+            {
+                rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
+            }               
         }
     }
 
-    private void MovementTesting()
+    public void MovementTesting()
     {
-        RaycastHit hit;
+        // ground check            
+        grounded = Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
 
-        // ground check       
-        //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
+        //SurfaceNormal = hit.normal;
 
-        Debug.Log(hit.distance);
+        //Debug.Log(hit.distance);
 
         // This runs when you hit the ground
         if (hit.distance < GroundedHeight == true && isJumping == false && hit.distance != 0)
         {
             // desired height to ground
-            DesiredHeight = hit.point.y + HeightOffset;
-
-
+            DesiredHeight = hit.point.y + HeightOffset;                  
 
             CurrentHeight = Mathf.Lerp(transform.position.y, DesiredHeight, interpolationTime);
 
@@ -226,15 +263,13 @@ public class PlayerMovment : MonoBehaviour
             newPosition.y = CurrentHeight;
             transform.position = newPosition;
 
-            // what is ground and player layer don't collide
+            // whatisground and player layer don't collide
             Physics.IgnoreLayerCollision(6, 9, true);
-
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
         else
         {
             grounded = false;
-            Debug.Log("Spherecast Not grounded");
+            //Debug.Log("Spherecast Not grounded");
             rb.useGravity = true;
 
             // what is ground and player layer do collide
@@ -276,13 +311,33 @@ public class PlayerMovment : MonoBehaviour
         readyToJump = true;
     }
 
+    private bool OnSlope()
+    {
+        if (Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out SlopeHit, playerHeight * 2f + 0.5f))
+        {
+            //Debug.DrawLine(transform.position, SlopeHit.point, Color.red);
+          
+            float angle = Vector3.Angle(Vector3.up, SlopeHit.normal);
+            return angle < MaxSlopeAngle && angle != 0;
+        }
+
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(moveDirection, SlopeHit.normal).normalized;
+
+        //Debug.Log("GetSlopeMoveDirection" + GetSlopeMoveDirection());
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(transform.position, SphereCastRadius);
 
         RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hitInfo, SphereCastDistance))
+        if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, SphereCastDistance))
         {
             Gizmos.DrawLine(transform.position, hitInfo.point);
         }

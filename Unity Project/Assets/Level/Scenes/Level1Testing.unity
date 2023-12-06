@@ -6596,6 +6596,7 @@ MonoBehaviour:
   interpolationTime: 0.1
   HeightOffset: 1
   GroundedHeight: 0.54
+  MaxSlopeAngle: 40
   orientation: {fileID: 5173293618267304008}
   PlayerFootCollider: {fileID: 0}
 --- !u!114 &5173293617685718045
