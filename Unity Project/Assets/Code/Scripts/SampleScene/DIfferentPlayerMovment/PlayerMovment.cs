@@ -57,6 +57,8 @@ public class PlayerMovment : MonoBehaviour
     public float HeightOffset;
     public float GroundedHeight;
 
+    private bool HasRun;
+
     [Header("SlopeMovement")]
     //private Vector3 SurfaceNormal;
     public float MaxSlopeAngle;
@@ -166,7 +168,7 @@ public class PlayerMovment : MonoBehaviour
         {           
             rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
 
-            Debug.Log("GetSlopeMoveDirection one" + GetSlopeMoveDirection());
+            //Debug.Log("GetSlopeMoveDirection one" + GetSlopeMoveDirection());
 
             //Debug.Log("OnSlopeCheck");
 
@@ -217,7 +219,7 @@ public class PlayerMovment : MonoBehaviour
             // limit velocity if needed
             if (flatVel.magnitude > SprintLimit)
             {
-                Debug.Log("speed went over");
+                //Debug.Log("speed went over");
 
                 Vector3 limitedVel = flatVel.normalized * SprintLimit;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
@@ -231,7 +233,7 @@ public class PlayerMovment : MonoBehaviour
         {
             IsSprinting = true;
 
-            Debug.Log("Sprint");
+            //Debug.Log("Sprint");
 
             if (OnSlope())
             {
@@ -250,6 +252,21 @@ public class PlayerMovment : MonoBehaviour
 
     public void MovementTesting()
     {
+        print(rb.transform.position.y + GroundedHeight);
+
+        if (grounded && !HasRun)
+        {
+            //Debug.Log("Velocity zero");
+
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            HasRun = true;
+        }
+        else if (!grounded)
+        {
+            HasRun = false;
+        }
+
         // ground check            
         grounded = Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
 
@@ -258,12 +275,14 @@ public class PlayerMovment : MonoBehaviour
         //Debug.Log(hit.distance);
 
         // This runs when you hit the ground
-        if (hit.distance < GroundedHeight == true && isJumping == false && hit.distance != 0)
+        if (hit.point.y > rb.transform.position.y + GroundedHeight == true && isJumping == false && hit.distance != 0)
         {
             ExitingSlope = false;
 
+           
+
             // desired height to ground
-            DesiredHeight = hit.point.y + HeightOffset;                  
+            DesiredHeight = hit.point.y + HeightOffset;
 
             CurrentHeight = Mathf.Lerp(transform.position.y, DesiredHeight, interpolationTime);
 
@@ -314,7 +333,7 @@ public class PlayerMovment : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            Debug.Log("Crouch");
+           // Debug.Log("Crouch");
 
             anim.SetTrigger("trCrouch");
 
@@ -322,7 +341,7 @@ public class PlayerMovment : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            anim.SetTrigger("trUncrouch");
+            //anim.SetTrigger("trUncrouch");
 
             playerHeight = 2f;
         }
