@@ -17,7 +17,7 @@ public class PlayerMovment : MonoBehaviour
     [Header("Walk")]
     private float moveSpeed;
     public float GroundMovement;
-    public float WalkLimit;
+    public float WalkLimit = 8.999998f;
     public float groundDrag;
 
     [Header("Jump/Fall")]
@@ -38,10 +38,8 @@ public class PlayerMovment : MonoBehaviour
 
     [Header("Sprint")]
     public float SprintSpeed;
-
-
-
     public float SprintLimit;
+    private bool IsSprinting;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -64,11 +62,7 @@ public class PlayerMovment : MonoBehaviour
     public float MaxSlopeAngle;
     //private Vector3 SlopeMoveDirection;
     private RaycastHit SlopeHit;
-
-
-
-
-
+    public bool ExitingSlope;
 
     public Transform orientation;
 
@@ -82,7 +76,6 @@ public class PlayerMovment : MonoBehaviour
     private Animator anim;
 
     public GameObject PlayerFootCollider;
-
 
     private void Start()
     {
@@ -140,10 +133,6 @@ public class PlayerMovment : MonoBehaviour
         MovementTesting();
 
         Sprint();
-
-        //Debug.Log("Surface Normal: " + SlopeHit.normal);
-
-        //Debug.DrawLine(transform.position, SlopeHit.normal, Color.red);
     }
     
     private void MyInput()
@@ -173,7 +162,7 @@ public class PlayerMovment : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // if on slope
-        if (OnSlope())
+        if (OnSlope() && !ExitingSlope)
         {           
             rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
 
@@ -203,23 +192,44 @@ public class PlayerMovment : MonoBehaviour
 
     private void SpeedLimiting()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // limit velocity if needed
-        if (flatVel.magnitude > SprintLimit)
+        // Limiting slope walk speed
+        if (OnSlope() && !ExitingSlope && !IsSprinting)
         {
-            Debug.Log("speed went over");
+            if (rb.velocity.magnitude > WalkLimit)
+            {
+                rb.velocity = rb.velocity.normalized * WalkLimit;
+            }
 
-            Vector3 limitedVel = flatVel.normalized * SprintLimit;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+        // Limiting slope Sprint speed
+        else if (OnSlope() && !ExitingSlope && IsSprinting == true)
+        {
+            if (rb.velocity.magnitude > SprintLimit)
+            {
+                rb.velocity = rb.velocity.normalized * SprintLimit;
+            }
+        }
+        // Limiting speed on ground or air
+        else
+        {
+            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            // limit velocity if needed
+            if (flatVel.magnitude > SprintLimit)
+            {
+                Debug.Log("speed went over");
+
+                Vector3 limitedVel = flatVel.normalized * SprintLimit;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
+        }   
     }
 
     private void Sprint()
     {
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
         {
-             
+            IsSprinting = true;
 
             Debug.Log("Sprint");
 
@@ -231,6 +241,10 @@ public class PlayerMovment : MonoBehaviour
             {
                 rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
             }               
+        }
+        else
+        {
+            IsSprinting = false;       
         }
     }
 
@@ -246,6 +260,8 @@ public class PlayerMovment : MonoBehaviour
         // This runs when you hit the ground
         if (hit.distance < GroundedHeight == true && isJumping == false && hit.distance != 0)
         {
+            ExitingSlope = false;
+
             // desired height to ground
             DesiredHeight = hit.point.y + HeightOffset;                  
 
@@ -284,8 +300,14 @@ public class PlayerMovment : MonoBehaviour
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
-        
+        ExitingSlope = true;
+
         jumped = true;
+    }
+
+    private void ResetJump()
+    {
+        readyToJump = true;
     }
 
     private void Crouch()
@@ -304,11 +326,6 @@ public class PlayerMovment : MonoBehaviour
 
             playerHeight = 2f;
         }
-    }
-
-    private void ResetJump()
-    {
-        readyToJump = true;
     }
 
     private bool OnSlope()
