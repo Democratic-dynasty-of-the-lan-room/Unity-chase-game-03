@@ -6692,7 +6692,7 @@ MonoBehaviour:
   DesiredHeight: 10
   interpolationTime: 0.1
   HeightOffset: 1
-  GroundedHeight: 0.54
+  GroundedHeight: -1.3
   MaxSlopeAngle: 40
   ExitingSlope: 0
   orientation: {fileID: 5173293618267304008}
