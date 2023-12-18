@@ -51,6 +51,7 @@ public class PlayerMovment : MonoBehaviour
     public bool grounded;
     public float SphereCastRadius;
     public float SphereCastDistance;
+    public Vector3 SphereCastPostitionY;
     public float DesiredHeight;
     public float interpolationTime = 0.1f;
     private float CurrentHeight;
@@ -90,7 +91,7 @@ public class PlayerMovment : MonoBehaviour
 
         readyToJump = true;
 
-        CurrentHeight = transform.position.y;
+        CurrentHeight = transform.position.y;       
     }
 
     private void Update()
@@ -265,10 +266,10 @@ public class PlayerMovment : MonoBehaviour
         else if (!grounded)
         {
             HasRun = false;
-        }
+        }       
 
         // ground check            
-        grounded = Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
+        grounded = Physics.SphereCast(transform.position + SphereCastPostitionY, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
 
         //SurfaceNormal = hit.normal;
 
@@ -298,7 +299,7 @@ public class PlayerMovment : MonoBehaviour
             newPosition.y = CurrentHeight;
             transform.position = newPosition;
 
-            // whatisground and player layer don't collide
+            // whatisground and PlayerLayer don't collide
             Physics.IgnoreLayerCollision(6, 9, true);
         }
         else
@@ -307,7 +308,7 @@ public class PlayerMovment : MonoBehaviour
             //Debug.Log("Spherecast Not grounded");
             rb.useGravity = true;
 
-            // what is ground and player layer do collide
+            // what is ground and PlayerLayer do collide
             Physics.IgnoreLayerCollision(6, 9, false);
         }
     }
@@ -349,7 +350,7 @@ public class PlayerMovment : MonoBehaviour
 
     private bool OnSlope()
     {
-        if (Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out SlopeHit, playerHeight * 2f + 0.5f))
+        if (Physics.SphereCast(transform.position + SphereCastPostitionY, SphereCastRadius, Vector3.down, out SlopeHit, playerHeight * 2f + 0.5f))
         {
             //Debug.DrawLine(transform.position, SlopeHit.point, Color.red);
           
@@ -370,7 +371,7 @@ public class PlayerMovment : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, SphereCastRadius);
+        Gizmos.DrawSphere(transform.position + SphereCastPostitionY, SphereCastRadius);
 
         RaycastHit hitInfo;
         if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, SphereCastDistance))
