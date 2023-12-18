@@ -13,6 +13,12 @@ public class PlayerMovment : MonoBehaviour
     RaycastHit hit;
 
     [Header("Ghost")]
+    
+    [Header("General")]
+    public float CurrentSpeedLimit;
+    public float proportionalGain;
+    public float derivativeGain;
+    private float previousHeightError;
 
     [Header("Walk")]
     private float moveSpeed;
@@ -26,7 +32,7 @@ public class PlayerMovment : MonoBehaviour
     bool readyToJump;
     public float airMultiplier;
     public bool jumped;
-    bool isJumping = false;
+    public bool isJumping = false;
     float jumpStartTime = 0f;
 
     [Header("Crouch")]
@@ -52,7 +58,7 @@ public class PlayerMovment : MonoBehaviour
     public float SphereCastRadius;
     public float SphereCastDistance;
     public Vector3 SphereCastPostitionY;
-    public float DesiredHeight;
+    public float desiredHeight;
     public float interpolationTime = 0.1f;
     private float CurrentHeight;
     public float HeightOffset;
@@ -72,7 +78,7 @@ public class PlayerMovment : MonoBehaviour
     float horizontalInput;
     float verticalInput;
 
-    Vector3 moveDirection;  
+    Vector3 moveDirection;
 
     Rigidbody rb;
 
@@ -91,19 +97,21 @@ public class PlayerMovment : MonoBehaviour
 
         readyToJump = true;
 
-        CurrentHeight = transform.position.y;       
+        CurrentHeight = transform.position.y;
     }
 
     private void Update()
     {
         MyInput();
+
+        Crouch();
     }
 
     private void LateUpdate()
     {
-       
 
-        if (isJumping && Time.time - jumpStartTime > 0.5f)
+
+        if (isJumping && Time.time - jumpStartTime > jumpCooldown)
         {
             isJumping = false;
         }
@@ -131,20 +139,27 @@ public class PlayerMovment : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        if (!isJumping)
+        {
+            MovePlayer();
+        }
 
-        MovementTesting();
+        Grounding();
 
-        Sprint();
+        if (!isJumping)
+        {
+            Sprint();
+        }
+
     }
-    
+
     private void MyInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
+        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y-0.2f)) < 0.24f))
         {
             isJumping = true;
             jumpStartTime = Time.time;
@@ -152,8 +167,6 @@ public class PlayerMovment : MonoBehaviour
             readyToJump = false;
 
             Jump();
-
-            Crouch();
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
@@ -166,15 +179,15 @@ public class PlayerMovment : MonoBehaviour
 
         // if on slope
         if (OnSlope() && !ExitingSlope)
-        {           
-            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
+        {
+            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 10f, ForceMode.Force);
 
             //Debug.Log("GetSlopeMoveDirection one" + GetSlopeMoveDirection());
 
             //Debug.Log("OnSlopeCheck");
 
             //if (rb.velocity.y > 0)
-               //rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+            //rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }       // on ground
         else if (grounded)
         {
@@ -225,14 +238,17 @@ public class PlayerMovment : MonoBehaviour
                 Vector3 limitedVel = flatVel.normalized * SprintLimit;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
             }
-        }   
+        }
     }
 
     private void Sprint()
     {
+
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
         {
             IsSprinting = true;
+
+            CurrentSpeedLimit = SprintLimit;
 
             //Debug.Log("Sprint");
 
@@ -243,19 +259,19 @@ public class PlayerMovment : MonoBehaviour
             else if (!OnSlope())
             {
                 rb.AddForce(moveDirection * SprintSpeed, ForceMode.Force);
-            }               
+            }
         }
         else
         {
-            IsSprinting = false;       
+            CurrentSpeedLimit = WalkLimit;
+
+            IsSprinting = false;
         }
     }
 
-    public void MovementTesting()
+    public void Grounding()
     {
-        print(rb.transform.position.y + GroundedHeight);
-
-        if (grounded && !HasRun)
+        if (grounded && !HasRun && (Mathf.Abs(desiredHeight - (transform.position.y+0.3f)) < 0.3f))
         {
             //Debug.Log("Velocity zero");
 
@@ -266,7 +282,7 @@ public class PlayerMovment : MonoBehaviour
         else if (!grounded)
         {
             HasRun = false;
-        }       
+        }
 
         // ground check            
         grounded = Physics.SphereCast(transform.position + SphereCastPostitionY, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
@@ -275,29 +291,34 @@ public class PlayerMovment : MonoBehaviour
 
         //Debug.Log(hit.distance);
 
-        // This runs when you hit the ground
+        // This runs while on the ground
         if (hit.point.y > rb.transform.position.y + GroundedHeight == true && isJumping == false && hit.distance != 0)
         {
             ExitingSlope = false;
 
-           
+
 
             // desired height to ground
-            DesiredHeight = hit.point.y + HeightOffset;
-
-            CurrentHeight = Mathf.Lerp(transform.position.y, DesiredHeight, interpolationTime);
-
-            // .. and increase the t interpolater
-            //interpolationTime += 0.5f * Time.deltaTime;
-
+            desiredHeight = hit.point.y + HeightOffset;
             
-            //Debug.Log("Spherecast check");
+            float currentHeight = transform.position.y;
+
+            float heightDifference = desiredHeight - currentHeight;
+
+            // Calculate proportional and derivative terms
+            float proportionalTerm = heightDifference;
+            float derivativeTerm = heightDifference - previousHeightError;
+
+            // Calculate the force based on PD control
+            float controlForce = proportionalTerm * proportionalGain + derivativeTerm * derivativeGain;
+
+            // Apply the force to the Rigidbody
+            rb.AddForce(new Vector3(0f, controlForce, 0f));
+
+            // Update the previous height error for the next iteration
+            previousHeightError = heightDifference;
             grounded = true;
             rb.useGravity = false;
-
-            Vector3 newPosition = transform.position;
-            newPosition.y = CurrentHeight;
-            transform.position = newPosition;
 
             // whatisground and PlayerLayer don't collide
             Physics.IgnoreLayerCollision(6, 9, true);
@@ -316,7 +337,7 @@ public class PlayerMovment : MonoBehaviour
     private void Jump()
     {
         //reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.velocity = rb.velocity.normalized * (hit.normal.y*rb.velocity.magnitude);
 
         rb.AddForce(hit.normal * jumpForce, ForceMode.Impulse);
 
@@ -334,7 +355,7 @@ public class PlayerMovment : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-           // Debug.Log("Crouch");
+            // Debug.Log("Crouch");
 
             anim.SetTrigger("trCrouch");
 
@@ -353,7 +374,7 @@ public class PlayerMovment : MonoBehaviour
         if (Physics.SphereCast(transform.position + SphereCastPostitionY, SphereCastRadius, Vector3.down, out SlopeHit, playerHeight * 2f + 0.5f))
         {
             //Debug.DrawLine(transform.position, SlopeHit.point, Color.red);
-          
+
             float angle = Vector3.Angle(Vector3.up, SlopeHit.normal);
             return angle < MaxSlopeAngle && angle != 0;
         }
