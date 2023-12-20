@@ -62,7 +62,8 @@ public class PlayerMovment : MonoBehaviour
     public float interpolationTime = 0.1f;
     private float CurrentHeight;
     public float HeightOffset;
-    public float GroundedHeight;
+    public float GroundedHeight =-1.3f;
+    public float LandedHeight;
 
     private bool HasRun;
 
@@ -155,11 +156,17 @@ public class PlayerMovment : MonoBehaviour
 
     private void MyInput()
     {
+        //set GroundedHeight to be equal to height offset when in the air
+        if (!grounded || isJumping == true)
+        {
+            GroundedHeight = HeightOffset * -1.3f;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y-0.2f)) < 0.24f))
+        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y-0.2f)) < 0.33f))
         {
             isJumping = true;
             jumpStartTime = Time.time;
@@ -271,9 +278,11 @@ public class PlayerMovment : MonoBehaviour
 
     public void Grounding()
     {
-        if (grounded && !HasRun && (Mathf.Abs(desiredHeight - (transform.position.y+0.3f)) < 0.3f))
+        if (grounded && !HasRun && (Mathf.Abs(desiredHeight - (transform.position.y+0.32f)) < 0.3f))
         {
-            //Debug.Log("Velocity zero");
+
+           GroundedHeight = LandedHeight; 
+           // Debug.Log("Velocity zero");
 
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -336,6 +345,7 @@ public class PlayerMovment : MonoBehaviour
 
     private void Jump()
     {
+
         //reset y velocity
         rb.velocity = rb.velocity.normalized * (hit.normal.y*rb.velocity.magnitude);
 
@@ -357,14 +367,13 @@ public class PlayerMovment : MonoBehaviour
         {
             // Debug.Log("Crouch");
 
-            anim.SetTrigger("trCrouch");
-
+            HeightOffset = 0.35f;
             playerHeight = 0.5f;
         }
         else if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            //anim.SetTrigger("trUncrouch");
 
+            HeightOffset = 1f;
             playerHeight = 2f;
         }
     }
