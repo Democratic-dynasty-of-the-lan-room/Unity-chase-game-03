@@ -21,8 +21,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         // Start is called before the first frame update
         void Start()
-        {
-
+        {           
+            //GameIsPaused = false;
             pauseMenuUI.SetActive(false);
         }
 
@@ -34,7 +34,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
                 if (GameIsPaused)
                 {
                     Resume();               
-                }
+                }              
                 else
                 {
                     Pause();
@@ -50,7 +50,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
             GameIsPaused = false;
-            InventoryScript.SetActive(true);
+            InventoryScript.SetActive(true);         
         }
 
         void Pause()
@@ -63,7 +63,13 @@ namespace Code.Scripts.SampleScene.MenuScripts
             Cursor.visible = true;
 
             InventoryScript.SetActive(false);
+        }
 
+        public void Restart()
+        {
+            Time.timeScale = 1f;
+            GameIsPaused = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public void LoadMenu()
@@ -71,8 +77,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
             SceneManager.LoadScene(0);
             Time.timeScale = 1f;
             GameIsPaused = false;
-
-        }
+        } 
 
     }
 }
