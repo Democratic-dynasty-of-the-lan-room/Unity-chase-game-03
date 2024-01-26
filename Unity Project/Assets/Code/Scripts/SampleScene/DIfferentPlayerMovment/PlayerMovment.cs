@@ -205,7 +205,6 @@ public class PlayerMovment : MonoBehaviour
     //translate velocity when entering a slope
     private void TranslateVelocityforSlope()
     {
-        Debug.Log(correctHitNormal);
         if (grounded)
         {
             if (Vector3.Angle(lastHitNormal, correctHitNormal) > normalchangeThreshold && Vector3.Angle(lastHitNormal, correctHitNormal) < 40 && correctHitNormal.y > 0.78)
