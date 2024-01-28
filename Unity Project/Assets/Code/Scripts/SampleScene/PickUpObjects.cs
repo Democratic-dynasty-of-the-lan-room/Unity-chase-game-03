@@ -5,7 +5,6 @@ namespace Code.Scripts.SampleScene
 {
     public class PickUpObjects : MonoBehaviour
     {
-
         public GameObject itemButton;
 
         private InventoryScript inventory;   
