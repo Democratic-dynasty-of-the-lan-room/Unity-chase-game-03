@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerCam : MonoBehaviour
+public class PlayerCam : MonoBehaviour, IDataPersistence
 {
     public float sensX;
     public float sensY;
@@ -34,6 +34,17 @@ public class PlayerCam : MonoBehaviour
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
 
+    }
+
+    // Why isn't this working?
+    public void LoadData(GameData data)
+    {     
+        this.transform.rotation = data.PlayerRotation;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.PlayerRotation = this.transform.rotation;
     }
 }
 

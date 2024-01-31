@@ -8,7 +8,7 @@ using UnityEngine.Animations;
 
 
 
-public class PlayerMovment : MonoBehaviour
+public class PlayerMovment : MonoBehaviour, IDataPersistence
 {
     RaycastHit hit;
 
@@ -106,6 +106,16 @@ public class PlayerMovment : MonoBehaviour
         MyInput();
 
         Crouch();
+    }
+
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;       
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = this.transform.position;
     }
 
     private void LateUpdate()

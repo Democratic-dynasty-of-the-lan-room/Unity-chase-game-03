@@ -6,15 +6,21 @@ namespace Code.Scripts.SampleScene.MenuScripts
 {
     public class PauseMenu : MonoBehaviour
     {
-
+        //public bool Restarted;
 
         public static bool GameIsPaused = false;
 
         public GameObject pauseMenuUI;
 
+        //[SerializeField] GameObject Player;
+
         [SerializeField] GameObject InventoryScript;
 
         private InventoryScript inventory;
+
+        public GameData GameDataScript;
+
+        public PlayerMovment PlayerMovementScript;
 
         //[SerializeField] GameObject pauseMenu;
 
@@ -67,6 +73,13 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void Restart()
         {
+            // This is bad remove this at some point. This is just for now ease of use.
+            PlayerMovementScript.transform.position = GameDataScript.RestartPosition;
+
+            GameDataScript.RestartLevel();
+
+            DataPersistenceManager.instance.SaveGame();
+
             Time.timeScale = 1f;
             GameIsPaused = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -74,6 +87,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void LoadMenu()
         {
+            //save the game anytime before loading a new scene check this works
+            DataPersistenceManager.instance.SaveGame();
+
             SceneManager.LoadScene(0);
             Time.timeScale = 1f;
             GameIsPaused = false;

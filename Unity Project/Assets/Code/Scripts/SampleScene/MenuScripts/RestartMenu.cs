@@ -7,8 +7,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
     {
 
         [SerializeField] GameObject restartMenu;
-    
 
+        public GameData gameDataScript;
 
 
         // Start is called before the first frame update
@@ -33,6 +33,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
         //Loads menu scene
         public void BackToMenu()
         {
+            //save the game anytime before loading a new scene check this works
+            DataPersistenceManager.instance.SaveGame();
+
             SceneManager.LoadScene(0);
         }
     }
