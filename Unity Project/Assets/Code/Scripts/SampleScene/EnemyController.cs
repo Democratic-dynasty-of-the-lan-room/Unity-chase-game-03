@@ -2,7 +2,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using static UnityEditor.Handles;
 
 namespace Code.Scripts.SampleScene
 {

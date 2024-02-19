@@ -14,10 +14,6 @@ public class GameData
     public Vector3 BlockPosition;
     public Quaternion BlockRotation;
 
-    [Header("RestartLevel")]
-
-    public Vector3 RestartPosition;
-
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
     public GameData()
@@ -31,16 +27,5 @@ public class GameData
 
         BlockPosition = Vector3.left;
         BlockRotation = Quaternion.identity;
-    }
-
-    // Runs when you click Restart/Succumb
-    public void RestartLevel()
-    {
-        // Enemy reset position
-
-        // player reset position how I did it now is bad
-        playerPosition = Vector3.zero;
-
-        // reset objects in the level if you collected them in this level and reset, but don't reset an object if you are visiting this place again
     }
 }

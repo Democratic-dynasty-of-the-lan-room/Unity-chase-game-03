@@ -9,6 +9,7 @@ TagManager:
   - PlayerBody
   - EnemyTerritory
   - LeverTag
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

@@ -8,15 +8,19 @@ using Code.Scripts.SampleScene.MenuScripts;
 
 public class DataPersistenceManager : MonoBehaviour
 {
-
-    private GameObject Player;
-    private PauseMenu PauseMenuScript;
-
     [Header("FileStorageConfig")]
     [SerializeField] private string fileName;
     [SerializeField] private bool useEncryption;
 
     private GameData gameData;
+
+    // Check Point
+    [SerializeField] private string RestartfileName;
+    [SerializeField] private bool RestartuseEncryption;
+
+    private CheckPointData checkPointData;
+
+    private List<IDataPersistence> RestartdataPersistenceObjects;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
 
@@ -33,7 +37,7 @@ public class DataPersistenceManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this.gameObject);
 
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, Application.persistentDataPath, RestartfileName, useEncryption, RestartuseEncryption);
     }
 
     private void OnEnable()
@@ -52,39 +56,17 @@ public class DataPersistenceManager : MonoBehaviour
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("OnSceneLoaded Called");
-        this.dataPersistenceObjects = FindAllDataPersistenceObjects();  
-        
-        /*if (PauseMenuScript.Restarted)
-        {
-            Player.transform.position = Vector3.zero;       
-        }
-        else
-        {
-            
-        }*/
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        this.RestartdataPersistenceObjects = FindAllDataPersistenceObjects();
 
         LoadGame();
     }
 
-    // Remove OnSceneUnloaded later. It doesn't work at all go to the fixes vid to change it
-    //public void OnSceneUnloaded(Scene scene)
-    //{
-    //    Debug.Log("OnSceneUnloaded Called");
-    //    //This need to be changed
-    //    SaveGame();
-    //}
-
     public void NewGame()
     {
         this.gameData = new GameData();
-    }
 
-    public void restartGame()
-    {
-        // Load any saved data from a file using the data handler
-        //this.gameData = dataHandler.Restart();
-
-        // Dont save specific data like player position, and enemy position, and objects that you picked during that level.
+        this.checkPointData = new CheckPointData();
     }
 
     public void LoadGame()
@@ -137,8 +119,59 @@ public class DataPersistenceManager : MonoBehaviour
         return new List<IDataPersistence>(dataPersistenceObjects);
     }
 
+    private List<IDataPersistence> RestartFindAllDataPersistenceObjects()
+    {
+        IEnumerable<IDataPersistence> RestartdataPersistenceObjects = FindObjectsOfType<MonoBehaviour>()
+            .OfType<IDataPersistence>();
+
+        return new List<IDataPersistence>(RestartdataPersistenceObjects);
+    }
+
     public bool HasGameData()
     {
         return gameData != null;
+    }
+
+    public bool RestartHasGameData()
+    {
+        return checkPointData != null;
+    }
+
+    //Restart Load Game
+    public void RestartLoadGame()
+    {
+        // Load any saved Restartdata from a file using the data handler
+        this.checkPointData = dataHandler.RestartLoad();
+
+        // if no data can be loaded, don't continue
+        if (this.checkPointData == null)
+        {
+            Debug.Log("You havent Gotten to a check point");
+            return;
+        }
+        // push the loaded data to all other scripts that need it
+        foreach (IDataPersistence RestartdataPersistenceObj in RestartdataPersistenceObjects)
+        {
+            RestartdataPersistenceObj.RestartLoadData(checkPointData);
+        }
+    }
+
+    public void RestartSaveGame()
+    {
+        // if we don't have any data, Log a worning here
+        if (this.checkPointData == null)
+        {
+            Debug.LogWarning("No data was found. When you went into a spawn point");
+            return;
+        }
+
+        // pass the data to other scripts so they can update it
+        foreach (IDataPersistence RestartdataPersistenceObj in RestartdataPersistenceObjects)
+        {
+            RestartdataPersistenceObj.RestartSaveData(ref checkPointData);
+        }
+
+        // save that data to a file using the data handler
+        dataHandler.RestartSave(checkPointData);
     }
 }

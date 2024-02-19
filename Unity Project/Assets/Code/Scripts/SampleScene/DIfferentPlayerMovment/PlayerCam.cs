@@ -46,6 +46,16 @@ public class PlayerCam : MonoBehaviour, IDataPersistence
     {
         data.PlayerRotation = this.transform.rotation;
     }
+
+    public void RestartLoadData(CheckPointData CheckPointLoadData)
+    {
+
+    }
+
+    public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+    {
+
+    }
 }
 
 

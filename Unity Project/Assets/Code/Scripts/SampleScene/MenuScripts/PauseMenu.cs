@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace Code.Scripts.SampleScene.MenuScripts
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseMenu : MonoBehaviour, IDataPersistence
     {
         //public bool Restarted;
 
@@ -73,10 +73,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void Restart()
         {
-            // This is bad remove this at some point. This is just for now ease of use.
-            PlayerMovementScript.transform.position = GameDataScript.RestartPosition;
-
-            GameDataScript.RestartLevel();
+            DataPersistenceManager.instance.RestartLoadGame();
 
             DataPersistenceManager.instance.SaveGame();
 
@@ -90,10 +87,34 @@ namespace Code.Scripts.SampleScene.MenuScripts
             //save the game anytime before loading a new scene check this works
             DataPersistenceManager.instance.SaveGame();
 
+
+            // Is this line necessary?
+            //DataPersistenceManager.instance.RestartLoadGame();
+
             SceneManager.LoadScene(0);
             Time.timeScale = 1f;
             GameIsPaused = false;
-        } 
+        }
+
+        public void LoadData(GameData data)
+        {
+           
+        }
+
+        public void SaveData(ref GameData data)
+        {
+           
+        }
+
+        public void RestartLoadData(CheckPointData CheckPointLoadData)
+        {
+            
+        }
+
+        public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+        {
+
+        }
 
     }
 }

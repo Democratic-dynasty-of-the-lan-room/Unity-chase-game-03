@@ -37,8 +37,17 @@ namespace Code.Scripts.SampleScene.MenuScripts
             DisableMenuButtons();
             // create a new game - which will initialize our game data
             DataPersistenceManager.instance.NewGame();
+
+            //Restart Data
+            //DataPersistenceManager.instance.FirstRestartPosition();
+
+
+            //And Saving Save Data So that It won't load the old data when canging scenes
+            DataPersistenceManager.instance.RestartSaveGame();
+
             //SavingNewDataSoThatItDoesn'tJustLoadToTheOldDataWhenChanginScenes
             DataPersistenceManager.instance.SaveGame();
+
             // Load the gameplay scene - which will in turn save the game because of
             // OnSceneUnloaded() in the DataPersistenceManager
             // unload doesn't work
