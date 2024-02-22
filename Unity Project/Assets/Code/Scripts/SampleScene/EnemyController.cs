@@ -110,7 +110,7 @@ namespace Code.Scripts.SampleScene
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             distance = Vector3.Distance(target.position, transform.position);
 
