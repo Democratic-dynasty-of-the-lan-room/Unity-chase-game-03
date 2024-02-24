@@ -19,7 +19,7 @@ namespace Code.Scripts.SampleScene
 
         [SerializeField] LayerMask WhatIsGround;
 
-
+        Animator animator;
 
         Transform target;
         NavMeshAgent agent;
@@ -34,13 +34,15 @@ namespace Code.Scripts.SampleScene
 
         bool InTerritory;
 
-
-
         //State Machine  
 
         [Header("Chasing state")]
 
         public float ChasingSpeed;
+
+
+
+        public float EnemySpeed;
 
 
 
@@ -70,6 +72,10 @@ namespace Code.Scripts.SampleScene
         private bool CanGoBackToTerritory;
 
         private bool CanStartCoroutine;
+
+        public float Speed;
+
+        public float Acceleration = 0.1f;
 
         //Check if enemy and player collide
         void OnCollisionEnter(Collision collision)
@@ -125,12 +131,27 @@ namespace Code.Scripts.SampleScene
             else if (IsGoingToTeritory)
             {
                 GoingToTerritoryState();
-            }           
+            }
+
+            agent.speed = EnemySpeed;
+
+            Animator animator = GetComponentInChildren<Animator>();
+
+            
+            
+            if (agent.velocity == new Vector3(0, 0, 0)) 
+            {
+                animator.SetFloat("Speed", 0);
+            }
+            else
+            {
+                animator.SetFloat("Speed", EnemySpeed);
+            }
         }
 
         private void ChasingState()
         {
-            agent.speed = ChasingSpeed;
+            EnemySpeed = ChasingSpeed;
 
             if (agent.velocity == new Vector3(0, 0, 0))
             {
@@ -182,7 +203,7 @@ namespace Code.Scripts.SampleScene
 
         private void WanderingState()
         {
-            agent.speed = WanderSpeed;
+            EnemySpeed = WanderSpeed;
 
             if (distance <= lookRadius)
             {
@@ -226,7 +247,7 @@ namespace Code.Scripts.SampleScene
 
         private void GoingToTerritoryState()
         {
-            agent.speed = ChasingSpeed;
+            EnemySpeed = ChasingSpeed;
 
             agent.SetDestination(FirstEnemyTerritory.transform.position);
 
