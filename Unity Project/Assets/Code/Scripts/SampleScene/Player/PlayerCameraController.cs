@@ -61,7 +61,7 @@ public class PlayerCameraController : MonoBehaviour
         if (magnitudeWithoutY > velocityThreshold)
         {
             ADRENALINE = Mathf.SmoothStep(ADRENALINE, ADRENALINEMax, ADRENALINESpeed * Time.deltaTime);
-            Debug.Log(ADRENALINE);
+            //Debug.Log(ADRENALINE);
 
             if (isPlayerGrounded)
             {

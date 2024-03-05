@@ -153,6 +153,8 @@ public class PlayerMovment : MonoBehaviour
 
             moveSpeed = AirMovement;
         }
+        SpeedSnapping();
+
     }
 
     private void FixedUpdate()
@@ -174,6 +176,7 @@ public class PlayerMovment : MonoBehaviour
         {
             Sprint();
         }
+        SpeedSnapping();
 
     }
 
@@ -189,7 +192,7 @@ public class PlayerMovment : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y - 0.2f)) < 0.33f))
+        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y - 0.2f)) < 0.35f))
         {
             isJumping = true;
             jumpStartTime = Time.time;
@@ -309,7 +312,7 @@ public class PlayerMovment : MonoBehaviour
 
     public void Grounding()
     {
-        if (grounded && !groundingHasRun && (Mathf.Abs(desiredHeight - (transform.position.y + 0.32f)) < 0.3f))
+        if (grounded && !groundingHasRun && (Mathf.Abs(desiredHeight - (transform.position.y + 0.32f)) < 0.3f)) 
         {
 
             GroundedHeight = LandedHeight;
@@ -384,7 +387,8 @@ public class PlayerMovment : MonoBehaviour
     private void Jump()
     {
         //reset y velocity
-        rb.velocity = rb.velocity.normalized * (hit.normal.y * rb.velocity.magnitude);
+        rb.velocity = rb.velocity.normalized * ((hit.normal.y*5f-4) * rb.velocity.magnitude);
+        
 
         rb.AddForce(hit.normal * jumpForce, ForceMode.Impulse);
 
@@ -436,6 +440,19 @@ public class PlayerMovment : MonoBehaviour
         return Vector3.ProjectOnPlane(moveDirection, SlopeHit.normal).normalized;
 
         //Debug.Log("GetSlopeMoveDirection" + GetSlopeMoveDirection());
+    }
+
+    private void SpeedSnapping()
+    {
+        if(grounded == true)
+        {
+            Vector3 HorizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            if(HorizontalVelocity.magnitude < 0.5 && HorizontalVelocity.magnitude != 0)
+            {
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            }
+            
+        }
     }
 
     private void OnDrawGizmos()
