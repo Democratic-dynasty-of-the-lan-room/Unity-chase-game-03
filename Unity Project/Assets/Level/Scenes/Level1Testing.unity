@@ -9483,7 +9483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501640003981930316}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.330082, y: -21.879803, z: 11.345719}
+  m_LocalPosition: {x: -10.330082, y: -21.879803, z: 5.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9579,7 +9579,10 @@ MonoBehaviour:
   LowerWanderOutsideTerritory: 30
   WanderSpeed: 6
   Speed: 0
-  Acceleration: 0
+  Acceleration: 0.1
+  Deceleration: 0.1
+  DesiredEnemySpeed: 0
+  DecelerationDistance: 5
 --- !u!4 &1501640004709176510
 Transform:
   m_ObjectHideFlags: 0
@@ -9588,7 +9591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501640004709176511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -80.88989, y: 22.099998, z: 59.74796}
+  m_LocalPosition: {x: -80.88989, y: 22.099998, z: 66.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

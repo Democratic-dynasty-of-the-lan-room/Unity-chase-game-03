@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.InputSystem.Android;
 
 namespace Code.Scripts.SampleScene
 {
@@ -75,7 +76,13 @@ namespace Code.Scripts.SampleScene
 
         public float Speed;
 
-        public float Acceleration = 0.1f;
+        public float Acceleration = 1f;
+
+        public float Deceleration = -1f;
+
+        public float DesiredEnemySpeed;
+
+        public float DecelerationDistance;
 
         //Check if enemy and player collide
         void OnCollisionEnter(Collision collision)
@@ -123,35 +130,91 @@ namespace Code.Scripts.SampleScene
             if (IsChasing)
             {
                 ChasingState();
+
+
+                // this code is still work in progress, and needs to likely be revised.
+                if (agent.remainingDistance <= DecelerationDistance && agent.destination != target.position)
+                {
+                    //Debug.Log("Deceleration?");
+
+                    EnemySpeed -= Deceleration;
+                }
+                else if (EnemySpeed < ChasingSpeed && agent.destination != target.position)
+                {
+                    EnemySpeed += Acceleration;
+                }
+                else if (EnemySpeed > ChasingSpeed && agent.destination != target.position)
+                {
+                    EnemySpeed -= Deceleration;
+                }
             }
             else if (IsWandering)
             {
                 WanderingState();
+
+                // this code is still work in progress, and needs to likely be revised.
+                if (agent.remainingDistance <= DecelerationDistance && agent.destination != target.position)
+                {
+
+                    //Debug.Log("Deceleration?");
+
+                    EnemySpeed -= Deceleration;
+                }
+                else if (EnemySpeed > WanderSpeed && agent.destination != target.position)
+                {
+                    EnemySpeed -= Deceleration;
+                }
+                else if (EnemySpeed < WanderSpeed && agent.destination != target.position)
+                {
+                    EnemySpeed += Acceleration;
+                }
             }
             else if (IsGoingToTeritory)
             {
                 GoingToTerritoryState();
-            }
+
+                // this code is still work in progress, and needs to likely be revised.
+                if (agent.remainingDistance <= DecelerationDistance && agent.destination != target.position)
+                {
+                    //Debug.Log("Deceleration?");
+
+                    EnemySpeed -= Deceleration;
+                }
+                else if (EnemySpeed < ChasingSpeed && agent.destination != target.position)
+                {
+                    EnemySpeed += Acceleration;
+                }
+                else if (EnemySpeed > ChasingSpeed && agent.destination != target.position)
+                {
+                    EnemySpeed -= Deceleration;
+                }
+            }       
 
             agent.speed = EnemySpeed;
 
             Animator animator = GetComponentInChildren<Animator>();
 
-            
-            
             if (agent.velocity == new Vector3(0, 0, 0)) 
             {
                 animator.SetFloat("Speed", 0);
+
+                EnemySpeed = 0;
+
+                //EnemySpeed -= Deceleration;
             }
             else
             {
-                animator.SetFloat("Speed", EnemySpeed);
+                animator.SetFloat("Speed", EnemySpeed);            
             }
         }
 
+
+
         private void ChasingState()
         {
-            EnemySpeed = ChasingSpeed;
+            //EnemySpeed = ChasingSpeed;
+
+            DesiredEnemySpeed = ChasingSpeed;
 
             if (agent.velocity == new Vector3(0, 0, 0))
             {
@@ -203,7 +266,12 @@ namespace Code.Scripts.SampleScene
 
         private void WanderingState()
         {
-            EnemySpeed = WanderSpeed;
+
+
+            DesiredEnemySpeed = WanderSpeed;
+
+            //EnemySpeed = WanderSpeed;
+
 
             if (distance <= lookRadius)
             {
@@ -241,13 +309,14 @@ namespace Code.Scripts.SampleScene
                 CanStartCoroutine = false;
 
                 agent.SetDestination(WanderPosition.transform.position);                            
-            }
-            
+            }        
         }
 
         private void GoingToTerritoryState()
         {
-            EnemySpeed = ChasingSpeed;
+            DesiredEnemySpeed = ChasingSpeed;
+
+            //EnemySpeed = ChasingSpeed;
 
             agent.SetDestination(FirstEnemyTerritory.transform.position);
 

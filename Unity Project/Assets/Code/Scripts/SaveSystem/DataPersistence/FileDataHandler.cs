@@ -149,7 +149,7 @@ public class FileDataHandler
         {
             // create directory the file will be written to if it doesn't already exist
             Directory.CreateDirectory(Path.GetDirectoryName(RestartfullPath));
-            Debug.Log($"Saving data to {RestartfullPath}");
+            //Debug.Log($"Saving data to {RestartfullPath}");
 
             // serialize the C# game data object into Json
             string RestartdataToStore = JsonUtility.ToJson(RestartData, true);
