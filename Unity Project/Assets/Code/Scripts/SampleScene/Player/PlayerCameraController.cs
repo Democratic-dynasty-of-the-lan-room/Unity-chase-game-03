@@ -52,7 +52,7 @@ public class PlayerCameraController : MonoBehaviour
         bool isPlayerGrounded = player.GetComponent<PlayerMovment>().Touchedground;
 
         // Calculate the velocity magnitude of the player considering only x and z components
-        Vector3 playerVelocity = player.GetComponent<Rigidbody>().velocity;
+        Vector3 playerVelocity = player.GetComponent<Rigidbody>().linearVelocity;
         playerVelocity.y = 0f; // Ignore y component
 
         float magnitudeWithoutY = playerVelocity.magnitude;

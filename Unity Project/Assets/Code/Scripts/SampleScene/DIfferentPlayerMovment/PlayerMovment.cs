@@ -139,17 +139,17 @@ public class PlayerMovment : MonoBehaviour
         // handle drag
         if (grounded && Input.GetKey(KeyCode.LeftControl))
         {
-            rb.drag = CrouchDrag;
+            rb.linearDamping = CrouchDrag;
             moveSpeed = ChrouchMovement;
         }
         else if (grounded)
         {
-            rb.drag = groundDrag;
+            rb.linearDamping = groundDrag;
             moveSpeed = GroundMovement;
         }
         else
         {
-            rb.drag = 0;
+            rb.linearDamping = 0;
 
             moveSpeed = AirMovement;
         }
@@ -212,7 +212,7 @@ public class PlayerMovment : MonoBehaviour
         {
             if (Vector3.Angle(lastHitNormal, correctHitNormal) > normalchangeThreshold && Vector3.Angle(lastHitNormal, correctHitNormal) < 40 && correctHitNormal.y > 0.78)
             {
-                rb.velocity = Vector3.ProjectOnPlane(rb.velocity, correctHitNormal);
+                rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, correctHitNormal);
             }
             lastHitNormal = correctHitNormal;
         }
@@ -227,9 +227,9 @@ public class PlayerMovment : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // If no active movement input but there's horizontal velocity, auto-counter-strafe
-        if (Mathf.Approximately(verticalInput, 0) && Mathf.Approximately(horizontalInput, 0) && (Mathf.Abs(rb.velocity.x) > 0.8f || Mathf.Abs(rb.velocity.z) > 0.8f) && grounded == true)
+        if (Mathf.Approximately(verticalInput, 0) && Mathf.Approximately(horizontalInput, 0) && (Mathf.Abs(rb.linearVelocity.x) > 0.8f || Mathf.Abs(rb.linearVelocity.z) > 0.8f) && grounded == true)
         {
-            moveDirection = -new Vector3(rb.velocity.x, 0, rb.velocity.z).normalized;
+            moveDirection = -new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).normalized;
         }
         //Debug.Log("Not Grounded");
 
@@ -243,7 +243,7 @@ public class PlayerMovment : MonoBehaviour
         }
 
         // Calculate the horizontal component of speed
-        Vector3 currentHorizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         float currentHorizontalSpeed = currentHorizontalVelocity.magnitude;
         Vector3 normalizedCurrentHorizontalVelocity = currentHorizontalVelocity.normalized;
 
@@ -318,11 +318,11 @@ public class PlayerMovment : MonoBehaviour
             GroundedHeight = LandedHeight;
             // Debug.Log("Velocity zero");
 
-            Vector3 killVelocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            Vector3 killVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
             killVelocity = Vector3.ProjectOnPlane(killVelocity, SlopeHit.normal);
 
-            rb.velocity = killVelocity;
+            rb.linearVelocity = killVelocity;
 
             groundingHasRun = true;
 
@@ -386,9 +386,11 @@ public class PlayerMovment : MonoBehaviour
 
     private void Jump()
     {
-        //reset y velocity
-        rb.velocity = rb.velocity.normalized * ((hit.normal.y*5f-4) * rb.velocity.magnitude);
-        
+
+        rb.linearVelocity = (rb.linearVelocity.normalized * (rb.linearVelocity.magnitude-(rb.linearVelocity.y*1.3f))); // has ramp dashing
+        //rb.linearVelocity = (rb.linearVelocity.normalized * Mathf.Max(0, rb.linearVelocity.magnitude - (Mathf.Abs(rb.linearVelocity.y) * 1.3f))); // does not have ramp dashing
+
+
 
         rb.AddForce(hit.normal * jumpForce, ForceMode.Impulse);
 
@@ -446,10 +448,10 @@ public class PlayerMovment : MonoBehaviour
     {
         if(grounded == true)
         {
-            Vector3 HorizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            Vector3 HorizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             if(HorizontalVelocity.magnitude < 0.5 && HorizontalVelocity.magnitude != 0)
             {
-                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             }
             
         }
