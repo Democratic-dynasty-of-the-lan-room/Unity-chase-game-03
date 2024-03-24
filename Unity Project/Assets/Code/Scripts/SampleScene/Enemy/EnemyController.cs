@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using UnityEngine.InputSystem.Android;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Code.Scripts.SampleScene
 {
@@ -20,7 +21,7 @@ namespace Code.Scripts.SampleScene
 
         [SerializeField] LayerMask WhatIsGround;
 
-        Animator animator;
+        //Animator animator;
 
         Transform target;
         NavMeshAgent agent;
@@ -35,9 +36,11 @@ namespace Code.Scripts.SampleScene
 
         bool InTerritory;
 
-        //State Machine  
+        public bool CanStopEnemySpeed;
 
-        [Header("Chasing state")]
+       //State Machine  
+
+       [Header("Chasing state")]
 
         public float ChasingSpeed;
 
@@ -74,7 +77,11 @@ namespace Code.Scripts.SampleScene
 
         private bool CanStartCoroutine;
 
-        public float Speed;
+       
+
+
+
+        //public float Speed;
 
         public float Acceleration = 1f;
 
@@ -82,7 +89,7 @@ namespace Code.Scripts.SampleScene
 
         public float DesiredEnemySpeed;
 
-        public float DecelerationDistance;
+        public float DecelerationDistance;       
 
         //Check if enemy and player collide
         void OnCollisionEnter(Collision collision)
@@ -107,7 +114,7 @@ namespace Code.Scripts.SampleScene
 
         // Start is called before the first frame update
         void Start()
-        {
+        {            
             target = PlayerManager.instance.player.transform;
             agent = GetComponent<NavMeshAgent>();
 
@@ -122,106 +129,84 @@ namespace Code.Scripts.SampleScene
             this.enabled = true;
         }
 
-        // Update is called once per frame
         void FixedUpdate()
+        {
+            // Controls Enemy speeding up and slowing down. I'm not very happy with this code
+            if (agent.remainingDistance <= DecelerationDistance && distance > lookRadius && EnemySpeed > -1)
+            {
+                EnemySpeed -= Deceleration;
+            }
+            else if (EnemySpeed <= DesiredEnemySpeed)
+            {
+                EnemySpeed += Acceleration;
+            }
+            else if (EnemySpeed > DesiredEnemySpeed && EnemySpeed > 0)
+            {
+                EnemySpeed -= Deceleration;
+            }      
+        }
+
+
+        // Update is called once per frame
+        void Update()
         {
             distance = Vector3.Distance(target.position, transform.position);
 
             if (IsChasing)
             {
                 ChasingState();
-
-
-                // this code is still work in progress, and needs to likely be revised.
-                if (agent.remainingDistance <= DecelerationDistance && agent.destination != target.position)
-                {
-                    //Debug.Log("Deceleration?");
-
-                    EnemySpeed -= Deceleration;
-                }
-                else if (EnemySpeed < ChasingSpeed && agent.destination != target.position)
-                {
-                    EnemySpeed += Acceleration;
-                }
-                else if (EnemySpeed > ChasingSpeed && agent.destination != target.position)
-                {
-                    EnemySpeed -= Deceleration;
-                }
             }
             else if (IsWandering)
             {
                 WanderingState();
-
-                // this code is still work in progress, and needs to likely be revised.
-                if (agent.remainingDistance <= DecelerationDistance && agent.destination != target.position)
-                {
-
-                    //Debug.Log("Deceleration?");
-
-                    EnemySpeed -= Deceleration;
-                }
-                else if (EnemySpeed > WanderSpeed && agent.destination != target.position)
-                {
-                    EnemySpeed -= Deceleration;
-                }
-                else if (EnemySpeed < WanderSpeed && agent.destination != target.position)
-                {
-                    EnemySpeed += Acceleration;
-                }
             }
             else if (IsGoingToTeritory)
             {
                 GoingToTerritoryState();
-
-                // this code is still work in progress, and needs to likely be revised.
-                if (agent.remainingDistance <= DecelerationDistance && agent.destination != target.position)
-                {
-                    //Debug.Log("Deceleration?");
-
-                    EnemySpeed -= Deceleration;
-                }
-                else if (EnemySpeed < ChasingSpeed && agent.destination != target.position)
-                {
-                    EnemySpeed += Acceleration;
-                }
-                else if (EnemySpeed > ChasingSpeed && agent.destination != target.position)
-                {
-                    EnemySpeed -= Deceleration;
-                }
-            }       
+            }
 
             agent.speed = EnemySpeed;
 
             Animator animator = GetComponentInChildren<Animator>();
-
-            if (agent.velocity == new Vector3(0, 0, 0)) 
+            
+            // animation is set to 0 when there is no velocity
+            if (agent.velocity == new Vector3(0, 0, 0) && CanStopEnemySpeed)
             {
+                //Debug.Log("Agent isn't moving");
+
+                CanStopEnemySpeed = false;
+
                 animator.SetFloat("Speed", 0);
 
-                EnemySpeed = 0;
-
-                //EnemySpeed -= Deceleration;
+                //EnemySpeed = 0;
             }
             else
             {
-                animator.SetFloat("Speed", EnemySpeed);            
+                //CanStopEnemySpeed = true;
+
+                animator.SetFloat("Speed", agent.velocity.magnitude);
             }
+
+            if (agent.velocity != new Vector3(0, 0, 0))
+            {
+                CanStopEnemySpeed = true;
+            }
+
+
+            //FaceDirection();
         }
-
-
 
         private void ChasingState()
         {
-            //EnemySpeed = ChasingSpeed;
-
             DesiredEnemySpeed = ChasingSpeed;
-
-            if (agent.velocity == new Vector3(0, 0, 0))
-            {
+         
+            if (agent.velocity == new Vector3(0, 0, 0) && distance > lookRadius)
+            {              
                 IsWandering = true;
 
                 IsChasing = false;
             }
+         
 
             //Enemy Is in i'ts territory
             if (InTerritory)
@@ -266,12 +251,7 @@ namespace Code.Scripts.SampleScene
 
         private void WanderingState()
         {
-
-
             DesiredEnemySpeed = WanderSpeed;
-
-            //EnemySpeed = WanderSpeed;
-
 
             if (distance <= lookRadius)
             {
@@ -296,7 +276,7 @@ namespace Code.Scripts.SampleScene
 
             if (CanStartCoroutine == true)
             {
-                WanderPosition.transform.position = UnityEngine.Random.insideUnitSphere * WanderDistance + transform.position;
+                WanderPosition.transform.position = Random.insideUnitSphere * WanderDistance + transform.position;
             }
            
             if (Physics.Raycast(WanderPosition.transform.position, new Vector3(0, -0.5f, 0), WhatIsGround))
@@ -314,6 +294,7 @@ namespace Code.Scripts.SampleScene
 
         private void GoingToTerritoryState()
         {
+
             DesiredEnemySpeed = ChasingSpeed;
 
             //EnemySpeed = ChasingSpeed;
@@ -340,7 +321,14 @@ namespace Code.Scripts.SampleScene
             Vector3 direction = (target.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3 (direction.x, 0, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);  
-        }     
+        }
+
+        void FaceDirection()
+        {
+            Vector3 direction = (agent.destination - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
 
         //Enemy Enters i'ts territory
         private void OnTriggerEnter(Collider other)
