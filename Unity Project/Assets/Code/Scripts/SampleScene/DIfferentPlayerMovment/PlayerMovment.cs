@@ -141,17 +141,17 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         // handle drag
         if (grounded && Input.GetKey(KeyCode.LeftControl))
         {
-            rb.drag = CrouchDrag;
+            rb.linearDamping = CrouchDrag;
             moveSpeed = ChrouchMovement;
         }
         else if (grounded)
         {
-            rb.drag = groundDrag;
+            rb.linearDamping = groundDrag;
             moveSpeed = GroundMovement;
         }
         else
         {
-            rb.drag = 0;
+            rb.linearDamping = 0;
 
             moveSpeed = AirMovement;
         }
@@ -237,24 +237,24 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         // Limiting slope walk speed
         if (OnSlope() && !ExitingSlope && !IsSprinting)
         {
-            if (rb.velocity.magnitude > WalkLimit)
+            if (rb.linearVelocity.magnitude > WalkLimit)
             {
-                rb.velocity = rb.velocity.normalized * WalkLimit;
+                rb.linearVelocity = rb.linearVelocity.normalized * WalkLimit;
             }
 
         }
         // Limiting slope Sprint speed
         else if (OnSlope() && !ExitingSlope && IsSprinting == true)
         {
-            if (rb.velocity.magnitude > SprintLimit)
+            if (rb.linearVelocity.magnitude > SprintLimit)
             {
-                rb.velocity = rb.velocity.normalized * SprintLimit;
+                rb.linearVelocity = rb.linearVelocity.normalized * SprintLimit;
             }
         }
         // Limiting speed on ground or air
         else
         {
-            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
             // limit velocity if needed
             if (flatVel.magnitude > SprintLimit)
@@ -262,7 +262,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
                 //Debug.Log("speed went over");
 
                 Vector3 limitedVel = flatVel.normalized * SprintLimit;
-                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+                rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
             }
         }
     }
@@ -303,7 +303,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
            GroundedHeight = LandedHeight; 
            // Debug.Log("Velocity zero");
 
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
             HasRun = true;
         }
@@ -366,7 +366,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     {
 
         //reset y velocity
-        rb.velocity = rb.velocity.normalized * (hit.normal.y*rb.velocity.magnitude);
+        rb.linearVelocity = rb.linearVelocity.normalized * (hit.normal.y*rb.linearVelocity.magnitude);
 
         rb.AddForce(hit.normal * jumpForce, ForceMode.Impulse);
 

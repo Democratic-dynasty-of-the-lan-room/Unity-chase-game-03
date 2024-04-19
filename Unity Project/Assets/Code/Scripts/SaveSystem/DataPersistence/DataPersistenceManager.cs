@@ -26,6 +26,8 @@ public class DataPersistenceManager : MonoBehaviour
 
     public static DataPersistenceManager instance { get; private set; }
 
+    public bool CanLoadGame;
+
     private void Awake()
     {
         if (instance != null)
@@ -59,7 +61,17 @@ public class DataPersistenceManager : MonoBehaviour
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         this.RestartdataPersistenceObjects = FindAllDataPersistenceObjects();
 
-        LoadGame();
+        // I had to re-implement this because I was in a detached HEAD on Gitkraken, I don't remember the original name for the bool lol!
+        CanLoadGame = true;
+    }
+
+    public void FixedUpdate()
+    {
+        if (CanLoadGame)
+        {
+            LoadGame();
+            CanLoadGame = false;
+        }
     }
 
     public void NewGame()
