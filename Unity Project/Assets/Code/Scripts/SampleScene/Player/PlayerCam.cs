@@ -1,39 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
-namespace Code.Scripts.SampleScene.Player
+
+public class PlayerCam : MonoBehaviour, IDataPersistence
 {
-    public class PlayerCam : MonoBehaviour
+    public float sensX;
+    public float sensY;
+
+    public Transform orientation;
+
+    float xRotation;
+    float yRotation;
+
+    private void Start()
     {
-        public float sensX;
-        public float sensY;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
-        public Transform orientation;
+    private void Update()
+    {
+        // get mouse input
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
-        float xRotation;
-        float yRotation;
+        yRotation += mouseX;
 
-        private void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        private void Update()
-        {
-            // get mouse input
-            float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-            float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        // rotate cam and orientation
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
 
-            yRotation += mouseX;
+    }
 
-            xRotation -= mouseY;
-            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+    // Why isn't this working?
+    public void LoadData(GameData data)
+    {     
+        this.transform.rotation = data.PlayerRotation;
+    }
 
-            // rotate cam and orientation
-            transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-            orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+    public void SaveData(ref GameData data)
+    {
+        data.PlayerRotation = this.transform.rotation;
+    }
 
-        }
+    public void RestartLoadData(CheckPointData CheckPointLoadData)
+    {
+
+    }
+
+    public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+    {
+
     }
 }
 

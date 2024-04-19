@@ -16,9 +16,6 @@ namespace Code.Scripts.SampleScene
         [SerializeField] GameObject FinishMenu;
         [SerializeField] GameObject InventoryScript;
 
-
-
-
         // Start is called before the first frame update
         void Start()
         {
@@ -28,13 +25,6 @@ namespace Code.Scripts.SampleScene
             navMeshAgent.enabled = true;
        
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
 
         //Checks if the player is touching the door if so disable movment
         void OnCollisionEnter(Collision collision)
@@ -52,11 +42,7 @@ namespace Code.Scripts.SampleScene
                 InventoryScript.SetActive(false);
 
                 Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-
-            
-
-
+                Cursor.visible = true;          
             }
         }
 
