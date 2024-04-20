@@ -14,6 +14,9 @@ public class PlayerCam : MonoBehaviour, IDataPersistence
     float xRotation;
     float yRotation;
 
+    private Vector2 currentMouseDelta;
+    private Vector2 previousMouseDelta;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -26,15 +29,28 @@ public class PlayerCam : MonoBehaviour, IDataPersistence
         float mouseX = Input.GetAxisRaw("Mouse X") * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * sensY;
 
-        yRotation += mouseX;
+        currentMouseDelta = new Vector2(mouseX, mouseY);
+        Vector2 averageDelta = (currentMouseDelta + previousMouseDelta) / 2.0f;
+        previousMouseDelta = currentMouseDelta;
+
+        // Apply mouse movement
+        Vector3 rotation = transform.localEulerAngles;
+        rotation.x -= averageDelta.y * sensY;
+        rotation.y += averageDelta.x * sensX;
+        transform.localEulerAngles = rotation;
+
+
+        rotation.x = Mathf.Clamp(rotation.x, -90f, 90f);
+        /*yRotation += mouseX;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+       
+        
 
         // rotate cam and orientation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
-
+        */
+        orientation.rotation = Quaternion.Euler(0, rotation.y, 0);   
     }
 
     // Why isn't this working?
