@@ -20,6 +20,7 @@ public class PlayerCameraController : MonoBehaviour
 
     public Transform orientation;
 
+    private Vector2 lastMouseDelta = Vector2.zero;
     private Camera mainCamera;
     private float targetSway = 0f;
     float xRotation;
@@ -101,17 +102,20 @@ public class PlayerCameraController : MonoBehaviour
     private void mouseMove()
     {
         // Get mouse input
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        float mouseX = Input.GetAxisRaw("Mouse X") * sensX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * sensY;
 
-        yRotation += mouseX;
+        // Calculate average of last two mouse movements
+        Vector2 averageMouseDelta = (lastMouseDelta + new Vector2(mouseX, mouseY)) / 2f;
 
-        xRotation -= mouseY;
+        // Store current mouse movement for next calculation
+        lastMouseDelta = new Vector2(mouseX, mouseY);
+
+        yRotation += averageMouseDelta.x;
+        xRotation -= averageMouseDelta.y;
+
+        // Clamp vertical rotation to prevent flipping
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        // Rotate cam and orientation
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
 
         // Rotate cam and orientation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);

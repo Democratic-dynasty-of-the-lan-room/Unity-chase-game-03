@@ -2,7 +2,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using UnityEngine.InputSystem.Android;
 using static UnityEngine.GraphicsBuffer;
 
 namespace Code.Scripts.SampleScene

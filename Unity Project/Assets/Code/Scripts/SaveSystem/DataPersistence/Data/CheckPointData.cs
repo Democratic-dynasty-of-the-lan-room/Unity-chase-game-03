@@ -12,7 +12,7 @@ public class CheckPointData
     // Restart Data
     public CheckPointData()
     {
-        RestartplayerPosition = Vector3.zero;
+        RestartplayerPosition = new Vector3(0,3,0);
         
         //RestartPlayerRotation = Quaternion.identity;
 
