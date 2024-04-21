@@ -4,17 +4,23 @@ using UnityEngine.SceneManagement;
 
 namespace Code.Scripts.SampleScene.MenuScripts
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseMenu : MonoBehaviour, IDataPersistence
     {
-
+        //public bool Restarted;
 
         public static bool GameIsPaused = false;
 
         public GameObject pauseMenuUI;
 
+        //[SerializeField] GameObject Player;
+
         [SerializeField] GameObject InventoryScript;
 
         private InventoryScript inventory;
+
+        public GameData GameDataScript;
+
+        public PlayerMovment PlayerMovementScript;
 
         //[SerializeField] GameObject pauseMenu;
 
@@ -67,6 +73,10 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void Restart()
         {
+            DataPersistenceManager.instance.RestartLoadGame();
+
+            DataPersistenceManager.instance.SaveGame();
+
             Time.timeScale = 1f;
             GameIsPaused = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -74,10 +84,37 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void LoadMenu()
         {
+            //save the game anytime before loading a new scene check this works
+            DataPersistenceManager.instance.SaveGame();
+
+
+            // Is this line necessary?
+            //DataPersistenceManager.instance.RestartLoadGame();
+
             SceneManager.LoadScene(0);
             Time.timeScale = 1f;
             GameIsPaused = false;
-        } 
+        }
+
+        public void LoadData(GameData data)
+        {
+           
+        }
+
+        public void SaveData(ref GameData data)
+        {
+           
+        }
+
+        public void RestartLoadData(CheckPointData CheckPointLoadData)
+        {
+            
+        }
+
+        public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+        {
+
+        }
 
     }
 }

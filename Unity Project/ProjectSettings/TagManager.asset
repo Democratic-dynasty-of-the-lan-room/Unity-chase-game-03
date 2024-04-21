@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Selectable
+  - PlayerBody
+  - EnemyTerritory
+  - LeverTag
+  - SpawnPoint
   - Handtag
   - PlayerBody
   - Weapon

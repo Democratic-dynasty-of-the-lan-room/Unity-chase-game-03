@@ -8,7 +8,8 @@ using UnityEngine.Animations;
 
 
 
-public class PlayerMovment : MonoBehaviour
+
+public class PlayerMovment : MonoBehaviour, IDataPersistence
 {
     RaycastHit hit;
 
@@ -127,10 +128,29 @@ public class PlayerMovment : MonoBehaviour
         Crouch();
     }
 
+    // these are Loading and saving game data
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;       
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = this.transform.position;
+    }
+
+    public void RestartLoadData(CheckPointData CheckPointData)
+    {
+        this.transform.position = CheckPointData.RestartplayerPosition;
+    }
+
+    public void RestartSaveData(ref CheckPointData CheckPointData)
+    {
+        CheckPointData.RestartplayerPosition = this.transform.position;
+    }
+
     private void LateUpdate()
     {
-
-
         if (isJumping && Time.time - jumpStartTime > jumpCooldown)
         {
             isJumping = false;
