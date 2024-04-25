@@ -20,6 +20,6 @@ namespace Code.Scripts.SampleScene
 
         public GameObject player;
 
-
+        //public FinishScript finishScript;
     }
 }

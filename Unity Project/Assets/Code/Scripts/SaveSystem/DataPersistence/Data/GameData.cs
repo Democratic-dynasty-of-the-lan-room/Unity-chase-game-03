@@ -14,6 +14,8 @@ public class GameData
     public Vector3 BlockPosition;
     public Quaternion BlockRotation;
 
+    public bool CanSetSpawn;
+
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
     public GameData()
@@ -27,5 +29,7 @@ public class GameData
 
         BlockPosition = Vector3.left;
         BlockRotation = Quaternion.identity;
+
+        CanSetSpawn = false;
     }
 }

@@ -26,7 +26,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
         //Loads next scene
         public void NextLevel()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
         //Loads Main Menu scene

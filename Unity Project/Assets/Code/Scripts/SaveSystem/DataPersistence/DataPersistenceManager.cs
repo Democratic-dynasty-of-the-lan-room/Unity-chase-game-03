@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Security.Cryptography;
 using Code.Scripts.SampleScene.MenuScripts;
+using Code.Scripts.SampleScene;
 
 public class DataPersistenceManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class DataPersistenceManager : MonoBehaviour
     [SerializeField] private bool useEncryption;
 
     private GameData gameData;
+
+
 
     // Check Point
     [SerializeField] private string RestartfileName;
@@ -23,6 +26,12 @@ public class DataPersistenceManager : MonoBehaviour
     private List<IDataPersistence> RestartdataPersistenceObjects;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
+
+    //private FinishScript finishScript;
+
+  
+
+    [SerializeField] FinishScript finishScript;
 
     public static DataPersistenceManager instance { get; private set; }
 
@@ -37,9 +46,14 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
         instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject);       
 
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, Application.persistentDataPath, RestartfileName, useEncryption, RestartuseEncryption);
+    }
+
+    private void Start()
+    {
+        //finishScript = GetComponent<FinishScript>();
     }
 
     private void OnEnable()
@@ -57,13 +71,49 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        //finishScript = GetComponent<FinishScript>();
+        //
+           
         //Debug.Log("OnSceneLoaded Called");
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        this.RestartdataPersistenceObjects = FindAllDataPersistenceObjects();
+        this.RestartdataPersistenceObjects = FindAllDataPersistenceObjects(); 
 
         // I had to re-implement this because I was in a detached HEAD on Gitkraken, I don't remember the original name for the bool lol!
-        CanLoadGame = true;
+        CanLoadGame = true;     
     }
+
+    /*
+    public void PlayerSpawnPosition()
+    {
+        Debug.Log("PlayerSpawnPosition");
+
+        if (SceneManager.GetActiveScene().buildIndex != 0 && gameData.CanSetSpawn)
+        {
+         
+        }
+
+        // this should go in fixed update probably.
+        if (finishScript.PositionToSpawn == 0)
+        {
+            Debug.Log("Position 0");          
+
+            //gameData.playerPosition = StartSpawn1.transform.position;
+        }
+        else if (finishScript.PositionToSpawn == 1)
+        {
+            //gameData.playerPosition = StartSpawn2.transform.position;
+        }
+        else if (finishScript.PositionToSpawn == 2)
+        {
+            gameData.playerPosition = StartSpawn3.transform.position;
+        }
+        Debug.Log("PlayerSpawnPosition DataPersistence");
+
+        finishScript.CanSetSpawnpoint = false;     
+
+        SaveGame();
+    }*/
+
 
     public void FixedUpdate()
     {

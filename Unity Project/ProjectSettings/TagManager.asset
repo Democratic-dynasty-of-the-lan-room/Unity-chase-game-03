@@ -12,6 +12,7 @@ TagManager:
   - Handtag
   - PlayerBody
   - Weapon
+  - Door
   layers:
   - Default
   - TransparentFX

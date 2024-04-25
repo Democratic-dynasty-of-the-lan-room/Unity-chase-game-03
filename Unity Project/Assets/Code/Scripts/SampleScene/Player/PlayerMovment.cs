@@ -5,6 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Code.Scripts;
 using UnityEngine.Animations;
+using Code.Scripts.SampleScene;
+using NUnit.Framework.Internal;
 
 
 
@@ -107,6 +109,62 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     public GameObject PlayerFootCollider;
 
+    [Header("PlayerSpawnPosition")]
+    [SerializeField] GameObject StartSpawn1;
+    [SerializeField] GameObject StartSpawn2;
+    [SerializeField] GameObject StartSpawn3;
+
+    public FinishScript finishScript;
+    public FinishScript finishScript1;
+    public FinishScript finishScript2;
+
+    public float WhichFinish;
+
+    public bool SetPlayerPosition = false;
+
+    public bool SetSpawn;
+
+    public bool SetSpawnWithP;
+
+    public bool bad;
+    public bool bad1;
+    public bool bad2;
+
+    public void Awake()
+    {
+        Debug.Log("Awake");
+     
+        if (finishScript.ThisFinish || finishScript1.ThisFinish || finishScript2.ThisFinish)
+        {        
+            if (finishScript.CanSetSpawnpoint)
+            {               
+                Debug.Log("SetPosition Awake");
+
+                bad = true;
+
+          
+
+                DataPersistenceManager.instance.SaveGame();
+            }
+            else if (finishScript1.CanSetSpawnpoint)
+            {
+                Debug.Log("SetPosition Awake 1");
+
+                bad1 = true;
+
+                DataPersistenceManager.instance.SaveGame();
+            }
+            else if (finishScript2.CanSetSpawnpoint)
+            {
+                Debug.Log("SetPosition Awake2");
+
+                bad2 = true;
+
+                DataPersistenceManager.instance.SaveGame();
+            }
+        }
+    }
+
     private void Start()
     {
         //anim = PlayerFootCollider.GetComponent<Animator>();
@@ -119,6 +177,12 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         readyToJump = true;
 
         CurrentHeight = transform.position.y;
+
+        //Debug.Log("Start Setspawn PlayerMovement");
+
+        // in fixed update
+        SetPlayerPosition = true;
+        
     }
 
     private void Update()
@@ -126,6 +190,11 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         MyInput();
 
         Crouch();
+
+        if (Input.GetKeyDown(KeyCode.P) && SetSpawnWithP)
+        {
+            SetSpawn = true;
+        }
     }
 
     // these are Loading and saving game data
@@ -183,6 +252,66 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         {
             MovePlayer();
         }
+
+        if (bad)
+        {
+            if (finishScript.Spawn1)
+            {
+                this.transform.position = StartSpawn1.transform.position;
+            }
+            else if (finishScript.Spawn2)
+            {
+                this.transform.position = StartSpawn2.transform.position;
+            }
+            else if (finishScript.Spawn3)
+            {
+                this.transform.position = StartSpawn3.transform.position;
+            }
+
+            bad = false;
+        }
+        else if (bad1)
+        {
+            if (finishScript1.Spawn1)
+            {
+                this.transform.position = StartSpawn1.transform.position;
+            }
+            else if (finishScript1.Spawn2)
+            {
+                this.transform.position = StartSpawn2.transform.position;
+            }
+            else if (finishScript1.Spawn3)
+            {
+                this.transform.position = StartSpawn3.transform.position;
+            }
+
+            bad = false;
+        }
+        else if (bad2)
+        {
+            if (finishScript2.Spawn1)
+            {
+                this.transform.position = StartSpawn1.transform.position;
+            }
+            else if (finishScript2.Spawn2)
+            {
+                this.transform.position = StartSpawn2.transform.position;
+            }
+            else if (finishScript2.Spawn3)
+            {
+                this.transform.position = StartSpawn3.transform.position;
+            }
+
+            bad = false;
+        }
+
+
+        /*if (SetPlayerPosition)
+        {
+            this.transform.position = StartSpawn1.transform.position;
+
+            SetPlayerPosition = false;
+        }*/
 
         Grounding();
 
