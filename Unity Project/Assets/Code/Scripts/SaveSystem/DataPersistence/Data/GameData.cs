@@ -7,6 +7,9 @@ public class GameData
 {
     public int JumpCount;
     public int DeathCount;
+    public int PosToSpawn;
+    //public int SceneNumber;
+
     public Vector3 playerPosition;
     public Quaternion PlayerRotation;
     public Quaternion PlayerOrientation;
@@ -14,7 +17,10 @@ public class GameData
     public Vector3 BlockPosition;
     public Quaternion BlockRotation;
 
-    public bool CanSetSpawn;
+    public bool CanSpawn;
+
+
+
 
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
@@ -22,6 +28,9 @@ public class GameData
     {
         this.JumpCount = 0;
         this.DeathCount = 0;
+        this.PosToSpawn = 0;
+        //this.SceneNumber = 1;
+
         playerPosition = Vector3.zero;
         // not sure what this does
         PlayerRotation = Quaternion.identity;
@@ -30,6 +39,6 @@ public class GameData
         BlockPosition = Vector3.left;
         BlockRotation = Quaternion.identity;
 
-        CanSetSpawn = false;
+        this.CanSpawn = true;
     }
 }

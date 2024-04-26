@@ -9,6 +9,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button continueGameButton;
 
+        [SerializeField] PlayerStartPos playerStartPos;
+
         private void Start()
         {
             if (!DataPersistenceManager.instance.HasGameData())
@@ -30,6 +32,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
             // OnSceneloaded() in the DataPersistenceManager
             // this needs to change as the load doesn't work?"??????????
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+
+            //SceneManager.LoadScene(playerStartPos.SceneToLoad, LoadSceneMode.Single);
         }
 
         public void ButtonNewGame()

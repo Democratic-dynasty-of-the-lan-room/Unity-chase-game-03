@@ -114,56 +114,13 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     [SerializeField] GameObject StartSpawn2;
     [SerializeField] GameObject StartSpawn3;
 
-    public FinishScript finishScript;
-    public FinishScript finishScript1;
-    public FinishScript finishScript2;
+    public PlayerStartPos playerStartPos;
 
-    public float WhichFinish;
-
-    public bool SetPlayerPosition = false;
+    private bool SetPlayerPosition = false;
 
     public bool SetSpawn;
 
     public bool SetSpawnWithP;
-
-    public bool bad;
-    public bool bad1;
-    public bool bad2;
-
-    public void Awake()
-    {
-        Debug.Log("Awake");
-     
-        if (finishScript.ThisFinish || finishScript1.ThisFinish || finishScript2.ThisFinish)
-        {        
-            if (finishScript.CanSetSpawnpoint)
-            {               
-                Debug.Log("SetPosition Awake");
-
-                bad = true;
-
-          
-
-                DataPersistenceManager.instance.SaveGame();
-            }
-            else if (finishScript1.CanSetSpawnpoint)
-            {
-                Debug.Log("SetPosition Awake 1");
-
-                bad1 = true;
-
-                DataPersistenceManager.instance.SaveGame();
-            }
-            else if (finishScript2.CanSetSpawnpoint)
-            {
-                Debug.Log("SetPosition Awake2");
-
-                bad2 = true;
-
-                DataPersistenceManager.instance.SaveGame();
-            }
-        }
-    }
 
     private void Start()
     {
@@ -180,9 +137,25 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
         //Debug.Log("Start Setspawn PlayerMovement");
 
+        /*if (playerStartPos.CanSetSpawn)
+        {
+            // in fixed update
+            SetPlayerPosition = true;
+        }*/
+
         // in fixed update
+        if (playerStartPos.CanSetSpawn)
+        {
+
+            
+            Debug.Log("CanSetSpawn if CanSetSpawn is true: " + playerStartPos.CanSetSpawn);
+        }
+
+
+        Debug.Log("CanSetSpawn start: " + playerStartPos.CanSetSpawn);
         SetPlayerPosition = true;
-        
+
+        //Debug.Log("SetPlayerPosition in start " + playerStartPos.PositionToSpawn);
     }
 
     private void Update()
@@ -253,65 +226,26 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             MovePlayer();
         }
 
-        if (bad)
+        // Sets the players position to SpawnPosition
+        if (SetPlayerPosition)
         {
-            if (finishScript.Spawn1)
+            //Debug.Log("Position To Spawn: " + playerStartPos.PositionToSpawn);
+
+            if (playerStartPos.PositionToSpawn == 0)
             {
                 this.transform.position = StartSpawn1.transform.position;
             }
-            else if (finishScript.Spawn2)
+            else if (playerStartPos.PositionToSpawn == 1)
             {
                 this.transform.position = StartSpawn2.transform.position;
             }
-            else if (finishScript.Spawn3)
+            else if (playerStartPos.PositionToSpawn == 2)
             {
                 this.transform.position = StartSpawn3.transform.position;
             }
-
-            bad = false;
-        }
-        else if (bad1)
-        {
-            if (finishScript1.Spawn1)
-            {
-                this.transform.position = StartSpawn1.transform.position;
-            }
-            else if (finishScript1.Spawn2)
-            {
-                this.transform.position = StartSpawn2.transform.position;
-            }
-            else if (finishScript1.Spawn3)
-            {
-                this.transform.position = StartSpawn3.transform.position;
-            }
-
-            bad = false;
-        }
-        else if (bad2)
-        {
-            if (finishScript2.Spawn1)
-            {
-                this.transform.position = StartSpawn1.transform.position;
-            }
-            else if (finishScript2.Spawn2)
-            {
-                this.transform.position = StartSpawn2.transform.position;
-            }
-            else if (finishScript2.Spawn3)
-            {
-                this.transform.position = StartSpawn3.transform.position;
-            }
-
-            bad = false;
-        }
-
-
-        /*if (SetPlayerPosition)
-        {
-            this.transform.position = StartSpawn1.transform.position;
 
             SetPlayerPosition = false;
-        }*/
+        }
 
         Grounding();
 

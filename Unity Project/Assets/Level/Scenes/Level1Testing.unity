@@ -975,17 +975,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238803956}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &253711707 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
-  m_PrefabInstance: {fileID: 1034759158}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d78ca152983c254bbc101a4f6334db3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &282981378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,22 +1835,15 @@ PrefabInstance:
       propertyPath: SceneNumber
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
+      propertyPath: playerStartPos
+      value: 
+      objectReference: {fileID: 1782443884}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
---- !u!114 &395921158 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
-  m_PrefabInstance: {fileID: 395921157}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d78ca152983c254bbc101a4f6334db3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &397128299
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,22 +4131,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2132896910727128355, guid: e0c6e4009d013c240b96403ebf66bc4e, type: 3}
-      propertyPath: StartSpawn1
-      value: 
-      objectReference: {fileID: 397128299}
-    - target: {fileID: 2132896910727128355, guid: e0c6e4009d013c240b96403ebf66bc4e, type: 3}
-      propertyPath: StartSpawn2
-      value: 
-      objectReference: {fileID: 444389151}
-    - target: {fileID: 2132896910727128355, guid: e0c6e4009d013c240b96403ebf66bc4e, type: 3}
-      propertyPath: StartSpawn3
-      value: 
-      objectReference: {fileID: 238803956}
-    - target: {fileID: 2132896910727128355, guid: e0c6e4009d013c240b96403ebf66bc4e, type: 3}
-      propertyPath: finishScript
-      value: 
-      objectReference: {fileID: 253711707}
     - target: {fileID: 2132896910727128381, guid: e0c6e4009d013c240b96403ebf66bc4e, type: 3}
       propertyPath: m_Name
       value: DataPersistenceManager
@@ -4719,22 +4685,15 @@ PrefabInstance:
       propertyPath: SceneNumber
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
+      propertyPath: playerStartPos
+      value: 
+      objectReference: {fileID: 1782443884}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
---- !u!114 &803987487 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
-  m_PrefabInstance: {fileID: 803987486}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d78ca152983c254bbc101a4f6334db3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &835881670
 GameObject:
   m_ObjectHideFlags: 0
@@ -5640,11 +5599,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: Spawn1
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: Spawn2
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: Spawn3
@@ -5658,6 +5617,10 @@ PrefabInstance:
       propertyPath: SceneNumber
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
+      propertyPath: playerStartPos
+      value: 
+      objectReference: {fileID: 1782443884}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8130,7 +8093,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2897884216618924076, guid: 3cfc52691dbe47e4f878ffb08c80dc1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1782443884}
   m_SourcePrefab: {fileID: 100100000, guid: 3cfc52691dbe47e4f878ffb08c80dc1e, type: 3}
 --- !u!1 &1605283245
 GameObject:
@@ -8855,6 +8821,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2088378147}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1782443881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2897884216618924076, guid: 3cfc52691dbe47e4f878ffb08c80dc1e, type: 3}
+  m_PrefabInstance: {fileID: 1591474892}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1782443884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782443881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bf12b2cc45ea24780281317f5a7302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionToSpawn: 0
 --- !u!1 &1795471117
 GameObject:
   m_ObjectHideFlags: 0
@@ -12916,16 +12900,10 @@ MonoBehaviour:
   StartSpawn1: {fileID: 397128299}
   StartSpawn2: {fileID: 444389151}
   StartSpawn3: {fileID: 238803956}
-  finishScript: {fileID: 253711707}
-  finishScript1: {fileID: 803987487}
-  finishScript2: {fileID: 395921158}
-  WhichFinish: 0
+  playerStartPos: {fileID: 1782443884}
   SetPlayerPosition: 0
   SetSpawn: 0
   SetSpawnWithP: 0
-  bad: 0
-  bad1: 0
-  bad2: 0
 --- !u!114 &5173293617685718045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14619,12 +14597,12 @@ MonoBehaviour:
   GameDataScript:
     JumpCount: 0
     DeathCount: 0
+    PosToSpawn: 0
     playerPosition: {x: 0, y: 0, z: 0}
     PlayerRotation: {x: 0, y: 0, z: 0, w: 1}
     PlayerOrientation: {x: 0, y: 0, z: 0, w: 1}
     BlockPosition: {x: -1, y: 0, z: 0}
     BlockRotation: {x: 0, y: 0, z: 0, w: 1}
-    CanSetSpawn: 0
   PlayerMovementScript: {fileID: 5173293617685718044}
 --- !u!4 &7481662084163847971
 Transform:
@@ -15536,12 +15514,12 @@ MonoBehaviour:
   gameDataScript:
     JumpCount: 0
     DeathCount: 0
+    PosToSpawn: 0
     playerPosition: {x: 0, y: 0, z: 0}
     PlayerRotation: {x: 0, y: 0, z: 0, w: 1}
     PlayerOrientation: {x: 0, y: 0, z: 0, w: 1}
     BlockPosition: {x: -1, y: 0, z: 0}
     BlockRotation: {x: 0, y: 0, z: 0, w: 1}
-    CanSetSpawn: 0
 --- !u!224 &7481662084601550634
 RectTransform:
   m_ObjectHideFlags: 0

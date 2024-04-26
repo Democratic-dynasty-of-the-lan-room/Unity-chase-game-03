@@ -5,26 +5,24 @@ using UnityEngine.SceneManagement;
 
 namespace Code.Scripts.SampleScene
 {
-    public class FinishScript : MonoBehaviour, IDataPersistence
+    public class FinishScript : MonoBehaviour
     {
-        [Header("SceneSelecting")]
+        [Header("SceneSelecting choose the scene list number of desired scene")]
         public int SceneNumber;
 
+
+        [Header("If this is selected it will go to the next scene in the scene list")]
         public bool NextScene;
 
-        [Header("Spawn Position, You must ONLY have one of these selected")]
+        [Header("Spawn Position in chosen level, You must ONLY have one of these selected")]
         public bool Spawn1;
         public bool Spawn2;
         public bool Spawn3;
 
-        [Header("PositionToSpawn")]
-        public int PositionToSpawn;
+        [Header("In the player movement script You can set bool to SetPlayerPosition")]
 
+        [SerializeField] PlayerStartPos playerStartPos;
 
-
-        public bool CanSetSpawnpoint;
-
-        public bool ThisFinish;
 
         /*
         [SerializeField] GameObject Player;
@@ -42,6 +40,10 @@ namespace Code.Scripts.SampleScene
         // Start is called before the first frame update
         void Start()
         {
+            //playerStartPos = new PlayerStartPos();
+
+            //playerStartPos = gameObject.AddComponent(PlayerStartPos);
+
             /*
             FinishMenu.SetActive(false);
             EnemyController.enabled = true;
@@ -49,9 +51,9 @@ namespace Code.Scripts.SampleScene
             navMeshAgent.enabled = true;
             */
 
-            //CanSetSpawnpoint = false;
+            //CanSetSpawn = false;
 
-            ThisFinish = false;
+            //playerStartPos.SceneToLoad = SceneManager.GetActiveScene().buildIndex;
         }
 
         //Checks if the player is touching the door if so disable movment
@@ -67,7 +69,7 @@ namespace Code.Scripts.SampleScene
                 }
                 else 
                 {
-                    SpawnPosition();
+                    SpawnPosition();                
 
                     LoadAnyScene();
                 }
@@ -107,43 +109,28 @@ namespace Code.Scripts.SampleScene
 
         public void SpawnPosition()
         {
-            CanSetSpawnpoint = true;
+            playerStartPos.CanSetSpawn = true;
 
-            ThisFinish = true;
-
-            /*if (Spawn1)
+            if (Spawn1)
             {
-                PositionToSpawn = 0;
+                playerStartPos.PositionToSpawn = 0;
             }
             else if (Spawn2)
             {
-                PositionToSpawn = 1;
+                playerStartPos.PositionToSpawn = 1;
             }
             else if (Spawn3)
             {
-                PositionToSpawn = 2;
-            }*/
-        }
+                playerStartPos.PositionToSpawn = 2;
+            }
 
-        // these are Loading and saving game data
-        public void LoadData(GameData data)
-        {
-            //CanSetSpawnpoint = data.CanSetSpawn;
-        }
+            DataPersistenceManager.instance.SaveGame();
 
-        public void SaveData(ref GameData data)
-        {
-            //data.CanSetSpawn = CanSetSpawnpoint;
-        }
+            Debug.Log("FinishScriptSpawn: " + playerStartPos.PositionToSpawn);
 
-        public void RestartLoadData(CheckPointData CheckPointData)
-        {
-           
-        }
+            Debug.Log("PlayerStartPos: " + playerStartPos.CanSetSpawn);
 
-        public void RestartSaveData(ref CheckPointData CheckPointData)
-        {
-            
+            //playerStartPos.CanSetSpawn = false;
         }
     }
 }
