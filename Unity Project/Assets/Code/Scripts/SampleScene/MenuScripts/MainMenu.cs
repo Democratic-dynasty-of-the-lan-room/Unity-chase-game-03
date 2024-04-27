@@ -17,23 +17,15 @@ namespace Code.Scripts.SampleScene.MenuScripts
         {
             // Check if there is GameData in fixed update lol
             NoGameDataCheck = true;
-
-            Debug.Log("Checking if there is Game Data: " + DataPersistenceManager.instance.HasGameData());
         }
 
         public void FixedUpdate()
         {
             if (!DataPersistenceManager.instance.HasGameData() && NoGameDataCheck)
-            {
-                Debug.LogWarning("Is There no Game Data?");
-
+            {            
                 continueGameButton.interactable = false;
 
                 NoGameDataCheck = false;
-            }
-            else
-            {
-                //Debug.Log("Is There no Game Data?" + DataPersistenceManager.instance.HasGameData());
             }
         }
 
@@ -48,14 +40,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
             // Load the next scene - which will in turn load the game because of
             // OnSceneloaded() in the DataPersistenceManager
-            // this needs to change as the load doesn't work?"??????????
-
-
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
-            Debug.Log("Scene Number To Load: " + playerStartPos.SceneToLoad);
-
-            //Load The PlayerStartPos.SceneToLoad
+            //Load The PlayerStartPos.SceneToLoad To load The saved scene.
             SceneManager.LoadScene(playerStartPos.SceneToLoad, LoadSceneMode.Single);
         }
 
@@ -72,19 +59,14 @@ namespace Code.Scripts.SampleScene.MenuScripts
             // I Think this Should be already set in the New GameData, but for some reason it sets spawn to 3 so I am setting it here.
             playerStartPos.PositionToSpawn = 0;
 
-            //Restart Data
-            //DataPersistenceManager.instance.FirstRestartPosition();
-
-
-            //And Saving Save Data So that It won't load the old data when canging scenes
+            //And Saving Save Data So that It won't load the old data when changing scenes
             DataPersistenceManager.instance.RestartSaveGame();
 
             //SavingNewDataSoThatItDoesn'tJustLoadToTheOldDataWhenChanginScenes
             DataPersistenceManager.instance.SaveGame();
 
             // Load the gameplay scene - which will in turn save the game because of
-            // OnSceneUnloaded() in the DataPersistenceManager
-            // unload doesn't work
+            // OnSceneUnloaded() in the DataPersistenceManager. Load the first level
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
 

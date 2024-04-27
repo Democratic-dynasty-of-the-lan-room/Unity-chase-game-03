@@ -15,11 +15,6 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
         CanSetSpawn = data.CanSpawn;
 
         SceneToLoad = data.SceneNumber;
-
-        //Debug.Log("LoadGame? PositionToSpawn: " + PositionToSpawn);
-
-        //Debug.Log("LoadGame? CanSetSpawn: " + CanSetSpawn);
-
     }
     public void SaveData(ref GameData data)
     {
@@ -28,8 +23,6 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
         data.CanSpawn = CanSetSpawn;
 
         data.SceneNumber = SceneToLoad;
-
-        //Debug.Log("saveGame?");
     }
 
     public void RestartLoadData(CheckPointData CheckPointLoadData)

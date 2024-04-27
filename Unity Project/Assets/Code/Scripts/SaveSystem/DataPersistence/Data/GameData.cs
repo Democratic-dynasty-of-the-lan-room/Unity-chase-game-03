@@ -35,8 +35,6 @@ public class GameData
 
         this.CanSpawn = true;
 
-        Debug.Log("CanSpawn" + CanSpawn);
-
         playerPosition = Vector3.zero;
         // not sure what this does
         PlayerRotation = Quaternion.identity;

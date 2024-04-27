@@ -24,9 +24,6 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public PlayerMovment PlayerMovementScript;
 
-        //[SerializeField] GameObject pauseMenu;
-
-
         // Start is called before the first frame update
         void Start()
         {           
@@ -91,12 +88,6 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
             //save the game anytime before loading a new scene check this works
             DataPersistenceManager.instance.SaveGame();
-
-            // Should I save Restart Data as well?
-            //DataPersistenceManager.instance.RestartSaveGame();
-
-            // Is this line necessary? This does work but it's weird?
-            //DataPersistenceManager.instance.RestartLoadGame();
 
             SceneManager.LoadScene(0);
             Time.timeScale = 1f;
