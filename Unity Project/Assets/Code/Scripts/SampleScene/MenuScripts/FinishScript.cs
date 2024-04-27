@@ -51,7 +51,7 @@ namespace Code.Scripts.SampleScene
             navMeshAgent.enabled = true;
             */
 
-            //CanSetSpawn = false;
+            //playerStartPos.CanSetSpawn = false;
 
             //playerStartPos.SceneToLoad = SceneManager.GetActiveScene().buildIndex;
         }
@@ -126,11 +126,9 @@ namespace Code.Scripts.SampleScene
 
             DataPersistenceManager.instance.SaveGame();
 
-            Debug.Log("FinishScriptSpawn: " + playerStartPos.PositionToSpawn);
+            //Debug.Log("FinishScriptSpawn: " + playerStartPos.PositionToSpawn);
 
-            Debug.Log("PlayerStartPos: " + playerStartPos.CanSetSpawn);
-
-            //playerStartPos.CanSetSpawn = false;
+            //Debug.Log("PlayerStartPos: " + playerStartPos.CanSetSpawn);
         }
     }
 }

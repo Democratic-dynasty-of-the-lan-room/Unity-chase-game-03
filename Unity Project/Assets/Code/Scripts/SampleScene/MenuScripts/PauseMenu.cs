@@ -16,6 +16,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         [SerializeField] GameObject InventoryScript;
 
+        [SerializeField] PlayerStartPos playerStartPos;
+
         private InventoryScript inventory;
 
         public GameData GameDataScript;
@@ -84,11 +86,16 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void LoadMenu()
         {
+            // Shouldn't this be after save game?
+            playerStartPos.SceneToLoad = SceneManager.GetActiveScene().buildIndex;
+
             //save the game anytime before loading a new scene check this works
             DataPersistenceManager.instance.SaveGame();
 
+            // Should I save Restart Data as well?
+            //DataPersistenceManager.instance.RestartSaveGame();
 
-            // Is this line necessary?
+            // Is this line necessary? This does work but it's weird?
             //DataPersistenceManager.instance.RestartLoadGame();
 
             SceneManager.LoadScene(0);

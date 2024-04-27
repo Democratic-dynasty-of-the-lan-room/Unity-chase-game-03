@@ -8,7 +8,9 @@ public class GameData
     public int JumpCount;
     public int DeathCount;
     public int PosToSpawn;
-    //public int SceneNumber;
+    public int SceneNumber;
+
+    public bool CanSpawn;
 
     public Vector3 playerPosition;
     public Quaternion PlayerRotation;
@@ -17,7 +19,7 @@ public class GameData
     public Vector3 BlockPosition;
     public Quaternion BlockRotation;
 
-    public bool CanSpawn;
+    
 
 
 
@@ -29,7 +31,11 @@ public class GameData
         this.JumpCount = 0;
         this.DeathCount = 0;
         this.PosToSpawn = 0;
-        //this.SceneNumber = 1;
+        this.SceneNumber = 1;
+
+        this.CanSpawn = true;
+
+        Debug.Log("CanSpawn" + CanSpawn);
 
         playerPosition = Vector3.zero;
         // not sure what this does
@@ -39,6 +45,6 @@ public class GameData
         BlockPosition = Vector3.left;
         BlockRotation = Quaternion.identity;
 
-        this.CanSpawn = true;
+        
     }
 }

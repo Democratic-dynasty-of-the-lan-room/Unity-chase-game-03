@@ -124,6 +124,9 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     private void Start()
     {
+        //Debug.Log("Start CanSpawnCheck " + playerStartPos.CanSetSpawn);
+
+
         //anim = PlayerFootCollider.GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
@@ -146,20 +149,23 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         // in fixed update
         if (playerStartPos.CanSetSpawn)
         {
+            SetPlayerPosition = true;
 
-            
-            Debug.Log("CanSetSpawn if CanSetSpawn is true: " + playerStartPos.CanSetSpawn);
+            //Debug.Log("CanSetSpawn if CanSetSpawn is true: " + playerStartPos.CanSetSpawn);
         }
 
+        
 
-        Debug.Log("CanSetSpawn start: " + playerStartPos.CanSetSpawn);
-        SetPlayerPosition = true;
+        //Debug.Log("CanSetSpawn start: " + playerStartPos.CanSetSpawn);
+
 
         //Debug.Log("SetPlayerPosition in start " + playerStartPos.PositionToSpawn);
     }
 
     private void Update()
     {
+        //Debug.Log("CanSetSpawn if CanSetSpawn is true: " + playerStartPos.CanSetSpawn);
+
         MyInput();
 
         Crouch();
@@ -226,10 +232,22 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             MovePlayer();
         }
 
+        
+        
+
         // Sets the players position to SpawnPosition
         if (SetPlayerPosition)
         {
             //Debug.Log("Position To Spawn: " + playerStartPos.PositionToSpawn);
+
+
+            SetPlayerPosition = false;
+        }
+
+
+        if (playerStartPos.CanSetSpawn)
+        {
+            Debug.Log("CanSpawn: " + playerStartPos.CanSetSpawn);
 
             if (playerStartPos.PositionToSpawn == 0)
             {
@@ -244,7 +262,9 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
                 this.transform.position = StartSpawn3.transform.position;
             }
 
-            SetPlayerPosition = false;
+            playerStartPos.CanSetSpawn = false;
+
+            Debug.Log("CanSpawn False? " + playerStartPos.CanSetSpawn);
         }
 
         Grounding();

@@ -64668,6 +64668,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PositionToSpawn: 0
+  SceneToLoad: 0
+  CanSetSpawn: 0
 --- !u!1 &1636779011
 GameObject:
   m_ObjectHideFlags: 0
@@ -83922,7 +83924,6 @@ MonoBehaviour:
   StartSpawn2: {fileID: 1458539642}
   StartSpawn3: {fileID: 1928976442}
   playerStartPos: {fileID: 1591474894}
-  SetPlayerPosition: 0
   SetSpawn: 1
   SetSpawnWithP: 0
 --- !u!114 &5173293617685718045
@@ -84981,15 +84982,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 7481662084967114352}
   InventoryScript: {fileID: 5173293617685718037}
+  playerStartPos: {fileID: 1591474894}
   GameDataScript:
     JumpCount: 0
     DeathCount: 0
     PosToSpawn: 0
+    SceneNumber: 1
     playerPosition: {x: 0, y: 0, z: 0}
     PlayerRotation: {x: 0, y: 0, z: 0, w: 1}
     PlayerOrientation: {x: 0, y: 0, z: 0, w: 1}
     BlockPosition: {x: -1, y: 0, z: 0}
     BlockRotation: {x: 0, y: 0, z: 0, w: 1}
+    CanSpawn: 1
   PlayerMovementScript: {fileID: 5173293617685718044}
 --- !u!4 &7481662084163847971
 Transform:
@@ -85902,11 +85906,13 @@ MonoBehaviour:
     JumpCount: 0
     DeathCount: 0
     PosToSpawn: 0
+    SceneNumber: 1
     playerPosition: {x: 0, y: 0, z: 0}
     PlayerRotation: {x: 0, y: 0, z: 0, w: 1}
     PlayerOrientation: {x: 0, y: 0, z: 0, w: 1}
     BlockPosition: {x: -1, y: 0, z: 0}
     BlockRotation: {x: 0, y: 0, z: 0, w: 1}
+    CanSpawn: 1
 --- !u!224 &7481662084601550634
 RectTransform:
   m_ObjectHideFlags: 0
