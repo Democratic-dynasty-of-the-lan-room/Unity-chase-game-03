@@ -4,11 +4,9 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
 {
     public int PositionToSpawn;
 
-    //public int SceneToLoad;
+    public int SceneToLoad;
 
-    public bool CanSetSpawn;
-
-    
+    public bool CanSetSpawn;  
 
     public void LoadData(GameData data)
     {
@@ -16,11 +14,11 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
 
         CanSetSpawn = data.CanSpawn;
 
-        //SceneToLoad = data.SceneNumber;
+        SceneToLoad = data.SceneNumber;
 
         //Debug.Log("LoadGame? PositionToSpawn: " + PositionToSpawn);
 
-        Debug.Log("LoadGame? CanSetSpawn: " + CanSetSpawn);
+        //Debug.Log("LoadGame? CanSetSpawn: " + CanSetSpawn);
 
     }
     public void SaveData(ref GameData data)
@@ -29,7 +27,7 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
 
         data.CanSpawn = CanSetSpawn;
 
-        //data.SceneNumber = SceneToLoad;
+        data.SceneNumber = SceneToLoad;
 
         //Debug.Log("saveGame?");
     }

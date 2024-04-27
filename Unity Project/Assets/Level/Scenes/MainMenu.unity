@@ -1142,7 +1142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PositionToSpawn: 0
-  CanSetSpawn: 0
+  SceneToLoad: 0
+  CanSetSpawn: 1
 --- !u!4 &899717165
 Transform:
   m_ObjectHideFlags: 0

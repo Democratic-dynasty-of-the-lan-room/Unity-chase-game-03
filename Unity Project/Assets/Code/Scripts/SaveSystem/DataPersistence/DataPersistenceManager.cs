@@ -77,6 +77,8 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if (CanLoadGame)
         {
+            Debug.Log("LoadGame From Fixed Update on scene loaded");
+
             LoadGame();
             CanLoadGame = false;
         }
