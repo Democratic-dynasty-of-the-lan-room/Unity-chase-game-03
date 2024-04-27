@@ -19,8 +19,6 @@ namespace Code.Scripts.SampleScene
         public bool Spawn2;
         public bool Spawn3;
 
-        [Header("In the player movement script You can set bool to SetPlayerPosition")]
-
         [SerializeField] PlayerStartPos playerStartPos;
 
 
@@ -40,20 +38,12 @@ namespace Code.Scripts.SampleScene
         // Start is called before the first frame update
         void Start()
         {
-            //playerStartPos = new PlayerStartPos();
-
-            //playerStartPos = gameObject.AddComponent(PlayerStartPos);
-
             /*
             FinishMenu.SetActive(false);
             EnemyController.enabled = true;
             Player.SetActive(true);
             navMeshAgent.enabled = true;
             */
-
-            //playerStartPos.CanSetSpawn = false;
-
-            //playerStartPos.SceneToLoad = SceneManager.GetActiveScene().buildIndex;
         }
 
         //Checks if the player is touching the door if so disable movment
@@ -76,7 +66,7 @@ namespace Code.Scripts.SampleScene
 
                
                 
-
+                // If we are going to have a menu that opens when you got through a door. I'm leaving this code here
                 /*
                 Player.SetActive(false);
             
@@ -100,10 +90,6 @@ namespace Code.Scripts.SampleScene
 
         public void LoadAnyScene()
         {
-            // SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex.Bui);
-
-            
-
             SceneManager.LoadScene(SceneNumber, LoadSceneMode.Single);
         }
 
@@ -125,10 +111,6 @@ namespace Code.Scripts.SampleScene
             }
 
             DataPersistenceManager.instance.SaveGame();
-
-            //Debug.Log("FinishScriptSpawn: " + playerStartPos.PositionToSpawn);
-
-            //Debug.Log("PlayerStartPos: " + playerStartPos.CanSetSpawn);
         }
     }
 }

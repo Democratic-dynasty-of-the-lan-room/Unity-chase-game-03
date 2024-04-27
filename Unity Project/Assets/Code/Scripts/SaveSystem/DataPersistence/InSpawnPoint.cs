@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class InSpawnPoint : MonoBehaviour
 {
-    //public DataPersistenceManager DataPersistenceManager;
-
     // Saves Restart Data
     private void OnTriggerEnter(Collider other)
     {
