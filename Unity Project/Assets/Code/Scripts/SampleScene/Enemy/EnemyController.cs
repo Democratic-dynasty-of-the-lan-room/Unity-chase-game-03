@@ -88,12 +88,12 @@ namespace Code.Scripts.SampleScene
 
         public float DesiredEnemySpeed;
 
-        public float DecelerationDistance;       
+        public float DecelerationDistance;
 
         //Check if enemy and player collide
         void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Player")
+            /*if (collision.gameObject.tag == "Player")
             {
                 //If player touches chaser game end
                 RestartMenu.SetActive(true);
@@ -108,7 +108,7 @@ namespace Code.Scripts.SampleScene
 
                 PauseMenu.SetActive(false);
                 InventoryScript.SetActive(false);
-            }
+            }*/
         }
 
         // Start is called before the first frame update
@@ -116,6 +116,8 @@ namespace Code.Scripts.SampleScene
         {            
             target = PlayerManager.instance.player.transform;
             agent = GetComponent<NavMeshAgent>();
+
+            
 
             CanStartCoroutine = true;
 
@@ -142,9 +144,8 @@ namespace Code.Scripts.SampleScene
             else if (EnemySpeed > DesiredEnemySpeed && EnemySpeed > 0)
             {
                 EnemySpeed -= Deceleration;
-            }      
+            }
         }
-
 
         // Update is called once per frame
         void Update()
@@ -287,7 +288,7 @@ namespace Code.Scripts.SampleScene
 
                 CanStartCoroutine = false;
 
-                agent.SetDestination(WanderPosition.transform.position);                            
+                agent.SetDestination(WanderPosition.transform.position);                    
             }        
         }
 
@@ -346,7 +347,7 @@ namespace Code.Scripts.SampleScene
             if (other.gameObject.tag == "EnemyTerritory")
             {
                 InTerritory = false;
-            }       
+            }    
         }
 
         private void OnDrawGizmosSelected()

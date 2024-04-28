@@ -18,6 +18,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         [SerializeField] PlayerStartPos playerStartPos;
 
+        [SerializeField] PlayerHealth playerHealth;
+
         private InventoryScript inventory;
 
         public GameData GameDataScript;
@@ -72,6 +74,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public void Restart()
         {
+            // Set Player health to full
+            playerHealth.Health = 100;
+
             DataPersistenceManager.instance.RestartLoadGame();
 
             DataPersistenceManager.instance.SaveGame();

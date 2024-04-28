@@ -10,6 +10,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public GameData gameDataScript;
 
+        public PlayerStartPos playerStartPos;
+
 
         // Start is called before the first frame update
         void Start()
@@ -42,7 +44,10 @@ namespace Code.Scripts.SampleScene.MenuScripts
             //save the game anytime before loading a new scene check this works
             DataPersistenceManager.instance.SaveGame();
 
-            SceneManager.LoadScene(0);
+            //SceneManager.LoadScene(0);
+
+            //Load The PlayerStartPos.SceneToLoad To load The saved scene.
+            SceneManager.LoadScene(playerStartPos.SceneToLoad, LoadSceneMode.Single);
         }
     }
 }

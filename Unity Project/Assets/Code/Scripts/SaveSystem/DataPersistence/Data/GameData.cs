@@ -9,6 +9,7 @@ public class GameData
     public int DeathCount;
     public int PosToSpawn;
     public int SceneNumber;
+    public int PlayerHealth;
 
     public bool CanSpawn;
 
@@ -32,6 +33,7 @@ public class GameData
         this.DeathCount = 0;
         this.PosToSpawn = 0;
         this.SceneNumber = 1;
+        this.PlayerHealth = 100;
 
         this.CanSpawn = true;
 

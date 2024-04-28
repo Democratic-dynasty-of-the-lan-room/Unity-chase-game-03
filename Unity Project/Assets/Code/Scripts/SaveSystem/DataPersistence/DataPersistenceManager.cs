@@ -40,7 +40,7 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
         instance = this;
-        DontDestroyOnLoad(this.gameObject);       
+        DontDestroyOnLoad(this.gameObject);
 
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, Application.persistentDataPath, RestartfileName, useEncryption, RestartuseEncryption);
     }
