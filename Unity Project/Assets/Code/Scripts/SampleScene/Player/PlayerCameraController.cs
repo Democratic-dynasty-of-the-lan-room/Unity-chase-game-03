@@ -1,6 +1,7 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
-public class PlayerCameraController : MonoBehaviour
+public class PlayerCameraController : MonoBehaviour, IDataPersistence
 {
     public Transform player; // Reference to your player's transform
     public float minFOV = 60f; // Minimum FOV
@@ -46,7 +47,7 @@ public class PlayerCameraController : MonoBehaviour
         if (player == null || mainCamera == null)
         {
             return;
-        }
+        }     
     }
     private void adrenalinAdder()
     {
@@ -120,5 +121,27 @@ public class PlayerCameraController : MonoBehaviour
         // Rotate cam and orientation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+    }
+
+    public void LoadData(GameData data)
+    {
+        yRotation = data.YRotation;
+        xRotation = data.XRotation;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.YRotation = yRotation;
+        data.XRotation = xRotation;
+    }
+     
+    public void RestartLoadData(CheckPointData CheckPointLoadData)
+    {
+       
+    }
+
+    public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+    {
+       
     }
 }

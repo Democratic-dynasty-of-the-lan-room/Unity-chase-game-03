@@ -16,15 +16,12 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
     public bool OverideDeath;
 
-
     private void Update()
     {     
         if (Health <= 0 && !OverideDeath)
         {
-            // You died run the death menu
-            Debug.Log("Health is zero");
-
-
+            Health = 100;
+         
             RestartMenu.SetActive(true);
             // setting the player to false so that you can't move after the end
             
@@ -38,9 +35,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
             PauseMenu.SetActive(false);
             InventoryScript.SetActive(false);
-
-            Health = 100;
-        }
+        }  
     }
 
 

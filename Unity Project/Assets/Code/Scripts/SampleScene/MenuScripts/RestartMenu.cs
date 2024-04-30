@@ -29,6 +29,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
         //Restarts when you click on restart
         public void Restart()
         {
+           // gameDataScript.PlayerHealth = 100;
+
             DataPersistenceManager.instance.RestartLoadGame();
 
             DataPersistenceManager.instance.SaveGame();

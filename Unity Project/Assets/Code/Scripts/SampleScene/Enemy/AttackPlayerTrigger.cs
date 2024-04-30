@@ -16,31 +16,50 @@ public class AttackPlayerTrigger : MonoBehaviour
 
     private bool InRange;
 
+    private bool CannotAttack;
+
     private void Start()
     {
         CanAttack = false;
 
         InRange = false;
+
+        CannotAttack = false;
     }
 
     private void FixedUpdate()
-    {
-        
-        if (CanAttack && InRange)
+    {    
+        if (CanAttack && InRange && playerHealth.Health > 0 && CannotAttack == false)
         {
-            coroutine = AttackWait(AttackWaitTime);
-            StartCoroutine(coroutine);
+            Debug.Log("player Health here: " + playerHealth.Health);
 
-            //Deal Damage
-            playerHealth.Health -= AttackDamage;
+            if (playerHealth.Health > 0)
+            {
 
-            CanAttack = false;
+                Debug.Log("player Health In: " + playerHealth.Health);
+
+                coroutine = AttackWait(AttackWaitTime);
+                StartCoroutine(coroutine);
+
+                //Deal Damage
+                playerHealth.Health -= AttackDamage;
+
+                CanAttack = true;
+            }
+            else if (playerHealth.Health < 0)
+            {
+                CannotAttack = true;
+
+                playerHealth.Health = 100;
+
+                Debug.Log("Cannot attack");
+            }                     
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && CannotAttack == false)
         {
             InRange = true;
 
@@ -50,8 +69,6 @@ public class AttackPlayerTrigger : MonoBehaviour
 
             //Deal First amount of damage
             playerHealth.Health -= AttackDamage;
-
-            Debug.Log("OnTriggerEnter");
 
             CanAttack = true;           
         }
@@ -69,12 +86,14 @@ public class AttackPlayerTrigger : MonoBehaviour
 
     private IEnumerator AttackWait(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
-        print("Coroutine ended: " + Time.time + " seconds");
+        if (playerHealth.Health > 0 && CannotAttack == false)
+        {
+            yield return new WaitForSeconds(waitTime);
+            print("Coroutine ended: " + Time.time + " seconds");
 
-        Debug.Log("Injured Health:" + playerHealth.Health);
+            Debug.Log("Injured Health:" + playerHealth.Health);
 
-        CanAttack = true;
+            CanAttack = true;
+        }  
     }
-
 }
