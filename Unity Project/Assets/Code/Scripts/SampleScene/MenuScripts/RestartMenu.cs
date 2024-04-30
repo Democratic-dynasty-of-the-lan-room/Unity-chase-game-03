@@ -10,6 +10,8 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public GameData gameDataScript;
 
+        public PlayerHealth playerHealth;
+
         public PlayerStartPos playerStartPos;
 
 
@@ -20,16 +22,12 @@ namespace Code.Scripts.SampleScene.MenuScripts
             restartMenu.SetActive(false);
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
         //Restarts when you click on restart
         public void Restart()
         {
-           // gameDataScript.PlayerHealth = 100;
+           playerHealth.Health = playerHealth.SetHealthAmount;
+
+            Debug.Log("HealthRestart" + playerHealth.Health);
 
             DataPersistenceManager.instance.RestartLoadGame();
 

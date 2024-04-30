@@ -18,10 +18,6 @@ public class FileDataHandler
 
     private bool RestartuseEncryption = false;
 
-    // are these two needed again?
-    //private bool RestartuseEncryption = false;
-    //private readonly string RestartencryptionCodeWord = "TheHorror";
-
     public FileDataHandler(string dataDirPath, string dataFileName, string restartDataDirPath, string restartDataFileName,  bool useEncryption, bool RestartuseEncryption)
     {
         this.dataDirPath = dataDirPath;

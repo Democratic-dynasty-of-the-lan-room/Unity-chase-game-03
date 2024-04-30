@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AttackPlayerTrigger : MonoBehaviour
 {
-
     private IEnumerator coroutine;
 
     [SerializeField] PlayerHealth playerHealth;
@@ -31,7 +30,7 @@ public class AttackPlayerTrigger : MonoBehaviour
     {    
         if (CanAttack && InRange && playerHealth.Health > 0 && CannotAttack == false)
         {
-            Debug.Log("player Health here: " + playerHealth.Health);
+            //Debug.Log("player Health here: " + playerHealth.Health);
 
             if (playerHealth.Health > 0)
             {
@@ -44,13 +43,11 @@ public class AttackPlayerTrigger : MonoBehaviour
                 //Deal Damage
                 playerHealth.Health -= AttackDamage;
 
-                CanAttack = true;
+                CanAttack = false;
             }
             else if (playerHealth.Health < 0)
             {
                 CannotAttack = true;
-
-                playerHealth.Health = 100;
 
                 Debug.Log("Cannot attack");
             }                     
@@ -63,7 +60,7 @@ public class AttackPlayerTrigger : MonoBehaviour
         {
             InRange = true;
 
-            //Send a ray to see if the player is behind a wall or not.
+            // TODO - Send a ray to see if the player is behind a wall or not.
 
             // Start the Attack Coroutine;
 
@@ -84,11 +81,11 @@ public class AttackPlayerTrigger : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackWait(float waitTime)
+    private IEnumerator AttackWait(float AttackWaitTime)
     {
         if (playerHealth.Health > 0 && CannotAttack == false)
         {
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(AttackWaitTime);
             print("Coroutine ended: " + Time.time + " seconds");
 
             Debug.Log("Injured Health:" + playerHealth.Health);

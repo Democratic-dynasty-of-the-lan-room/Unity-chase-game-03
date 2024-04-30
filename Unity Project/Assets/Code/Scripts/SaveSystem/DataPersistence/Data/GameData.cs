@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
+    //public int HealthAmount;
+
     public int JumpCount;
     public int DeathCount;
     public int PosToSpawn;
@@ -23,11 +25,6 @@ public class GameData
 
     public float YRotation;
     public float XRotation;
-
-    
-
-
-
 
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
