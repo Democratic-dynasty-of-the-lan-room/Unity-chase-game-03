@@ -4970,7 +4970,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.016666668
+  m_VoxelSize: 1.8066667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 6fc1b5c7d1c67de48b0bb1dbbd7155f5, type: 2}
   m_BuildHeightMesh: 0
@@ -12086,6 +12086,7 @@ GameObject:
   - component: {fileID: 5173293617685718046}
   - component: {fileID: 5173293617685718045}
   - component: {fileID: 5173293617685718047}
+  - component: {fileID: 5173293617685718048}
   m_Layer: 0
   m_Name: MovementPlayer
   m_TagString: Player
@@ -12256,6 +12257,38 @@ MonoBehaviour:
   rayLength: 3
   LeverIsUp: 0
   IsPressed: 0
+--- !u!114 &5173293617685718048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5173293617685718037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba80274d20da474091c983775e6ba62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
+  SetHealthAmount: 100
+  Player: {fileID: 5173293617685718037}
+  PauseMenu: {fileID: 7481662084163847996}
+  InventoryScript: {fileID: 755770888}
+  RestartMenu: {fileID: 7481662084601550635}
+  gameData:
+    JumpCount: 0
+    DeathCount: 0
+    PosToSpawn: 0
+    SceneNumber: 1
+    PlayerHealth: 100
+    CanSpawn: 1
+    playerPosition: {x: 0, y: 0, z: 0}
+    BlockPosition: {x: -1, y: 0, z: 0}
+    BlockRotation: {x: 0, y: 0, z: 0, w: 1}
+    YRotation: 0
+    XRotation: 0
+  OverideDeath: 0
+  ShowHealthWithH: 0
 --- !u!4 &5173293617706668099
 Transform:
   m_ObjectHideFlags: 0
@@ -13904,17 +13937,19 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 7481662084967114352}
   InventoryScript: {fileID: 5173293617685718037}
   playerStartPos: {fileID: 1782443884}
+  playerHealth: {fileID: 5173293617685718048}
   GameDataScript:
     JumpCount: 0
     DeathCount: 0
     PosToSpawn: 0
     SceneNumber: 1
+    PlayerHealth: 100
     CanSpawn: 1
     playerPosition: {x: 0, y: 0, z: 0}
-    PlayerRotation: {x: 0, y: 0, z: 0, w: 1}
-    PlayerOrientation: {x: 0, y: 0, z: 0, w: 1}
     BlockPosition: {x: -1, y: 0, z: 0}
     BlockRotation: {x: 0, y: 0, z: 0, w: 1}
+    YRotation: 0
+    XRotation: 0
   PlayerMovementScript: {fileID: 5173293617685718044}
 --- !u!4 &7481662084163847971
 Transform:
@@ -14828,12 +14863,14 @@ MonoBehaviour:
     DeathCount: 0
     PosToSpawn: 0
     SceneNumber: 1
+    PlayerHealth: 100
     CanSpawn: 1
     playerPosition: {x: 0, y: 0, z: 0}
-    PlayerRotation: {x: 0, y: 0, z: 0, w: 1}
-    PlayerOrientation: {x: 0, y: 0, z: 0, w: 1}
     BlockPosition: {x: -1, y: 0, z: 0}
     BlockRotation: {x: 0, y: 0, z: 0, w: 1}
+    YRotation: 0
+    XRotation: 0
+  playerHealth: {fileID: 5173293617685718048}
   playerStartPos: {fileID: 1782443884}
 --- !u!224 &7481662084601550634
 RectTransform:

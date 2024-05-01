@@ -27,7 +27,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
         {
            playerHealth.Health = playerHealth.SetHealthAmount;
 
-            Debug.Log("HealthRestart" + playerHealth.Health);
+            //Debug.Log("HealthRestart" + playerHealth.Health);
 
             DataPersistenceManager.instance.RestartLoadGame();
 

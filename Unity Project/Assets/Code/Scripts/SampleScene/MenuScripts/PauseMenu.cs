@@ -75,7 +75,7 @@ namespace Code.Scripts.SampleScene.MenuScripts
         public void Restart()
         {
             // Set Player health to full
-            playerHealth.Health = 100;
+            playerHealth.Health = playerHealth.SetHealthAmount;
 
             DataPersistenceManager.instance.RestartLoadGame();
 
