@@ -23,22 +23,15 @@ public class PortCullusScript : MonoBehaviour
         {
             if (Interactable.LeverIsUp)
             {
-
                 anim.Play("PortCullusOpen");
-
-
-
             }
             else if (!Interactable.LeverIsUp)
             {
-
                 anim.Play("PortCullusClose");
-
             }           
         }
         else if (anim.isPlaying == true)
         {
-
             if (Interactable.LeverIsUp && Interactable.IsPressed == true)
             {
                 Interactable.LeverIsUp = false;

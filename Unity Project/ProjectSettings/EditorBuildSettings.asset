@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Level/Scenes/LevelBigSewer/LevelBigSewer.unity
     guid: a89edf11c3ff79843a082c21eb744e14
+  - enabled: 1
+    path: Assets/Level/Scenes/Labrynth/labrynthLevel.unity
+    guid: 24e6db021a006d74e886a7ffecaedb20
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
