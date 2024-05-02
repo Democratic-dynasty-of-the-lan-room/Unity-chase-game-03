@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,13 +14,14 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         private bool NoGameDataCheck;
 
-        private void Start()
+        private void Awake()
         {
             // Check if there is GameData in fixed update lol
             NoGameDataCheck = true;
         }
 
-        public void FixedUpdate()
+        // Switch back to fixed update? Fixed update wasn't finding the data in the Build.
+        public void Update()
         {
             if (!DataPersistenceManager.instance.HasGameData() && NoGameDataCheck)
             {            

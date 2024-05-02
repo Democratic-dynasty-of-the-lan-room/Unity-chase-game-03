@@ -25,10 +25,20 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     [Header("Check what health is with H")]
     public bool ShowHealthWithH;
 
-    private void Update()
+    private void Awake()
+    {
+        //Time.timeScale = 1.0f;
+    }
+
+    private void FixedUpdate()
     {     
         if (Health <= 0 && !OverideDeath)
-        {         
+        {
+            //Debug.Log("Health in death" + Health);
+
+            // We probably want this. Just need to find a good place to set it to 1o again. That works with other scripts.
+            //Time.timeScale = 0f;
+
             RestartMenu.SetActive(true);
             // setting the player to false so that you can't move after the end
             

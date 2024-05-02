@@ -12288,7 +12288,7 @@ MonoBehaviour:
     YRotation: 0
     XRotation: 0
   OverideDeath: 0
-  ShowHealthWithH: 0
+  ShowHealthWithH: 1
 --- !u!4 &5173293617706668099
 Transform:
   m_ObjectHideFlags: 0

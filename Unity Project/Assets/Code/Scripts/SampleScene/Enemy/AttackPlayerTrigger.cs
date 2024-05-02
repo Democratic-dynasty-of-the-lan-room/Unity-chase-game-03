@@ -35,7 +35,7 @@ public class AttackPlayerTrigger : MonoBehaviour
             if (playerHealth.Health > 0)
             {
 
-                Debug.Log("player Health In: " + playerHealth.Health);
+                //Debug.Log("player Health In: " + playerHealth.Health);
 
                 coroutine = AttackWait(AttackWaitTime);
                 StartCoroutine(coroutine);
@@ -49,7 +49,7 @@ public class AttackPlayerTrigger : MonoBehaviour
             {
                 CannotAttack = true;
 
-                Debug.Log("Cannot attack");
+                //Debug.Log("Cannot attack");
             }                     
         }
     }
