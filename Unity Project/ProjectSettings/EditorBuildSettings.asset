@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Level/Scenes/Labrynth/labrynthLevel.unity
     guid: 24e6db021a006d74e886a7ffecaedb20
+  - enabled: 1
+    path: Assets/Level/Scenes/ParkourLevel/ParkourScene.unity
+    guid: 2db08be745897d24ba06afbd35fef545
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

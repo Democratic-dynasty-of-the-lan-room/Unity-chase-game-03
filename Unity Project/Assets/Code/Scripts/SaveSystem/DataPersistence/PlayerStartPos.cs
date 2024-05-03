@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStartPos : MonoBehaviour, IDataPersistence
 {
@@ -23,6 +24,18 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
         data.CanSpawn = CanSetSpawn;
 
         data.SceneNumber = SceneToLoad;
+    }
+
+    // Making sure that We have the right scene to load when you click Stop in unity.
+    private void OnApplicationQuit()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            // What about the menu?
+            SceneToLoad = SceneManager.GetActiveScene().buildIndex;
+
+            Debug.Log("OnApplicationQuit in PlayerStartPos");
+        }
     }
 
     public void RestartLoadData(CheckPointData CheckPointLoadData)

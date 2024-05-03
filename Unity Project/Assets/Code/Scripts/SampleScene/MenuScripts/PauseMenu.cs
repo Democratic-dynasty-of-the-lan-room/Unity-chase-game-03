@@ -98,16 +98,6 @@ namespace Code.Scripts.SampleScene.MenuScripts
             GameIsPaused = false;
         }
 
-        // Making sure that We have the right scene to load when you click Stop in unity.
-        private void OnApplicationQuit()
-        {
-            if (SceneManager.GetActiveScene().buildIndex != 0)
-            { 
-                // What about the menu?
-                playerStartPos.SceneToLoad = SceneManager.GetActiveScene().buildIndex;
-            }
-        }
-
         public void LoadData(GameData data)
         {
            
