@@ -7,7 +7,7 @@ public class PlayerStartPos : MonoBehaviour, IDataPersistence
 
     public int SceneToLoad;
 
-    public bool CanSetSpawn;  
+    public bool CanSetSpawn;
 
     public void LoadData(GameData data)
     {

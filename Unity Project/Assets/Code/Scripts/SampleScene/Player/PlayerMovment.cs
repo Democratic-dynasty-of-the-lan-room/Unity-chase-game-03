@@ -7,6 +7,7 @@ using Code.Scripts;
 using UnityEngine.Animations;
 using Code.Scripts.SampleScene;
 using NUnit.Framework.Internal;
+using System;
 
 
 
@@ -114,7 +115,12 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     [SerializeField] GameObject StartSpawn2;
     [SerializeField] GameObject StartSpawn3;
 
+    // Set Spawn Position
     public PlayerStartPos playerStartPos;
+
+    public bool Spawn1WithU;
+
+    private bool SpawnWithU;
 
     private void Start()
     {
@@ -135,6 +141,12 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         MyInput();
 
         Crouch();
+
+        //Spawn1 with U
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            SpawnWithU = true;
+        }
     }
 
     // these are Loading and saving game data
@@ -191,6 +203,13 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         if (!isJumping)
         {
             MovePlayer();
+        }
+
+        if (SpawnWithU)
+        {
+            this.transform.position = StartSpawn1.transform.position;
+
+            SpawnWithU = false;
         }
 
         // Sets the Players Spawn position when loading a new level. Set Spawn is for Delbuging.
