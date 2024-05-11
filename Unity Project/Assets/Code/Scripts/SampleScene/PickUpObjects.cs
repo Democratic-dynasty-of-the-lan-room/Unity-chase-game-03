@@ -10,10 +10,13 @@ namespace Code.Scripts.SampleScene
         // I had it referenved wifh findGameObject with tag. But it wasn't finding it after the update. PlayerGameobject ref
         public InventoryScript inventory;
 
+
+
         // Start is called before the first frame update
         void Start()
         {
             //inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryScript>();
+
         }
 
         // Update is called once per frame
@@ -22,8 +25,13 @@ namespace Code.Scripts.SampleScene
         
         }
 
-        //function to be called in pickupscript. Instanciates button in inventory and prefab?
-        public void Instanciates()
+      
+        
+            
+        
+
+    //function to be called in pickupscript. Instanciates button in inventory and prefab?
+    public void Instanciates()
         {
 
             Debug.Log("Instantiates");
@@ -37,10 +45,10 @@ namespace Code.Scripts.SampleScene
                 {
                     Debug.Log("Instantiate intentory before");
 
-
                     Instantiate(itemButton, inventory.slots[i].transform, false);
-                    Destroy(this.gameObject);
 
+                    Destroy(this.gameObject);
+                    
                     Debug.Log("Instantiate intentory after");
 
                     inventory.isFull[i] = true;         
@@ -49,9 +57,12 @@ namespace Code.Scripts.SampleScene
                 }
             }
         }
+       
 
-        //Function called for any object with handtag that is picked up
-        public void Hand()
+
+
+    //Function called for any object with handtag that is picked up
+    public void Hand()
         {
             //Debug.Log("Hand");
 
