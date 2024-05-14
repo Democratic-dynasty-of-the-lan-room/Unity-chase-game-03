@@ -55028,7 +55028,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3214960343603028915, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3710277316930416836, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_LocalPosition.x

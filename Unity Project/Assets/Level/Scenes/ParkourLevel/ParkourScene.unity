@@ -13863,11 +13863,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: Spawn2
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: Spawn3
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber

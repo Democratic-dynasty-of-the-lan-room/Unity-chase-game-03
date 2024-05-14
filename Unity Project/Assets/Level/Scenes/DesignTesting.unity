@@ -407,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: SceneNumber
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: playerStartPos
@@ -786,7 +786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: SceneNumber
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: playerStartPos
@@ -868,7 +868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: SceneNumber
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 522098674249270479, guid: 79b50886a958bb94ab10dad60f49f591, type: 3}
       propertyPath: playerStartPos
@@ -1011,7 +1011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3214960343603028915, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3710277316930416836, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1115,7 +1115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5895943024300831670, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5897753064732101709, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_Enabled
@@ -1179,7 +1179,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8424184446742488508, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_Layer
@@ -1190,16 +1190,17 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3214960343603028916, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4638493617920964307, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
-      insertIndex: 8
+      insertIndex: -1
       addedObject: {fileID: 329470310}
     - targetCorrespondingSourceObject: {fileID: 4638493617920964307, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
-      insertIndex: 9
+      insertIndex: -1
       addedObject: {fileID: 501864599}
     - targetCorrespondingSourceObject: {fileID: 4638493617920964307, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 753448755}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}

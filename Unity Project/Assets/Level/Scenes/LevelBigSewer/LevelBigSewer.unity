@@ -45117,7 +45117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3214960343603028915, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3710277316930416836, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_LocalPosition.y
@@ -45233,11 +45233,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: Spawn2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: Spawn3
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8421911970373529775, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SceneNumber
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

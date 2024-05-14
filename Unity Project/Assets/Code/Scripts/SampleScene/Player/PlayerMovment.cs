@@ -8,7 +8,9 @@ using UnityEngine.Animations;
 using Code.Scripts.SampleScene;
 using NUnit.Framework.Internal;
 using System;
-
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Composites;
 
 
 
@@ -64,8 +66,8 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     public float SprintLimit;
     private bool IsSprinting;
 
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
+    //[Header("Keybinds")]
+    //public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -121,6 +123,22 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     public bool Spawn1WithU;
 
     private bool SpawnWithU;
+
+    PlayerInput playerInput;
+
+    private void Awake()
+    {
+        playerInput = new PlayerInput();
+    }
+
+    private void OnEnable()
+    {
+        playerInput.Enable();
+    }
+    private void OnDisable()
+    {
+        playerInput.Disable();
+    }
 
     private void Start()
     {
@@ -178,7 +196,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         }
 
         // handle drag
-        if (grounded && Input.GetKey(KeyCode.LeftControl))
+        if (grounded && playerInput.GamePlay.Crouch.ReadValue<float>() > 0f)
         {
             rb.linearDamping = CrouchDrag;
             moveSpeed = ChrouchMovement;
@@ -255,11 +273,15 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             GroundedHeight = HeightOffset * -1.3f;
         }
 
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = playerInput.GamePlay.PlayerHorizontal.ReadValue<float>();
+        verticalInput = playerInput.GamePlay.PlayerVertical.ReadValue<float>();
+        // Old method getaxisraw
+        //horizontalInput = Input.GetAxisRaw("Horizontal");
+        //verticalInput = Input.GetAxisRaw("Vertical");
+
 
         // when to jump
-        if (Input.GetKeyDown(jumpKey) && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y - 0.2f)) < 0.35f))
+        if (playerInput.GamePlay.Jump.triggered && readyToJump && grounded && (Mathf.Abs(desiredHeight - (transform.position.y - 0.2f)) < 0.35f))
         {
             isJumping = true;
             jumpStartTime = Time.time;
@@ -343,7 +365,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     private void Sprint()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (playerInput.GamePlay.Sprint.ReadValue<float>() > 0f)
         {
             SprintKeyPressed = true;
         }
@@ -352,7 +374,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             SprintKeyPressed = false;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && grounded)
+        if (playerInput.GamePlay.Sprint.ReadValue<float>() > 0f && playerInput.GamePlay.PlayerVertical.ReadValue<float>() > 0f && grounded)
         {
             IsSprinting = true;
 
@@ -473,7 +495,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     private void Crouch()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (playerInput.GamePlay.Crouch.ReadValue<float>() > 0f)
         {
             // Debug.Log("Crouch");
             Crouched = true;
@@ -481,7 +503,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             playerHeight = 0.5f;
 
         }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        else if (playerInput.GamePlay.Crouch.ReadValue<float>() <= 0f)
         {
 
             HeightOffset = 1f;

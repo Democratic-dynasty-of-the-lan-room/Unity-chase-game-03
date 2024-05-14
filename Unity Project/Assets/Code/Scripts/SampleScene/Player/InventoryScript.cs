@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Code.Scripts.SampleScene.Player
 {
-    public class InventoryScript : MonoBehaviour
+    public class InventoryScript : MonoBehaviour, IDataPersistence
     {
         public bool[] isFull;
         public GameObject[] slots;
@@ -18,6 +18,22 @@ namespace Code.Scripts.SampleScene.Player
         [SerializeField] GameObject Inventory;
         [SerializeField] GameObject pauseMenu;
 
+        PlayerInput playerInput;
+
+        private void Awake()
+        {
+            playerInput = new PlayerInput();
+        }
+
+        private void OnEnable()
+        {
+            playerInput.Enable();
+        }
+        private void OnDisable()
+        {
+            playerInput.Disable();
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -28,7 +44,7 @@ namespace Code.Scripts.SampleScene.Player
         void Update()
         {
             //Opens and closes inventory
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (playerInput.UI.OpenInventory.triggered)
             {
                 if (InventoryIsOpen)
                 {
@@ -71,6 +87,26 @@ namespace Code.Scripts.SampleScene.Player
 
             Time.timeScale = 0f;
             InventoryIsOpen = true;
+        }
+
+        public void LoadData(GameData data)
+        {
+           
+        }
+
+        public void SaveData(ref GameData data)
+        {
+           
+        }
+
+        public void RestartLoadData(CheckPointData CheckPointLoadData)
+        {
+            
+        }
+
+        public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+        {
+            
         }
     }
 }

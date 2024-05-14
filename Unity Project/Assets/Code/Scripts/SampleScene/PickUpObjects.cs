@@ -1,4 +1,5 @@
 using Code.Scripts.SampleScene.Player;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Code.Scripts.SampleScene
@@ -7,49 +8,21 @@ namespace Code.Scripts.SampleScene
     {
         public GameObject itemButton;
 
+        // maybe have a bool for each instantiated ItemButton.
+
         // I had it referenved wifh findGameObject with tag. But it wasn't finding it after the update. PlayerGameobject ref
         public InventoryScript inventory;
-
-
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            //inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryScript>();
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
-      
-        
-            
-        
 
     //function to be called in pickupscript. Instanciates button in inventory and prefab?
     public void Instanciates()
         {
-
-            Debug.Log("Instantiates");
-
             for (int i = 0; i < inventory.slots.Length; i++)
             {
-
-                Debug.Log("intentory Slots");
-
                 if (inventory.isFull[i] == false)
-                {
-                    Debug.Log("Instantiate intentory before");
-
+                {        
                     Instantiate(itemButton, inventory.slots[i].transform, false);
 
                     Destroy(this.gameObject);
-                    
-                    Debug.Log("Instantiate intentory after");
 
                     inventory.isFull[i] = true;         
 
@@ -89,6 +62,5 @@ namespace Code.Scripts.SampleScene
                 }
             }
         }
-
     }
 }

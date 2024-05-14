@@ -13,7 +13,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             SaveDash = true;
 
             //TODO - also save the item button somehow.
-        }   
+        }
     }
 
 
@@ -26,12 +26,12 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-      
+        //SaveDash = data.ADash;
     }
 
     public void SaveData(ref GameData data)
     {
-      
+        //data.ADash = SaveDash;
     }
 
     public void RestartLoadData(CheckPointData CheckPointLoadData)

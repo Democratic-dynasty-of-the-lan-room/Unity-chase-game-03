@@ -12,7 +12,25 @@ namespace Code.Scripts.SampleScene.Player
 
         [SerializeField] GameObject PressEToPickUp;
 
+        //public GameObject[] SaveInventory;
+
         public float rayLength;
+
+        PlayerInput playerInput;
+
+        private void Awake()
+        {
+            playerInput = new PlayerInput();
+        }
+
+        private void OnEnable()
+        {
+            playerInput.Enable();
+        }
+        private void OnDisable()
+        {
+            playerInput.Disable();
+        }
 
         // Start is called before the first frame update
         private void Start()
@@ -21,6 +39,8 @@ namespace Code.Scripts.SampleScene.Player
 
             PressEToPickUp.SetActive(false);
         }
+
+
 
         //Update is called once per frame
         //Checking if Player is picking up or viewing an object that can be picked up using raycast and checking slots
@@ -38,19 +58,18 @@ namespace Code.Scripts.SampleScene.Player
                 
                     PressEToPickUp.SetActive(true);
                 
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (playerInput.GamePlay.Interact.triggered)
                     {                       
                         PickUpObjects pickUpObjects = hit.collider.gameObject.GetComponent<PickUpObjects>();
 
                         if (pickUpObjects != null)
                         {
-                            Debug.Log("PickUpScript before");
-
                             //call function from pickupobjects script
                             pickUpObjects.Instanciates();
                             PressEToPickUp.SetActive(false);
 
-                            Debug.Log("PickUpScript Hand after");
+                            // Lol what does this do
+                            //SaveInventory[inventory.slots.Length] = pickUpObjects.itemButton;
                         }                  
                     }                         
                 } //For things held in hand, probably a bad way to do this
@@ -84,8 +103,15 @@ namespace Code.Scripts.SampleScene.Player
             else
             {
                 PressEToPickUp.SetActive(false);
-            }
-
+            }           
         }
+
+        /*public void loadTheInventoryquestion() 
+        {
+            for (int i = 0; i < inventory.slots.Length; i++)
+            {
+                //pickUpObjects.Instantiates();
+            }
+        } */
     }
 }

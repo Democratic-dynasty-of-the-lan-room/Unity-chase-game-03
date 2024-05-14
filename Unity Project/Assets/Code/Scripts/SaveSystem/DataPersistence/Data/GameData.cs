@@ -26,6 +26,12 @@ public class GameData
     public float YRotation;
     public float XRotation;
 
+    // Inventory
+    public GameObject[] InventorySlots;
+
+    // Abilities Marked with A:
+    public bool ADash;
+
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
     public GameData()
@@ -50,6 +56,8 @@ public class GameData
         YRotation = 0;
         XRotation = 0;
 
+        // Abilites
+        ADash = false;
 
 
     }

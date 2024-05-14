@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Dash : MonoBehaviour
 {
@@ -20,9 +21,31 @@ public class Dash : MonoBehaviour
 
     private Camera mainCamera;
 
+    //public InputActionReference Move;
+
+    PlayerInput Move;
+
     private void Awake()
-    {
+    {       
+        Move = new PlayerInput();
+
         this.enabled = false;
+    }
+
+    // Lol this a terrible way to do this. as if the reload wasn't done ot starts again when you open the menu.
+    private void OnEnable()
+    {
+        if (CanDash == false)
+        {
+            coroutine = DashReloadTime(DashReload);
+            StartCoroutine(coroutine);
+        }
+
+        Move.Enable();
+    }
+    private void OnDisable()
+    {
+        Move.Disable();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -41,29 +64,19 @@ public class Dash : MonoBehaviour
         dash = false;
     }
 
-    // Lol this a terrible way to do this. as if the reload wasn't done ot starts again when you open the menu.
-    private void OnEnable()
-    {
-        if (CanDash == false)
-        {
-            coroutine = DashReloadTime(DashReload);
-            StartCoroutine(coroutine);
-        }
-    }
-
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) && CanDash)
+        //bool PressDash = Move.GamePlay.Dash.triggered;
+
+        if (Move.GamePlay.Dash.triggered && CanDash)
         {
             CanDash = false;
-           
+            
             dash = true;
 
             coroutine = DashReloadTime(DashReload);
             StartCoroutine(coroutine);
-
-            print("Coroutine started");
 
             print("Coroutine started: " + Time.time + " seconds");
         }
