@@ -1,12 +1,18 @@
 using Code.Scripts.SampleScene.Player;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Code.Scripts.SampleScene
 {
-    public class PickUpObjects : MonoBehaviour
+    public class PickUpObjects : MonoBehaviour, IDataPersistence
     {
         public GameObject itemButton;
+
+        public Transform test;
+        public string testName;
+        //public GameObject TestGameObject;
 
         // maybe have a bool for each instantiated ItemButton.
 
@@ -21,6 +27,12 @@ namespace Code.Scripts.SampleScene
                 if (inventory.isFull[i] == false)
                 {        
                     Instantiate(itemButton, inventory.slots[i].transform, false);
+
+                    test = inventory.Handslots[i].transform;
+                    testName = itemButton.name;
+                    //TestGameObject = itemButton.GameObject;
+
+                    Debug.Log("Test: " + test + "Item Name: " + testName);
 
                     Destroy(this.gameObject);
 
@@ -61,6 +73,31 @@ namespace Code.Scripts.SampleScene
                     break;
                 }
             }
+        }
+
+        public void TestInstantiates()
+        {
+            //Instantiate(itemButton, inventory.slots[test].transform, false);
+        }
+
+        public void LoadData(GameData data)
+        {
+          
+        }
+
+        public void SaveData(ref GameData data)
+        {
+            testName = data.TestStringSave;
+        }
+
+        public void RestartLoadData(CheckPointData CheckPointLoadData)
+        {
+       
+        }
+
+        public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+        {
+     
         }
     }
 }

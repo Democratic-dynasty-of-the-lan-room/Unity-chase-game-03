@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -27,10 +29,19 @@ public class GameData
     public float XRotation;
 
     // Inventory
-    public GameObject[] InventorySlots;
+    public bool[] InventorySlots;
+    public List<GameObject> InInventory;
 
-    // Abilities Marked with A:
+    // Abilities Marked with A, and Inventory IN:
     public bool ADash;
+    public bool INDash;
+    public string TestStringSave;
+    public bool ADashInventory;
+
+    public List<string> ItemName;
+    public List<int> SlotIndex;
+
+    public List<GameObject> InventoryGameObjects;
 
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
@@ -56,9 +67,15 @@ public class GameData
         YRotation = 0;
         XRotation = 0;
 
+        InInventory = null;
+
         // Abilites
         ADash = false;
+        INDash = false;
+        TestStringSave = string.Empty;
+        ADashInventory = false;
 
 
+        InventoryGameObjects = new List<GameObject>();
     }
 }

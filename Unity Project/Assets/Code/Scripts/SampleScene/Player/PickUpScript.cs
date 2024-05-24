@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Code.Scripts.SampleScene.Player
 {
-    public class PickUpScript : MonoBehaviour
+    public class PickUpScript : MonoBehaviour, IDataPersistence
     {
         private InventoryScript inventory;
 
@@ -11,6 +11,8 @@ namespace Code.Scripts.SampleScene.Player
         [SerializeField] private string HandTag = "Handtag";
 
         [SerializeField] GameObject PressEToPickUp;
+
+        [SerializeField] SpeedDash speedDash;
 
         //public GameObject[] SaveInventory;
 
@@ -77,7 +79,7 @@ namespace Code.Scripts.SampleScene.Player
                 {
                     PressEToPickUp.SetActive(true);
 
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (playerInput.GamePlay.Interact.triggered)
                     {
 
                     
@@ -104,6 +106,26 @@ namespace Code.Scripts.SampleScene.Player
             {
                 PressEToPickUp.SetActive(false);
             }           
+        }
+
+        public void LoadData(GameData data)
+        {
+           
+        }
+
+        public void SaveData(ref GameData data)
+        {
+           
+        }
+
+        public void RestartLoadData(CheckPointData CheckPointLoadData)
+        {
+          
+        }
+
+        public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+        {
+         
         }
 
         /*public void loadTheInventoryquestion() 

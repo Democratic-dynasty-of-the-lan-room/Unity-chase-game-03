@@ -954,8 +954,56 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: ImageDash
+      value: 
+      objectReference: {fileID: 8903918739483906253, guid: bc88919a7024fdf4f811ac97c394d167, type: 3}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1452466023}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: ItemButton
+      value: 
+      objectReference: {fileID: 8903918739483906253, guid: bc88919a7024fdf4f811ac97c394d167, type: 3}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: ItemButton1
+      value: 
+      objectReference: {fileID: 8903918739483906253, guid: 9fb4cf710c78921499aafec102696aff, type: 3}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: ItemButton2
+      value: 
+      objectReference: {fileID: 8903918739483906253, guid: c19d95863271e8e459e6b8fe886b31f6, type: 3}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: ImageSpeedBoost
+      value: 
+      objectReference: {fileID: 8903918739483906253, guid: 9fb4cf710c78921499aafec102696aff, type: 3}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: parentTransform
+      value: 
+      objectReference: {fileID: 1829475349}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: SetDashInventory
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: SaveInventory.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: SaveInventoryName.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: SaveInventorySlotIndex.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: SaveInventoryGameObject.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1119216656653946744, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_Layer
@@ -1300,6 +1348,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: baf5b10b432b5cf4bbe0a904f6aea658, type: 3}
+--- !u!224 &1829475349 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5967855367835834586, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+  m_PrefabInstance: {fileID: 1452466020}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1886289501
 PrefabInstance:
   m_ObjectHideFlags: 0

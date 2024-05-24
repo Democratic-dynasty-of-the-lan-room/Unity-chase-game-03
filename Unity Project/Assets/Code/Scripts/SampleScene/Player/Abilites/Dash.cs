@@ -21,6 +21,8 @@ public class Dash : MonoBehaviour
 
     private Camera mainCamera;
 
+    public bool DashEnabled;
+
     //public InputActionReference Move;
 
     PlayerInput Move;
@@ -62,6 +64,11 @@ public class Dash : MonoBehaviour
         CanDash = true;
 
         dash = false;
+
+        if (this.enabled == true)
+        {
+            DashEnabled = true;
+        }
     }
 
     // Update is called once per frame

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Code.Scripts.SampleScene.Player
@@ -89,6 +91,14 @@ namespace Code.Scripts.SampleScene.Player
             InventoryIsOpen = true;
         }
 
+        private void CheckSlots()
+        {
+            if (transform.childCount > 0)
+            {
+                // we have children!
+            }
+        }
+
         public void LoadData(GameData data)
         {
            
@@ -96,7 +106,7 @@ namespace Code.Scripts.SampleScene.Player
 
         public void SaveData(ref GameData data)
         {
-           
+         
         }
 
         public void RestartLoadData(CheckPointData CheckPointLoadData)
