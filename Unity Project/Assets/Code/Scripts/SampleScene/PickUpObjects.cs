@@ -25,14 +25,14 @@ namespace Code.Scripts.SampleScene
             for (int i = 0; i < inventory.slots.Length; i++)
             {
                 if (inventory.isFull[i] == false)
-                {        
+                {
                     Instantiate(itemButton, inventory.slots[i].transform, false);
 
-                    test = inventory.Handslots[i].transform;
-                    testName = itemButton.name;
+                    //test = inventory.Handslots[i].transform;
+                    //testName = itemButton.name;
                     //TestGameObject = itemButton.GameObject;
 
-                    Debug.Log("Test: " + test + "Item Name: " + testName);
+                    //Debug.Log("Test: " + test + "Item Name: " + testName);
 
                     Destroy(this.gameObject);
 

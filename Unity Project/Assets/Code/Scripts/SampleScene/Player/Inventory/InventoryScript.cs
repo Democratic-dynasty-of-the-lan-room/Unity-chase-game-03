@@ -25,6 +25,8 @@ namespace Code.Scripts.SampleScene.Player
         private void Awake()
         {
             playerInput = new PlayerInput();
+
+            //Time.timeScale = 1f;
         }
 
         private void OnEnable()
@@ -72,13 +74,10 @@ namespace Code.Scripts.SampleScene.Player
 
             Time.timeScale = 1f;
             InventoryIsOpen = false;
-
-
         }
 
         void Pause()
         {
-
             Inventory.SetActive(true);
 
             pauseMenu.SetActive(false);

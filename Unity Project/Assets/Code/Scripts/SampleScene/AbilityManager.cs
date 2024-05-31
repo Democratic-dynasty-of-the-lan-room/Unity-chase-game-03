@@ -46,11 +46,15 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public Transform parentTransform;
 
+    private bool LoadInventoryFixedUpdate;
+
     private void Awake()
     {
         prefabDictionary.Add("ImageDash", ImageDash);
         prefabDictionary.Add("ImageSpeedBoost", ImageSpeedBoost);
         prefabDictionary.Add("ImageWall", ImageWall);
+
+        LoadInventoryFixedUpdate = false;
     }
 
     public void SaveInventoryQuestion()
@@ -114,47 +118,52 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
         {
             Debug.Log("ForLoop");
 
-            Debug.Log("ForeachChild");
+            //Debug.Log("ForeachChild");
             if (inventory.slots[i].transform.childCount > 0)
             {
-                print("ChildCount" + inventory.slots[i].transform.childCount);
+                //print("ChildCount" + inventory.slots[i].transform.childCount);
 
                 Debug.Log("DestroyChildren");
                 Destroy(inventory.slots[i].transform.GetChild(0).gameObject);
-                Debug.Log("There is an error: Transform child out of bounds for Image speed boost?");
+                //Debug.Log("There is an error: Transform child out of bounds for Image speed boost?");
             }
             else
             {
-                print("ChildCount" + inventory.slots[i].transform.childCount);
+                //print("ChildCount" + inventory.slots[i].transform.childCount);
 
                 Debug.Log("There was no inventory to destroy");
             }
         }
        
         for (int i = 0; i < inventory.slots.Length; i++)
-        {     
+        {
+            // This is not quite ideal because it will remove any part of a name that has clone in it. Which means it won't work for objects that happen to have clone in the name already.
             string SlotName = SaveInventoryName[i].Replace("(Clone)", "");
 
             Debug.Log(SlotName);
       
-            if (SlotName != null)
+            if (SlotName != "")
             {
-                // This is not quite ideal because it will remove any part of a name that has clone in it. Which means it won't work for objects that happen to have clone in the name already.
+                Debug.Log("SlotName isn't null");
+
                 GameObject instance = Instantiate(Resources.Load("Inventory UI/" + SlotName, typeof(GameObject))) as GameObject;
 
                 Transform slotTransform = inventory.slots[i].transform;
 
+                
                 if (instance != null)
                 {
+                    // Inventory Slot set to full
+                    inventory.isFull[i] = true;
+
                     // sets the instance to be a parent of sloTransform
                     instance.transform.SetParent(slotTransform);
-
-                    //instance.transform.localPosition = new Vector3(slot.transform.position.x, slot.transform.position.y, slot.transform.position.z);
 
                     // sets the instance's position to be 0 0 0.
                     instance.transform.localPosition = new Vector3(0, 0, 0);
 
-                    Debug.Log("Set pos of instantiated object");
+                    // I didn't set the scale before which mean't you couldn't see the button lol!
+                    instance.transform.localScale = new Vector3(1, 1, 1);
                 }
                 else
                 {
@@ -165,67 +174,16 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             {
                 Debug.Log("Slots to load are empty");
             }
+        }
+    }
 
-            // Put back when trying to Code  + inventory.slots[i].transform.GetChild(0).name.Replace("(Clone)", "")
-            // Put In instantiate SlotName
+    private void FixedUpdate()
+    {
+        if (LoadInventoryFixedUpdate)
+        {
+            LoadInventoryQuestion();
 
-     
-
-            //print("inventorySlots: " + inventory.slots[i].transform.GetChild(0).name);
-
-            // Potentially a better way to get the right name?
-            //var clone = Instantiate(inventory.slots[i].transform.GetChild(i));
-            //clone.name = inventory.slots[i].transform.GetChild(i).name;
-
-            //string Testingg = SaveInventory[i].transform.GetChild(0).name.Replace("(Clone)", "");
-
-
-
-            //prefabName[i] = SaveInventoryName[i];
-
-            //Debug.Log("StartInstantiateInventory");
-
-            //Problem here. And Problem with referencing Prefabs in inspector doesn't really work from another prefab.
-            /*if (prefabDictionary.TryGetValue(SaveInventoryName[i], out GameObject parent))
-            {
-                Debug.Log("TryGetValueSaveInventoryItemName");
-                parent = inventory.slots[i].gameObject;
-
-                if (prefabDictionary.TryGetValue(SaveInventoryName[i], out GameObject prefab))
-                {
-                    Instantiate(prefab, parent.transform);
-                }
-                else
-                {
-                    Debug.LogError("Prefab not found for name: " + SaveInventoryName[i]);
-                }
-            }
-            else
-            {
-                Debug.Log("TryGetValue Didn't work");
-            }*/
-
-            //PrefabEntry entry = prefabs.Find(x => x.name == prefabName);
-
-
-
-
-
-
-
-
-            //string test = SaveInventoryName[i];
-
-            //GameObject.Find(prefabName);
-
-            //GameObject Testing = GameObject.FindAnyObjectByType<GameObject>(SaveInventoryName[i]);
-
-
-            //Transform slot = inventory.slots[slotIndex];
-
-            //Instantiate(SaveInventoryName, SaveInventorySlotIndex);
-
-            //GameObject newItem = Instantiate(prefab, slot);
+            LoadInventoryFixedUpdate = false;
         }
     }
 
@@ -277,7 +235,9 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             //LoadInventoryQuestion("ImageDash", 0);
             //LoadInventoryQuestion("AnotherPrefab", 1);
 
-            LoadInventoryQuestion();
+            //LoadInventoryQuestion();
+
+            LoadInventoryFixedUpdate = true;
 
             Debug.Log("LoadInventory");
         }
