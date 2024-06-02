@@ -87,7 +87,7 @@ namespace Code.Scripts.SampleScene
 
         public void SaveData(ref GameData data)
         {
-            testName = data.TestStringSave;
+            //testName = data.TestStringSave;
         }
 
         public void RestartLoadData(CheckPointData CheckPointLoadData)

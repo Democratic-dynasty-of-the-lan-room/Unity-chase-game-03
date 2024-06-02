@@ -32,11 +32,17 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public bool SetDashInventory;
 
-    public List<GameObject> SaveInventory;
-    public List<string> SaveInventoryName;
-    public List<int> SaveInventorySlotIndex;
+    //public List<GameObject> SaveInventory; OLD
+    //public List<string> SaveInventoryName;
 
-    public List<GameObject> SaveInventoryGameObject;
+    public string[] SaveInventoryName;
+    public int[] SaveInventorySlotIndex;
+
+    public List<int> InitializeSlotCount;
+
+    //private int InitSlotAmount = 3;
+
+    //public List<GameObject> SaveInventoryGameObject;
 
     //private Dictionary<string, GameObject> prefabDictionary;
 
@@ -55,6 +61,8 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
         prefabDictionary.Add("ImageWall", ImageWall);
 
         LoadInventoryFixedUpdate = false;
+
+        //SaveInventorySlotIndex.Add(3);
     }
 
     public void SaveInventoryQuestion()
@@ -78,7 +86,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
                 SaveInventorySlotIndex[i] = i;
 
                 // This is unneccesarry and will propably be removed. I was just curious.
-                SaveInventoryGameObject[i] = itemObj.gameObject;
+                //SaveInventoryGameObject[i] = itemObj.gameObject;
 
                 //Instantiate(itemObj, slot.GetChild(i).transform);
 
@@ -90,7 +98,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
                 //itemObj = SaveInventory[itemObj.GetInstanceID()];
 
-                Debug.Log("SaveInventory: " + SaveInventory);
+                //Debug.Log("SaveInventory: " + SaveInventory);
 
                 //Debug.Log(slot.gameObject.name);                  
                 //Debug.Log("Slot");
@@ -100,6 +108,10 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             {
                 SaveInventoryName[i] = "";
                 Debug.Log("SaveInventoryName = nothing");
+            }
+            else if (slot == null)
+            {
+                Debug.Log("Slot = null");
             }
         }
     }
@@ -111,6 +123,13 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public void LoadInventoryQuestion()
     {
+
+        if (SaveInventoryName == null)
+        {
+            //SaveInventorySlotIndex = InitializeSlotCount;
+
+            Debug.Log("Initializing InventoryName");
+        }
         //Debug.Log("RunLoadInventory");
 
         // Check if this is working correctly!
@@ -211,6 +230,10 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
                 Instantiate(ItemButton, inventory.slots[i].transform, false);
             }
         }*/
+
+        //LoadInventoryFixedUpdate = true;
+
+        //Debug.Log("LoadInventory");
     }
 
     public void Dash()
@@ -235,11 +258,9 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             //LoadInventoryQuestion("ImageDash", 0);
             //LoadInventoryQuestion("AnotherPrefab", 1);
 
-            //LoadInventoryQuestion();
+            LoadInventoryQuestion();
 
             LoadInventoryFixedUpdate = true;
-
-            Debug.Log("LoadInventory");
         }
 
         if (Input.GetKeyDown(KeyCode.H))
@@ -264,28 +285,16 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        //dash.enabled = data.ADash;
-
-        //SetDashInventory = data.ADashInventory;
-
-        //speedDash.DashButton = data.INDash;
-
-        SaveInventoryName = data.ItemName;
-        SaveInventorySlotIndex = data.SlotIndex;
+        SaveInventoryName = data.ItemNameArray;
+        SaveInventorySlotIndex = data.SlotIndexArray;
     }
 
     public void SaveData(ref GameData data)
     {
-        //data.ADash = dash.enabled;
+        data.ItemNameArray = SaveInventoryName;
+        data.SlotIndexArray = SaveInventorySlotIndex;
 
-        //data.InInventory = SaveInventory;
-
-        data.ItemName = SaveInventoryName;
-        data.SlotIndex = SaveInventorySlotIndex;
-
-        data.InventoryGameObjects = SaveInventoryGameObject;
-
-        //data.INDash = speedDash.DashButton;
+        data.InitSlotCount = InitializeSlotCount;
     }
 
     public void RestartLoadData(CheckPointData CheckPointLoadData)

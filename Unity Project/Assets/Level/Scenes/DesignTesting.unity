@@ -1010,6 +1010,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: InitializeSlotCount.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 516010655243126291, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: SaveInventorySlotIndex.Array.size
       value: 3
       objectReference: {fileID: 0}

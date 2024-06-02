@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.LookDev;
 
 [System.Serializable]
 public class GameData
@@ -41,7 +43,12 @@ public class GameData
     public List<string> ItemName;
     public List<int> SlotIndex;
 
-    public List<GameObject> InventoryGameObjects;
+    public int[] SlotIndexArray = new int[3];
+    public string[] ItemNameArray;
+
+    public List<int> InitSlotCount;
+
+    //public List<GameObject> InventoryGameObjects;
 
     //the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
@@ -75,7 +82,11 @@ public class GameData
         TestStringSave = string.Empty;
         ADashInventory = false;
 
+        ItemNameArray = new string[3];
 
-        InventoryGameObjects = new List<GameObject>();
+        //slots = new SlotIndex[3];
+
+        //SlotIndex = InitSlotCount;
+        //SlotIndex = InitSlotCount;
     }
 }

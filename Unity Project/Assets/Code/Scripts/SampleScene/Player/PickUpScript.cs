@@ -80,9 +80,7 @@ namespace Code.Scripts.SampleScene.Player
                     PressEToPickUp.SetActive(true);
 
                     if (playerInput.GamePlay.Interact.triggered)
-                    {
-
-                    
+                    {                   
                         PickUpObjects pickUpObjects = hit.collider.gameObject.GetComponent<PickUpObjects>();
 
                         if (pickUpObjects != null)
