@@ -42,8 +42,6 @@ namespace Code.Scripts.SampleScene.Player
             PressEToPickUp.SetActive(false);
         }
 
-
-
         //Update is called once per frame
         //Checking if Player is picking up or viewing an object that can be picked up using raycast and checking slots
         void Update()
@@ -69,9 +67,6 @@ namespace Code.Scripts.SampleScene.Player
                             //call function from pickupobjects script
                             pickUpObjects.Instanciates();
                             PressEToPickUp.SetActive(false);
-
-                            // Lol what does this do
-                            //SaveInventory[inventory.slots.Length] = pickUpObjects.itemButton;
                         }                  
                     }                         
                 } //For things held in hand, probably a bad way to do this
@@ -125,13 +120,5 @@ namespace Code.Scripts.SampleScene.Player
         {
          
         }
-
-        /*public void loadTheInventoryquestion() 
-        {
-            for (int i = 0; i < inventory.slots.Length; i++)
-            {
-                //pickUpObjects.Instantiates();
-            }
-        } */
     }
 }

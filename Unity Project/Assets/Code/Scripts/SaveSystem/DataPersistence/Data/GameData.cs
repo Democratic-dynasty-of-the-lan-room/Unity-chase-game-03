@@ -45,8 +45,13 @@ public class GameData
 
     public int[] SlotIndexArray = new int[3];
     public string[] ItemNameArray;
+    public bool[] AbilityActivated;
 
     public List<int> InitSlotCount;
+
+    public bool DashEquiped;
+
+    public bool equipedDash;
 
     //public List<GameObject> InventoryGameObjects;
 
@@ -83,10 +88,14 @@ public class GameData
         ADashInventory = false;
 
         ItemNameArray = new string[3];
+        AbilityActivated = new bool[3];
 
         //slots = new SlotIndex[3];
 
         //SlotIndex = InitSlotCount;
         //SlotIndex = InitSlotCount;
+
+        DashEquiped = false;
+        equipedDash = false;
     }
 }

@@ -3,11 +3,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Dash : MonoBehaviour
+public class Dash : MonoBehaviour, IDataPersistence
 {
     Rigidbody rb;
-
-    //[SerializeField] GameObject playerMovement;
 
     private IEnumerator coroutine;
 
@@ -23,14 +21,15 @@ public class Dash : MonoBehaviour
 
     public bool DashEnabled;
 
-    //public InputActionReference Move;
-
     PlayerInput Move;
+
+    public bool EquipedDash;
 
     private void Awake()
     {       
         Move = new PlayerInput();
 
+        // Take this out?
         this.enabled = false;
     }
 
@@ -43,10 +42,17 @@ public class Dash : MonoBehaviour
             StartCoroutine(coroutine);
         }
 
+        EquipedDash = true;
+
+        Debug.Log("SaveGameDash");
+        DataPersistenceManager.instance.SaveGame();
+
         Move.Enable();
     }
     private void OnDisable()
     {
+        EquipedDash = false;
+
         Move.Disable();
     }
 
@@ -95,8 +101,6 @@ public class Dash : MonoBehaviour
         {         
             Debug.Log("Dash!");
 
-            //rb.AddForce(new Vector3(0, mainCamera.transform.rotation.y, 0) * ForceAmount, ForceMode.Impulse);
-
             rb.AddForce(mainCamera.transform.forward * ForceAmount, ForceMode.Impulse);
 
             dash = false;
@@ -110,5 +114,25 @@ public class Dash : MonoBehaviour
         print("Coroutine ended: " + Time.time + " seconds");
 
         CanDash = true;       
+    }
+
+    public void LoadData(GameData data)
+    {
+        //EquipedDash = data.equipedDash;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        //data.equipedDash = EquipedDash;
+    }
+
+    public void RestartLoadData(CheckPointData CheckPointLoadData)
+    {
+   
+    }
+
+    public void RestartSaveData(ref CheckPointData CheckPointSaveData)
+    {
+
     }
 }
