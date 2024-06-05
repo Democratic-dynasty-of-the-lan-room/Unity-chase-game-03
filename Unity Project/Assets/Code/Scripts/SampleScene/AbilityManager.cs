@@ -39,7 +39,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public Transform parentTransform;
 
-    private bool LoadInventoryFixedUpdate;
+    private bool LoadInventoryUpdate;
 
     public bool DashingAble;
 
@@ -49,7 +49,30 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
         prefabDictionary.Add("ImageSpeedBoost", ImageSpeedBoost);
         prefabDictionary.Add("ImageWall", ImageWall);
 
-        LoadInventoryFixedUpdate = false;
+        LoadInventoryUpdate = false;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    //Remove Later as well I think
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        LoadInventoryUpdate = true;
+        // Doesn't work here
+        //LoadInventoryQuestion();
+    }
+
+    private void FixedUpdate()
+    {
+
     }
 
     public void SaveInventoryQuestion()
@@ -83,6 +106,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public void LoadInventoryQuestion()
     {
+        //Debug.Log("Loading Inventory");
 
         if (SaveInventoryName == null)
         {
@@ -114,8 +138,8 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             // This is not quite ideal because it will remove any part of a name that has clone in it. Which means it won't work for objects that happen to have clone in the name already.
             string SlotName = SaveInventoryName[i].Replace("(Clone)", "");
 
-            //Debug.Log(SlotName);
-      
+            Debug.Log(SlotName);
+            
             if (SlotName != "")
             {
                 //Debug.Log("SlotName isn't null");
@@ -170,7 +194,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
                     
                     //itemObj.gameObject.SetActive(true); Doesn't work because it's checking the game object not the script component.
 
-                    Debug.Log("AbilityActive: " + AbilityActive[i]);
+                    //Debug.Log("AbilityActive: " + AbilityActive[i]);
                 }
                 else
                 {
@@ -178,64 +202,55 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
                     itemObj.gameObject.SetActive(false);
 
-                    Debug.Log("AbilityActiveFalse?: " + AbilityActive[i]);
+                    //Debug.Log("AbilityActiveFalse?: " + AbilityActive[i]);
                 }
             }
             else
             {
-                Debug.Log("NoChildren AbilityActive");
+                //Debug.Log("NoChildren AbilityActive");
             }
         }
     }
 
-    private void FixedUpdate()
-    {
-        if (LoadInventoryFixedUpdate)
-        {
-            LoadInventoryQuestion();
-
-            LoadInventoryFixedUpdate = false;
-        }
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    //Remove Later as well I think
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        LoadInventoryFixedUpdate = true;
-    }
-
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.I))
+        /*
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            //LoadInventoryQuestion("ImageDash", 0);
-            //LoadInventoryQuestion("AnotherPrefab", 1);
-
-            LoadInventoryQuestion();
-
             LoadInventoryFixedUpdate = true;
+
+            Debug.Log("Load Inventory");
         }
 
         if (Input.GetKeyDown(KeyCode.H))
         {
             SaveInventoryQuestion();
+
+            Debug.Log("Save Inventory");
         }
-        */
+        
 
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log(DashingAble);
         }
+        */
+        // This seems to only work on update and not fixed update.
+        if (LoadInventoryUpdate)
+        {
+            LoadInventoryQuestion();
+
+            Debug.Log("Load Inventory update");
+
+            LoadInventoryUpdate = false;
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        //SaveInventoryQuestion();
+
+        //DataPersistenceManager.instance.SaveGame();
     }
 
     public void LoadData(GameData data)
@@ -253,15 +268,11 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
         data.ItemNameArray = SaveInventoryName;
         data.SlotIndexArray = SaveInventorySlotIndex;
 
-        data.InitSlotCount = InitializeSlotCount;
-
         data.AbilityActivated = AbilityActive;
 
-        // Working but Ok?
         data.equipedDash = DashingAble;
 
         // Bad Place to Save the Inventory from?
-        Debug.Log("ErrorHere?");
         SaveInventoryQuestion();
     }
 

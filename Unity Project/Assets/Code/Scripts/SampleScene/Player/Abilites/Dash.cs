@@ -23,7 +23,7 @@ public class Dash : MonoBehaviour, IDataPersistence
 
     PlayerInput Move;
 
-    public bool EquipedDash;
+    //public bool EquipedDash;
 
     private void Awake()
     {       
@@ -42,16 +42,16 @@ public class Dash : MonoBehaviour, IDataPersistence
             StartCoroutine(coroutine);
         }
 
-        EquipedDash = true;
+        //EquipedDash = true;
 
-        Debug.Log("SaveGameDash");
-        DataPersistenceManager.instance.SaveGame();
+        //Debug.Log("SaveGameDash");
+        //DataPersistenceManager.instance.SaveGame();
 
         Move.Enable();
     }
     private void OnDisable()
     {
-        EquipedDash = false;
+        //EquipedDash = false;
 
         Move.Disable();
     }

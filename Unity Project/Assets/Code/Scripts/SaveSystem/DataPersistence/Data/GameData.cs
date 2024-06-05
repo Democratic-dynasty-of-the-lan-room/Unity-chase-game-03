@@ -35,21 +35,21 @@ public class GameData
     public List<GameObject> InInventory;
 
     // Abilities Marked with A, and Inventory IN:
-    public bool ADash;
-    public bool INDash;
-    public string TestStringSave;
-    public bool ADashInventory;
+    //public bool ADash;
+    //public bool INDash;
+    //public string TestStringSave;
+    //public bool ADashInventory;
 
-    public List<string> ItemName;
-    public List<int> SlotIndex;
+    //public List<string> ItemName;
+    //public List<int> SlotIndex;
 
     public int[] SlotIndexArray = new int[3];
     public string[] ItemNameArray;
     public bool[] AbilityActivated;
 
-    public List<int> InitSlotCount;
+    //public List<int> InitSlotCount;
 
-    public bool DashEquiped;
+    //public bool DashEquiped;
 
     public bool equipedDash;
 
@@ -82,10 +82,10 @@ public class GameData
         InInventory = null;
 
         // Abilites
-        ADash = false;
-        INDash = false;
-        TestStringSave = string.Empty;
-        ADashInventory = false;
+        //ADash = false;
+        //INDash = false;
+        //TestStringSave = string.Empty;
+        //ADashInventory = false;
 
         ItemNameArray = new string[3];
         AbilityActivated = new bool[3];
@@ -95,7 +95,7 @@ public class GameData
         //SlotIndex = InitSlotCount;
         //SlotIndex = InitSlotCount;
 
-        DashEquiped = false;
+        //DashEquiped = false;
         equipedDash = false;
     }
 }
