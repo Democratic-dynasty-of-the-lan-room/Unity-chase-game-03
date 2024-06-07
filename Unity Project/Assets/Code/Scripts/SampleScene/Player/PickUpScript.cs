@@ -12,7 +12,7 @@ namespace Code.Scripts.SampleScene.Player
 
         [SerializeField] GameObject PressEToPickUp;
 
-        [SerializeField] SpeedDash speedDash;
+        [SerializeField] ImageDashScript speedDash;
 
         //public GameObject[] SaveInventory;
 

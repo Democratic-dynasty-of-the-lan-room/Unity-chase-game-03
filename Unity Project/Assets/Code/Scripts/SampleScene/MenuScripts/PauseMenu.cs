@@ -6,13 +6,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
 {
     public class PauseMenu : MonoBehaviour, IDataPersistence
     {
-        //public bool Restarted;
-
         public static bool GameIsPaused = false;
 
         public GameObject pauseMenuUI;
-
-        //[SerializeField] GameObject Player;
 
         [SerializeField] GameObject InventoryScript;
 

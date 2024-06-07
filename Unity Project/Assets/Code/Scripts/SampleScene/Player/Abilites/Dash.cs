@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Dash : MonoBehaviour, IDataPersistence
 {
+    [SerializeField] PlayerMovment Player;
+
     Rigidbody rb;
 
     private IEnumerator coroutine;
@@ -20,6 +22,10 @@ public class Dash : MonoBehaviour, IDataPersistence
     private Camera mainCamera;
 
     public bool DashEnabled;
+
+    private bool GroundedDash;
+
+    public float DivideUpwardsMovement;
 
     PlayerInput Move;
 
@@ -82,16 +88,27 @@ public class Dash : MonoBehaviour, IDataPersistence
     {
         //bool PressDash = Move.GamePlay.Dash.triggered;
 
-        if (Move.GamePlay.Dash.triggered && CanDash)
+        if (Move.GamePlay.Dash.triggered && CanDash && GroundedDash)
         {
             CanDash = false;
             
             dash = true;
 
+            GroundedDash = false;
+
             coroutine = DashReloadTime(DashReload);
             StartCoroutine(coroutine);
 
             print("Coroutine started: " + Time.time + " seconds");
+        }
+
+        if (Player.grounded)
+        {
+            GroundedDash = true;
+        }
+        else
+        {
+            //GroundedDash = false;
         }
     }
 
@@ -101,7 +118,12 @@ public class Dash : MonoBehaviour, IDataPersistence
         {         
             Debug.Log("Dash!");
 
-            rb.AddForce(mainCamera.transform.forward * ForceAmount, ForceMode.Impulse);
+            Vector3 forceDirection = mainCamera.transform.forward;
+
+            // limit upwards force.
+            forceDirection.y = forceDirection.y / DivideUpwardsMovement;
+
+            rb.AddForce(forceDirection * ForceAmount, ForceMode.Impulse);        
 
             dash = false;
         }

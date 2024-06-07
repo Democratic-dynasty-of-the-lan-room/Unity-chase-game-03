@@ -43,9 +43,11 @@ public class GameData
     //public List<string> ItemName;
     //public List<int> SlotIndex;
 
-    public int[] SlotIndexArray = new int[3];
+    public int[] SlotIndexArray;
     public string[] ItemNameArray;
     public bool[] AbilityActivated;
+
+    private int Length = 10;
 
     //public List<int> InitSlotCount;
 
@@ -86,9 +88,9 @@ public class GameData
         //INDash = false;
         //TestStringSave = string.Empty;
         //ADashInventory = false;
-
-        ItemNameArray = new string[3];
-        AbilityActivated = new bool[3];
+        SlotIndexArray = new int[Length];
+        ItemNameArray = new string[Length];
+        AbilityActivated = new bool[Length];
 
         //slots = new SlotIndex[3];
 

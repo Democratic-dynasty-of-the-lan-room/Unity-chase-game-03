@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace Code.Scripts.SampleScene.Player
     public class LeverScript : MonoBehaviour
     {       
         [SerializeField] GameObject EToPressLever;
+
+        // Animation Set To Play From Script effected by the lever.
+        public Animation anim;
 
         public float rayLength;
 
@@ -36,7 +40,6 @@ namespace Code.Scripts.SampleScene.Player
                 var selection = hit.transform;
                 if (selection.CompareTag("LeverTag"))
                 {
-
                     EToPressLever.SetActive(true);
 
                     if (Input.GetKeyDown(KeyCode.E))
@@ -44,18 +47,20 @@ namespace Code.Scripts.SampleScene.Player
                         IsPressed = true;
 
                         // Change bool of lever to be true or false               
-                        if(!LeverIsUp)
+                        if (!LeverIsUp)
                         {
                             LeverOn();
 
-                            Debug.Log("LeverTrue");
+                            Debug.Log("LeverTrue");              
                         }
                         else if (LeverIsUp)
                         {
-                            LeverFalse();
-                          
+                            LeverOff();
+
                             Debug.Log("LeverFalse");
                         }
+
+                     
                     }
                     else
                     {
@@ -80,7 +85,7 @@ namespace Code.Scripts.SampleScene.Player
         }
 
         //Turns lever down and Lever isn't up
-        public void LeverFalse()
+        public void LeverOff()
         {
             LeverIsUp = false;
         }

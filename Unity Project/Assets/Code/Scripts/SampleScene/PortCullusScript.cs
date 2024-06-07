@@ -21,13 +21,19 @@ public class PortCullusScript : MonoBehaviour
     {           
         if(anim.isPlaying == false && Interactable.IsPressed == true)
         {
-            if (Interactable.LeverIsUp)
+            if (Interactable.LeverIsUp && !Interactable.anim.isPlaying)
             {
                 anim.Play("PortCullusOpen");
+
+                // Animate The Lever
+                Interactable.anim.Play("BoneLeverAnimation");           
             }
-            else if (!Interactable.LeverIsUp)
+            else if (!Interactable.LeverIsUp && !Interactable.anim.isPlaying)
             {
                 anim.Play("PortCullusClose");
+
+                // Animate The lever
+                Interactable.anim.Play("BoneLeverBackAnim");
             }           
         }
         else if (anim.isPlaying == true)

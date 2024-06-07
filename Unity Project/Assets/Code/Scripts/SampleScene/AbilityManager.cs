@@ -16,7 +16,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 {
     [SerializeField] Dash dash;
 
-    SpeedDash script;
+    ImageDashScript script;
 
     [SerializeField] InventoryScript inventory;
 
@@ -41,7 +41,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     private bool LoadInventoryUpdate;
 
-    public bool DashingAble;
+    //public bool DashingAble;
 
     private void Awake()
     {
@@ -138,7 +138,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
             // This is not quite ideal because it will remove any part of a name that has clone in it. Which means it won't work for objects that happen to have clone in the name already.
             string SlotName = SaveInventoryName[i].Replace("(Clone)", "");
 
-            Debug.Log(SlotName);
+            //Debug.Log(SlotName);
             
             if (SlotName != "")
             {
@@ -246,13 +246,6 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
         }
     }
 
-    private void OnApplicationQuit()
-    {
-        //SaveInventoryQuestion();
-
-        //DataPersistenceManager.instance.SaveGame();
-    }
-
     public void LoadData(GameData data)
     {
         SaveInventoryName = data.ItemNameArray;
@@ -260,7 +253,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
         AbilityActive = data.AbilityActivated;
 
-        DashingAble = data.equipedDash;
+        //DashingAble = data.equipedDash;
     }
 
     public void SaveData(ref GameData data)
@@ -270,7 +263,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
         data.AbilityActivated = AbilityActive;
 
-        data.equipedDash = DashingAble;
+        //data.equipedDash = DashingAble;
 
         // Bad Place to Save the Inventory from?
         SaveInventoryQuestion();
