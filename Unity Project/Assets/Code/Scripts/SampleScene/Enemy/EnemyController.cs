@@ -18,12 +18,18 @@ namespace Code.Scripts.SampleScene
 
         [SerializeField] GameObject InventoryScript;
 
+        [SerializeField] AttackPlayerTrigger attackPlayerTrigger;
+
         [SerializeField] LayerMask WhatIsGround;
 
+        [SerializeField] ParticleSystem particleSystem;
+ 
         //Animator animator;
 
         Transform target;
         NavMeshAgent agent;
+
+        public float angleThresholdTerritory = 30.0f;
 
 
 
@@ -46,6 +52,14 @@ namespace Code.Scripts.SampleScene
 
 
         public float EnemySpeed;
+
+        [Header("Attacking State")]
+
+        public float AttackSlowDistance = 15;
+
+        public float AttackingSpeed;
+
+        private bool PlayParticles = true;
 
 
 
@@ -76,7 +90,9 @@ namespace Code.Scripts.SampleScene
 
         private bool CanStartCoroutine;
 
-       
+        public bool IsAttacking;
+
+
 
 
 
@@ -117,7 +133,11 @@ namespace Code.Scripts.SampleScene
             target = PlayerManager.instance.player.transform;
             agent = GetComponent<NavMeshAgent>();
 
-            
+            if (particleSystem == null)
+            {
+                //particleSystem = GetComponentInChildren<ParticleSystem>();
+            }
+            particleSystem.Stop();
 
             CanStartCoroutine = true;
 
@@ -164,6 +184,10 @@ namespace Code.Scripts.SampleScene
             {
                 GoingToTerritoryState();
             }
+            else if (IsAttacking)
+            {
+                AttackingState();
+            }
 
             agent.speed = EnemySpeed;
 
@@ -205,6 +229,13 @@ namespace Code.Scripts.SampleScene
                 IsWandering = true;
 
                 IsChasing = false;
+            }
+
+            if (distance <= AttackSlowDistance)
+            {
+                IsChasing = false;
+
+                IsAttacking = true;
             }
          
 
@@ -260,6 +291,13 @@ namespace Code.Scripts.SampleScene
                 IsWandering = false;
             }
 
+            if (distance <= AttackSlowDistance)
+            {
+                IsWandering = false;
+
+                IsAttacking = true;
+            }
+
             if (!InTerritory)
             {
                 StartCoroutine(WaitBeforeGoingToTerritory());
@@ -313,6 +351,64 @@ namespace Code.Scripts.SampleScene
                 IsChasing = true;
 
                 IsGoingToTeritory = false;
+            }
+
+            if (distance <= AttackSlowDistance)
+            {
+                IsGoingToTeritory = false;
+
+                IsAttacking = true;
+            }
+        }
+
+        private void AttackingState()
+        {
+            if (distance <= AttackSlowDistance)
+            {
+                FaceTarget();
+
+                DesiredEnemySpeed = AttackingSpeed;
+
+                if (PlayParticles)
+                {
+                    particleSystem.Play();
+
+                    PlayParticles = false;
+                }
+
+                Debug.Log("Attacking State");
+                
+                /*
+                Vector3 directionToTrigger = (FirstEnemyTerritory.transform.position - agent.transform.position).normalized;
+
+                Vector3 agentForward = agent.transform.forward;
+
+                float angle = Vector3.Angle(agentForward, directionToTrigger);
+
+                if (angle <= angleThresholdTerritory)
+                {
+                    Debug.Log("Enemy facing it's teritory");
+                }
+                */
+            }
+            else
+            {
+                particleSystem.Stop();
+
+                PlayParticles = true;
+
+                if (distance <= lookRadius)
+                {
+                    IsChasing = true;
+
+                    IsAttacking = false;
+                }
+                else if (distance > lookRadius)
+                {
+                    IsWandering = true;
+
+                    IsAttacking = false;
+                }
             }
         }
 

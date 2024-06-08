@@ -1,3 +1,4 @@
+using Code.Scripts.SampleScene;
 using System.Collections;
 using UnityEngine;
 
@@ -7,13 +8,15 @@ public class AttackPlayerTrigger : MonoBehaviour
 
     [SerializeField] PlayerHealth playerHealth;
 
+    [SerializeField] EnemyController enemyController;
+
     public int AttackDamage;
 
     public float AttackWaitTime;
 
     private bool CanAttack;
 
-    private bool InRange;
+    public bool InRange;
 
     private bool CannotAttack;
 
@@ -60,6 +63,8 @@ public class AttackPlayerTrigger : MonoBehaviour
         {
             InRange = true;
 
+            //enemyController.DesiredEnemySpeed = enemyController.AttackingSpeed;
+
             // TODO - Send a ray to see if the player is behind a wall or not.
 
             // Start the Attack Coroutine;
@@ -67,7 +72,7 @@ public class AttackPlayerTrigger : MonoBehaviour
             //Deal First amount of damage
             playerHealth.Health -= AttackDamage;
 
-            CanAttack = true;           
+            CanAttack = true;
         }
     }
 
