@@ -80,17 +80,20 @@ namespace Code.Scripts.SampleScene
 
 
 
-        private bool IsChasing = false;
+        public bool IsChasing = false;
 
-        private bool IsWandering = true;
+        public bool IsWandering = true;
 
-        private bool IsGoingToTeritory = false;
+        public bool IsGoingToTeritory = false;
+
+        public bool IsAttacking;
+
 
         private bool CanGoBackToTerritory;
 
         private bool CanStartCoroutine;
 
-        public bool IsAttacking;
+        
 
 
 
@@ -184,7 +187,8 @@ namespace Code.Scripts.SampleScene
             {
                 GoingToTerritoryState();
             }
-            else if (IsAttacking)
+
+            if (IsAttacking)
             {
                 AttackingState();
             }
@@ -201,6 +205,7 @@ namespace Code.Scripts.SampleScene
                 CanStopEnemySpeed = false;
 
                 animator.SetFloat("Speed", 0);
+                //animator.SetFloat("Speed", agent.velocity.magnitude);// why not this line here?
 
                 //EnemySpeed = 0;
             }
@@ -223,23 +228,25 @@ namespace Code.Scripts.SampleScene
         private void ChasingState()
         {
             DesiredEnemySpeed = ChasingSpeed;
-         
+
+            //EnemySpeed = ChasingSpeed;
+
+
             if (agent.velocity == new Vector3(0, 0, 0) && distance > lookRadius)
             {              
                 IsWandering = true;
 
                 IsChasing = false;
             }
-
+            
             if (distance <= AttackSlowDistance)
             {
-                IsChasing = false;
-
                 IsAttacking = true;
-            }
-         
 
-            //Enemy Is in i'ts territory
+                IsChasing = false;
+            }
+
+            //Enemy Is in it's territory
             if (InTerritory)
             {          
                 if (distance <= lookRadius)
@@ -284,19 +291,22 @@ namespace Code.Scripts.SampleScene
         {
             DesiredEnemySpeed = WanderSpeed;
 
+            //EnemySpeed = WanderSpeed;
+
+
             if (distance <= lookRadius)
             {
                 IsChasing = true;
 
                 IsWandering = false;
             }
-
+           
             if (distance <= AttackSlowDistance)
             {
-                IsWandering = false;
-
                 IsAttacking = true;
-            }
+
+                IsWandering = false;
+            }                      
 
             if (!InTerritory)
             {
@@ -332,7 +342,6 @@ namespace Code.Scripts.SampleScene
 
         private void GoingToTerritoryState()
         {
-
             DesiredEnemySpeed = ChasingSpeed;
 
             //EnemySpeed = ChasingSpeed;
@@ -352,44 +361,33 @@ namespace Code.Scripts.SampleScene
 
                 IsGoingToTeritory = false;
             }
-
+            
+            
             if (distance <= AttackSlowDistance)
             {
-                IsGoingToTeritory = false;
-
                 IsAttacking = true;
-            }
+
+                IsGoingToTeritory = false;
+            }                      
         }
 
         private void AttackingState()
         {
+            DesiredEnemySpeed = AttackingSpeed;
+
+            FaceTarget();
+
+            // The problem is that I didn't add this line here lol.
+            agent.SetDestination(target.position);
+
             if (distance <= AttackSlowDistance)
-            {
-                FaceTarget();
-
-                DesiredEnemySpeed = AttackingSpeed;
-
+            {               
                 if (PlayParticles)
                 {
                     particleSystem.Play();
 
                     PlayParticles = false;
                 }
-
-                Debug.Log("Attacking State");
-                
-                /*
-                Vector3 directionToTrigger = (FirstEnemyTerritory.transform.position - agent.transform.position).normalized;
-
-                Vector3 agentForward = agent.transform.forward;
-
-                float angle = Vector3.Angle(agentForward, directionToTrigger);
-
-                if (angle <= angleThresholdTerritory)
-                {
-                    Debug.Log("Enemy facing it's teritory");
-                }
-                */
             }
             else
             {
@@ -397,20 +395,25 @@ namespace Code.Scripts.SampleScene
 
                 PlayParticles = true;
 
-                if (distance <= lookRadius)
+                if (distance < lookRadius)
                 {
                     IsChasing = true;
 
                     IsAttacking = false;
+
+                    Debug.Log("Chasing");
                 }
                 else if (distance > lookRadius)
                 {
                     IsWandering = true;
 
                     IsAttacking = false;
+
+                    Debug.Log("Exit Attack");
                 }
             }
         }
+        
 
         void FaceTarget()
         {
