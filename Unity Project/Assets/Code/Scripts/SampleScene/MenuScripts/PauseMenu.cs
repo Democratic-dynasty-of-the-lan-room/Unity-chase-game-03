@@ -32,12 +32,13 @@ namespace Code.Scripts.SampleScene.MenuScripts
         // Update is called once per frame
         void Update()
         {
+            // This isn't on the new input system yet.
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (GameIsPaused)
                 {
                     Resume();               
-                }              
+                }
                 else
                 {
                     Pause();
@@ -53,7 +54,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
             GameIsPaused = false;
-            InventoryScript.SetActive(true);         
+            //InventorfyScript.SetActive(true);
+            //PlayerMovementScript.enabled = false;
+            InventoryScript.GetComponent<InventoryScript>().enabled = true;
         }
 
         void Pause()
@@ -65,7 +68,9 @@ namespace Code.Scripts.SampleScene.MenuScripts
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            InventoryScript.SetActive(false);
+            //InventoryScript.SetActive(false);
+            //PlayerMovementScript.enabled = false;
+            InventoryScript.GetComponent<InventoryScript>().enabled = false;
         }
 
         public void Restart()

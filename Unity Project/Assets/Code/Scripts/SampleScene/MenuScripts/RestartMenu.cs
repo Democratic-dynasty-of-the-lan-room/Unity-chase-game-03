@@ -14,7 +14,6 @@ namespace Code.Scripts.SampleScene.MenuScripts
 
         public PlayerStartPos playerStartPos;
 
-
         // Start is called before the first frame update
         void Start()
         {

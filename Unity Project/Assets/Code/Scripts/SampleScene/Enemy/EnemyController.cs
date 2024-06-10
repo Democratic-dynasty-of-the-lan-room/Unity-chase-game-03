@@ -140,6 +140,7 @@ namespace Code.Scripts.SampleScene
             {
                 //particleSystem = GetComponentInChildren<ParticleSystem>();
             }
+            // Was this causing that error?
             particleSystem.Stop();
 
             CanStartCoroutine = true;

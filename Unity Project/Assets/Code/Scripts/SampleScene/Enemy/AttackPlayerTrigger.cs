@@ -1,4 +1,5 @@
 using Code.Scripts.SampleScene;
+using NUnit.Framework.Internal;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class AttackPlayerTrigger : MonoBehaviour
     [SerializeField] PlayerHealth playerHealth;
 
     [SerializeField] EnemyController enemyController;
+
+    //public System.Action onHealthDown;
 
     public int AttackDamage;
 
@@ -45,6 +48,8 @@ public class AttackPlayerTrigger : MonoBehaviour
 
                 //Deal Damage
                 playerHealth.Health -= AttackDamage;
+
+                //onHealthDown?.Invoke();
 
                 CanAttack = false;
             }

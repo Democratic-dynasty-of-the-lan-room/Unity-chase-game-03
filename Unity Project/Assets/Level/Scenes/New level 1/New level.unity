@@ -4423,6 +4423,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5115143994984564741, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: AfterHitWaitTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115143994984564741, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: RegenHealthAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115143994984564741, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
+      propertyPath: RegenHealthWaitTime
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5895943024300831669, guid: 53af9b2a3f43cd042bcc9662f175f672, type: 3}
       propertyPath: m_LocalPosition.x
       value: 60
@@ -14982,10 +14994,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 80638256}
     - target: {fileID: 2060289893286820481, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: AttackingSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2060289893286820481, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
       propertyPath: InventoryScript
       value: 
       objectReference: {fileID: 452176947}
@@ -15033,74 +15041,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4133127484649163296, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: m_MaxParticleSize
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 5246459752083187783, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
       propertyPath: m_Name
       value: FirstEnemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065056573939307010, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: m_Size.x
-      value: 8.36
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065056573939307010, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: m_Size.y
-      value: 4.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065056573939307010, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: m_Size.z
-      value: 11.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065056573939307010, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: m_Center.y
-      value: 0.88
-      objectReference: {fileID: 0}
-    - target: {fileID: 6065056573939307010, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: m_Center.z
-      value: 2.58
       objectReference: {fileID: 0}
     - target: {fileID: 6354430234781312368, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
       propertyPath: playerHealth
       value: 
       objectReference: {fileID: 1305079091}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ShapeModule.angle
-      value: 30.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ForceModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ShapeModule.m_Scale.y
-      value: 0.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ShapeModule.m_Scale.z
-      value: 1.95
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ShapeModule.m_Rotation.x
-      value: -2.88
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 1.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: ShapeModule.radiusThickness
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6651717340538382977, guid: 80bdba1eebea6484f9b755484870600d, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
