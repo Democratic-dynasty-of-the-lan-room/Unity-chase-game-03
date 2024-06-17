@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMOD.Studio;
 
 public class Dash : MonoBehaviour, IDataPersistence
 {
@@ -29,7 +30,8 @@ public class Dash : MonoBehaviour, IDataPersistence
 
     PlayerInput Move;
 
-    //public bool EquipedDash;
+    // Audio
+    private EventInstance DashSound;
 
     private void Awake()
     {       
@@ -65,6 +67,8 @@ public class Dash : MonoBehaviour, IDataPersistence
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        DashSound = AudioManager.instance.CreateEventInstance(FMODEvents.instance.DashSound);
+
         rb = GetComponent<Rigidbody>();
 
         mainCamera = Camera.main;
@@ -123,7 +127,9 @@ public class Dash : MonoBehaviour, IDataPersistence
             // limit upwards force.
             forceDirection.y = forceDirection.y / DivideUpwardsMovement;
 
-            rb.AddForce(forceDirection * ForceAmount, ForceMode.Impulse);        
+            rb.AddForce(forceDirection * ForceAmount, ForceMode.Impulse);
+
+            PlaySound();
 
             dash = false;
         }
@@ -156,5 +162,12 @@ public class Dash : MonoBehaviour, IDataPersistence
     public void RestartSaveData(ref CheckPointData CheckPointSaveData)
     {
 
+    }
+
+    private void PlaySound()
+    {
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(DashSound, GetComponent<Transform>(), GetComponent<Rigidbody>());
+        //AudioManager.instance.PlayOneShot(FMODEvents.instance.DashSound, Camera.main.transform.position);
+        DashSound.start();
     }
 }

@@ -26,7 +26,9 @@ public class PortCullusScript : MonoBehaviour
                 anim.Play("PortCullusOpen");
 
                 // Animate The Lever
-                Interactable.anim.Play("BoneLeverAnimation");           
+                Interactable.anim.Play("BoneLeverAnimation");
+
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.LeverSound, Interactable.transform.position);
             }
             else if (!Interactable.LeverIsUp && !Interactable.anim.isPlaying)
             {
@@ -34,6 +36,8 @@ public class PortCullusScript : MonoBehaviour
 
                 // Animate The lever
                 Interactable.anim.Play("BoneLeverBackAnim");
+
+                AudioManager.instance.PlayOneShot(FMODEvents.instance.LeverSound, Interactable.transform.position);
             }           
         }
         else if (anim.isPlaying == true)

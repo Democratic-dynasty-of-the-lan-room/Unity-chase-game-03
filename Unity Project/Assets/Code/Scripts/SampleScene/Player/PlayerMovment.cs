@@ -11,6 +11,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Composites;
+using FMOD.Studio;
 
 
 
@@ -110,7 +111,9 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     private Animator anim;
 
-    //public GameObject PlayerFootCollider;
+    // Audio
+    private EventInstance playerFootsteps;
+    private EventInstance  PlayerRunning;
 
     [Header("PlayerSpawnPosition")]
     [SerializeField] GameObject StartSpawn1;
@@ -138,10 +141,17 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     private void OnDisable()
     {
         playerInput.Disable();
+
+        // Ensure the event instance is released properly
+        playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+        PlayerRunning.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
     private void Start()
     {
+        playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.PlayerFootsteps);
+        PlayerRunning = AudioManager.instance.CreateEventInstance(FMODEvents.instance.PlayerRunning);
+
         //anim = PlayerFootCollider.GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
@@ -164,6 +174,13 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         if (Input.GetKeyDown(KeyCode.U))
         {
             SpawnWithU = true;
+        }
+
+        if (Time.timeScale == 0)
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+
+            //Debug.Log("Time zero Stop footsteps");
         }
     }
 
@@ -263,6 +280,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         }
         SpeedSnapping();
 
+        UpdateSound();
     }
 
     private void MyInput()
@@ -561,5 +579,79 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             // Draw the sphere cast line up to the maximum distance
             Gizmos.DrawLine(transform.position, transform.position + Vector3.down * SphereCastDistance);
         }
+    }
+
+    private bool CanRunRunSound;
+    private void UpdateSound()
+    {
+        // start footsteps if the player has velocity and is on the ground
+        if (new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > WalkLimit / 2 && grounded == true && CanRunRunSound == false)
+        {         
+            // get the playback state
+            PLAYBACK_STATE playbackState;
+            playerFootsteps.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                //Vector3 position = transform.position;
+                //Vector3 velocity = Vector3.zero; // Assuming no velocity for simplicity
+                //Vector3 forward = transform.forward;
+                //Vector3 up = transform.up;
+
+                //PlayerFootsteps.get3DAttributes(footstepEvent, position, velocity, forward, up);
+
+                FMODUnity.RuntimeManager.AttachInstanceToGameObject(playerFootsteps, GetComponent<Transform>(), GetComponent<Rigidbody>());
+                playerFootsteps.start();
+
+                //AudioManager.instance.PlayOneShot(FMODEvents.instance.PickedUpSound, Camera.main.transform.position);
+
+                //Debug.Log("Start sound");
+            }
+
+
+            if (new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > 10)
+            {
+                playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+
+                CanRunRunSound = true;
+            }
+        }
+        else // otherwise, stop the footsteps event
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+
+        
+        if (CanRunRunSound && grounded && new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > 10)
+        {
+            CanRunRunSound = true;
+
+            //Debug.Log("Start running");
+
+            PLAYBACK_STATE playbackState;
+            PlayerRunning.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                FMODUnity.RuntimeManager.AttachInstanceToGameObject(PlayerRunning, GetComponent<Transform>(), GetComponent<Rigidbody>());
+                PlayerRunning.start();
+
+                playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+
+                //Debug.Log("Start running sound");
+            }
+
+            if (new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude > WalkLimit / 2 && grounded == true && CanRunRunSound == false)
+            {
+                PlayerRunning.stop(STOP_MODE.ALLOWFADEOUT);
+
+                CanRunRunSound = false;
+            }
+        }
+        else
+        {
+            PlayerRunning.stop(STOP_MODE.ALLOWFADEOUT);
+
+            CanRunRunSound = false;
+        }
+        
     }
 }

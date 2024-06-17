@@ -5,9 +5,12 @@ using Unity.VisualScripting;
 using Code.Scripts.SampleScene.Player;
 using UnityEngine.SceneManagement;
 using System.Runtime.CompilerServices;
+using FMODUnity;
 
 public class ImageDashScript : MonoBehaviour
 {
+    [SerializeField] private EventReference PickedUpSound;
+
     Dash Script;
 
     AbilityManager abilityManager;
@@ -37,6 +40,9 @@ public class ImageDashScript : MonoBehaviour
     {
         Button btn = yourButton.GetComponent<Button>();
         btn.onClick.AddListener(TaskOnClick);
+
+        //AudioManager.instance.PlayOneShot(PickedUpSound, this.transform.position);
+        //AudioManager.instance.PlayOneShot(PickedUpSound, Camera.main.transform.position);
     }
 
     private void EnableDash()

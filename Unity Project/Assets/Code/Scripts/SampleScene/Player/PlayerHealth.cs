@@ -103,6 +103,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         // If you where hit Take Time before being able to regen Health.
         if (Health < previousHealth && CanHitWaitTime)
         {
+            coroutine = RegenWait(RegenHealthWaitTime);
             StopCoroutine(coroutine);
 
             afterHitCoroutine = AfterHitCoroutine(AfterHitWaitTime);
@@ -142,9 +143,14 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
             yield return new WaitForSeconds(RegenWaitTime);
             print("Coroutine ended: " + Time.time + " seconds");
 
-            Health = Health + RegenHealthAmount;
+            //Health = SetHealthAmount;
 
-            if (Health > SetHealthAmount)
+         
+            if (Health + RegenHealthAmount < SetHealthAmount)
+            {
+                Health = Health + RegenHealthAmount;
+            }
+            else if (Health + RegenHealthAmount > SetHealthAmount)
             {
                 Health = SetHealthAmount;
             }
@@ -166,7 +172,16 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         StartCoroutine(coroutine);
 
         // add's first health amount after AfterHitCoroutine has finished.
-        Health = Health + RegenHealthAmount;
+        //Health = Health + RegenHealthAmount;
+
+        if (Health + RegenHealthAmount < SetHealthAmount)
+        {
+            Health = Health + RegenHealthAmount;
+        }
+        else if (Health + RegenHealthAmount > SetHealthAmount)
+        {
+            Health = SetHealthAmount;
+        }
 
         CanStartRegen = true;
 

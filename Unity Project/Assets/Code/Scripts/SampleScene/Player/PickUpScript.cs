@@ -67,8 +67,10 @@ namespace Code.Scripts.SampleScene.Player
                             //call function from pickupobjects script
                             pickUpObjects.Instanciates();
                             PressEToPickUp.SetActive(false);
-                        }                  
-                    }                         
+
+                            AudioManager.instance.PlayOneShot(FMODEvents.instance.PickedUpSound, Camera.main.transform.position);
+                        }
+                    }
                 } //For things held in hand, probably a bad way to do this
                 else if (selection.CompareTag(HandTag))
                 {

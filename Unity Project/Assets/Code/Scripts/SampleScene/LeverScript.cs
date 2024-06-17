@@ -49,7 +49,7 @@ namespace Code.Scripts.SampleScene.Player
                         // Change bool of lever to be true or false               
                         if (!LeverIsUp)
                         {
-                            LeverOn();
+                            LeverOn();                     
 
                             Debug.Log("LeverTrue");              
                         }
@@ -59,8 +59,6 @@ namespace Code.Scripts.SampleScene.Player
 
                             Debug.Log("LeverFalse");
                         }
-
-                     
                     }
                     else
                     {

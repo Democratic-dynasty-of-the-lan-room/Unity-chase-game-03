@@ -39,7 +39,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
 
     public Transform parentTransform;
 
-    private bool LoadInventoryUpdate;
+    private bool LoadInventoryUpdate = false;
 
     //public bool DashingAble;
 
