@@ -67,7 +67,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         {
             previousHealth = Health;
 
-            Debug.Log("Health in FixedUpdate: " + Health);
+            //Debug.Log("Health in FixedUpdate: " + Health);
 
             CanPreviousHealth = false;
         }
@@ -115,7 +115,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
             CanHitWaitTime = false;
 
-            Debug.Log("Health Went Down");
+            //Debug.Log("Health Went Down");
         }
         else
         {
@@ -129,7 +129,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
             CanRegen = false;
 
-            Debug.Log("Able To Regenerate Health Now");
+            //Debug.Log("Able To Regenerate Health Now");
         }
     }
 
@@ -138,10 +138,10 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     {
         if (Health < SetHealthAmount)
         {
-            print("Coroutine Beginning Time: " + Time.time + " seconds");
+            //print("Coroutine Beginning Time: " + Time.time + " seconds");
 
             yield return new WaitForSeconds(RegenWaitTime);
-            print("Coroutine ended: " + Time.time + " seconds");
+            //print("Coroutine ended: " + Time.time + " seconds");
 
             //Health = SetHealthAmount;
 
@@ -157,16 +157,16 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
             CanRegen = true;
 
-            Debug.Log("Health Regen: " + Health);
+            //Debug.Log("Health Regen: " + Health);
         }
     }
 
     private IEnumerator AfterHitCoroutine(float AfterHitWaitTime)
     {
-        print("AfterHit Beginning Time: " + Time.time + " seconds");
+        //print("AfterHit Beginning Time: " + Time.time + " seconds");
 
         yield return new WaitForSeconds(AfterHitWaitTime);
-        print("AfterHit ended: " + Time.time + " seconds");
+        //print("AfterHit ended: " + Time.time + " seconds");
 
         coroutine = RegenWait(RegenHealthWaitTime);
         StartCoroutine(coroutine);
@@ -187,7 +187,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
         CanHitWaitTime = true;
 
-        Debug.Log("After Hit Wait Time: " + Health);
+        //Debug.Log("After Hit Wait Time: " + Health);
     }
 
 

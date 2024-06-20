@@ -21,6 +21,8 @@ public class PortCullusScript : MonoBehaviour
     {           
         if(anim.isPlaying == false && Interactable.IsPressed == true)
         {
+            Debug.Log("PortCulluspresed");
+
             if (Interactable.LeverIsUp && !Interactable.anim.isPlaying)
             {
                 anim.Play("PortCullusOpen");

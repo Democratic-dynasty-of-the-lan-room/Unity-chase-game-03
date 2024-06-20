@@ -139,7 +139,7 @@ public class Dash : MonoBehaviour, IDataPersistence
     {
         yield return new WaitForSeconds(ReloadTime);
 
-        print("Coroutine ended: " + Time.time + " seconds");
+        //print("Coroutine ended: " + Time.time + " seconds");
 
         CanDash = true;       
     }

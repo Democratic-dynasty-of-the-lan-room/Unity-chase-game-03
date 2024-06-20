@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../../../FMOD/FMOD projects/HorrorGameCollab/Build/Desktop/Ambient.bank
   Name: Ambient
   StudioPath: bank:/Ambient
-  lastModified: 638541781537185573
+  lastModified: 638542598995204506
   FileSizes:
   - Name: Desktop
     Value: 20269920
@@ -132,7 +132,7 @@ MonoBehaviour:
   - {fileID: 2538141037203540305}
   StringsBanks:
   - {fileID: 6638783555252028371}
-  cacheTime: 638541826370750851
+  cacheTime: 638542598995204506
   cacheVersion: 131618
 --- !u!114 &1351853914657406890
 MonoBehaviour:
@@ -223,7 +223,7 @@ MonoBehaviour:
   Path: ../../../FMOD/FMOD projects/HorrorGameCollab/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638541826370750851
+  lastModified: 638542594811695373
   FileSizes:
   - Name: Desktop
     Value: 2091168
