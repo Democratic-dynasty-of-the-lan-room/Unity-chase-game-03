@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PortCullusScript : MonoBehaviour
+public class PortCullusScript2 : MonoBehaviour
 {
     private Animation anim;
 
-    [SerializeField] LeverScript Lever;
+    [SerializeField] LeverScript2Point0 Lever;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class PortCullusScript : MonoBehaviour
     {           
         if(anim.isPlaying == false && Lever.IsPressed == true)
         {
-            Debug.Log("PortCulluspresed");
+            //Debug.Log("PortCulluspresed");
 
             if (Lever.LeverIsUp && !Lever.anim.isPlaying)
             {

@@ -28,7 +28,7 @@ namespace Code.Scripts.SampleScene.Player
         }
 
         //Update is called once per frame    
-        //Checks if you are pressing on the Lever then changes Lever Bool on or of
+        //Checks if you are pressing on the Lever then changes Lever Bool on or off
         void Update()
         {
 
