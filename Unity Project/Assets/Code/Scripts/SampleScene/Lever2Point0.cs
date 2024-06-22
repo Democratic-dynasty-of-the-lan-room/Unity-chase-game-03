@@ -13,6 +13,8 @@ namespace Code.Scripts.SampleScene.Player
 
         public bool IsPressed;
 
+        public bool LeverLocked;
+
         // Start is called before the first frame update
         private void Start()
         {
@@ -20,6 +22,8 @@ namespace Code.Scripts.SampleScene.Player
             LeverIsUp = false;
 
             IsPressed = false;
+
+            anim = GetComponentInChildren<Animation>();
         }
 
         //Switches Lever Direction
@@ -27,19 +31,26 @@ namespace Code.Scripts.SampleScene.Player
         {
             IsPressed = true;
 
-            // Change bool of lever to be true or false               
-            if (!LeverIsUp)
+            if (!LeverLocked)
             {
-                LeverIsUp = true;
+                // Change bool of lever to be true or false               
+                if (!LeverIsUp)
+                {
+                    LeverIsUp = true;
 
-                //Debug.Log("Lever = " + LeverIsUp);
+                    //Debug.Log("Lever = " + LeverIsUp);
+                }
+                else if (LeverIsUp)
+                {
+                    LeverIsUp = false;
+
+                    //Debug.Log("Lever = " + LeverIsUp);
+                }
             }
-            else if (LeverIsUp)
+            else
             {
-                LeverIsUp = false;
-
-                //Debug.Log("Lever = " + LeverIsUp);
-            }    
+                Debug.Log("LeverLocked");
+            }
         }
     }
 }

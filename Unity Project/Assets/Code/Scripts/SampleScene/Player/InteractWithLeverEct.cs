@@ -43,34 +43,36 @@ public class InteractWithLeverEct : MonoBehaviour
                 EToPressLever.SetActive(true);
 
                 //Debug.Log("RaycastWorking");
-                var Collider = hit.collider.gameObject.GetComponent<LeverScript2Point0>();
+                //var Collider = hit.collider.gameObject.GetComponent<LeverScript2Point0>();
 
 
                 if (playerInput.GamePlay.Interact.triggered)
                 {
                     // Why does this run 3 times???
                     //hit.collider.gameObject.GetComponent<LeverScript2Point0>().SwitchLever();
-                   
+
+                    hit.collider.gameObject.GetComponent<LeverScript2Point0>().SwitchLever();
 
                     //Collider.IsPressed = true;
-
+                    /*
                     // Switches the lever
                     if (hit.collider.gameObject.GetComponent<LeverScript2Point0>() == true)
                     {
                         //Debug.Log("Switch Lever");
+
                         
-                        Collider.SwitchLever();
                     }
                     else
                     {
                         //Collider.IsPressed = false;
 
                         //Debug.Log("LeverScript2Point0 Not found");
-                    }                   
+                    }    
+                    */
                 }
                 else
                 {
-                    Collider.IsPressed = false;
+                    //Collider.IsPressed = false;
                 }
             }
             else
