@@ -552,6 +552,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gate And Lever
       objectReference: {fileID: 0}
+    - target: {fileID: 3538087765629040381, guid: 45f26de7ae270084e9d4524c7278284f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034592138820722375, guid: 45f26de7ae270084e9d4524c7278284f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5489445306808567080, guid: 45f26de7ae270084e9d4524c7278284f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6467328958948594029, guid: 45f26de7ae270084e9d4524c7278284f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 34.8667
