@@ -443,7 +443,7 @@ namespace Code.Scripts.SampleScene
         {
             yield return new WaitForSeconds(TimeWaitBeforeAttack);
 
-            print("WaitTimeCoroutine ended: " + Time.time + " seconds");
+            //print("WaitTimeCoroutine ended: " + Time.time + " seconds");
 
             //Debug.Log("WaitTimeBeforeAttack Couroutine");
 
