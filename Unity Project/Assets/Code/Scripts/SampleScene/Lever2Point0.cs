@@ -33,7 +33,7 @@ namespace Code.Scripts.SampleScene.Player
 
             if (!LeverLocked)
             {
-                // Change bool of lever to be true or false               
+                // Change bool of lever to be true or false 
                 if (!LeverIsUp)
                 {
                     LeverIsUp = true;

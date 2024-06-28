@@ -3,16 +3,22 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.ProBuilder.MeshOperations;
 
 namespace Code.Scripts.SampleScene
 {
-    public class ScuttlerMovementScript : MonoBehaviour
+    public class ChargerScript : MonoBehaviour
     {
         [SerializeField] PlayerMovment MovementPlayer;
 
-        [SerializeField] GameObject TerritoryScuttler;
+        [SerializeField] GameObject TerritoryCharger;
 
         [SerializeField] GameObject LastPlayerPosition;
+
+        [SerializeField] GameObject chargerAttackBox;
+
+
+        [SerializeField] GameObject ChargePosition;
 
         [SerializeField] LayerMask WhatIsGround;
 
@@ -20,7 +26,7 @@ namespace Code.Scripts.SampleScene
 
         private IEnumerator coroutine;
 
-        private IEnumerator GroundingCoroutine;
+        private IEnumerator WaitChargedCoroutine;
 
         Transform target;
         NavMeshAgent agent;
@@ -52,20 +58,34 @@ namespace Code.Scripts.SampleScene
 
         public float TimeWaitBeforeAttack;
 
+        public float TimeWaitAfterCharged;
+
         [Tooltip("wait before checking if the enemy is on the ground or not after juming.")]
         public float TimeToWaitGrounding;
 
         public float DistanceToGround;
 
-        public float UpwardsForce;
+        public float ChargingSpeed;
 
-        public float ForwardForceAmount;
+        public bool CanStartWaitTimeCoroutine;
 
-        private bool CanStartGroundCheck;
+        public bool CanCharge;
 
-        private bool CanAddJumpForce;
+        public bool WaitingState;
 
-        private bool CanAttackPlayer;
+        public float AngularSpeed;
+
+        public float ChargingAngularSpeed;
+
+        public float NormalAngularSpeed;
+
+        public float KnockBackForceUp;
+
+        public float KnockBackForceBack;
+
+        public bool CanKnockBack;
+
+
 
 
         // WanderState
@@ -100,15 +120,6 @@ namespace Code.Scripts.SampleScene
         private bool CanGoBackToTerritory;
 
         private bool CanStartCoroutine;
-      
-        //Check if enemy and player collide
-        void OnCollisionEnter(Collision collision)
-        {
-            /*if (collision.gameObject.tag == "Player")
-            {
-                 // This could be useful to check
-            }*/
-        }
 
         // Start is called before the first frame update
         void Start()
@@ -128,31 +139,20 @@ namespace Code.Scripts.SampleScene
             // setting Booleans
             CanStartCoroutine = true;
 
-            CanAttackPlayer = true;
-
-            rb.isKinematic = true;
-
-            CanAddJumpForce = false;
-
             CanGoBackToTerritory = false;
+
+            CanCharge = false;
+
+            CanStartWaitTimeCoroutine = true;
+
+            WaitingState = false;
+
+            CanKnockBack = true;
         }
 
         private void FixedUpdate()
         {
-            // For Attacking state here.
-            if (CanAddJumpForce)
-            {
-                rb.AddForce(this.transform.forward * ForwardForceAmount + this.transform.up * UpwardsForce, ForceMode.Impulse);
 
-                CanAddJumpForce = false;
-            }
-
-            if (agent.enabled == false && CanStartGroundCheck)
-            {
-                Grounding();
-
-                //Debug.Log("Agent Enabled");
-            }
         }
 
         // Update is called once per frame
@@ -161,7 +161,11 @@ namespace Code.Scripts.SampleScene
             distance = Vector3.Distance(target.position, transform.position);
 
             // Setting which states are active or inactive.
-            if (IsChasing)
+            if (IsAttacking)
+            {
+                AttackingState();
+            }
+            else if (IsChasing)
             {
                 ChasingState();
             }
@@ -172,12 +176,13 @@ namespace Code.Scripts.SampleScene
             else if (IsGoingToTeritory)
             {
                 GoingToTerritoryState();
+            }  
+            else if (WaitingState)
+            {
+                WaitState();
             }
 
-            if (IsAttacking)
-            {
-                AttackingState();
-            }
+            //agent.angularSpeed = AngularSpeed;
 
             agent.speed = EnemySpeed;           
         }
@@ -201,6 +206,8 @@ namespace Code.Scripts.SampleScene
                 IsChasing = false;
             }
 
+            FaceTarget();
+
             //Enemy Is in it's territory
             if (InTerritory)
             {          
@@ -215,6 +222,8 @@ namespace Code.Scripts.SampleScene
                         //Attack
                         //face target
                         FaceTarget();
+
+                        //Debug.Log("ChasingFaceTarget");
                     }
                 }
             }
@@ -312,7 +321,7 @@ namespace Code.Scripts.SampleScene
 
             if (agent.enabled)
             {
-                agent.SetDestination(TerritoryScuttler.transform.position);
+                agent.SetDestination(TerritoryCharger.transform.position);
             }
 
             if (agent.velocity == new Vector3(0, 0, 0))
@@ -322,7 +331,7 @@ namespace Code.Scripts.SampleScene
                 IsGoingToTeritory = false;
             }
 
-            if(distance <= lookRadius) 
+            if(distance <= lookRadius)
             {
                 IsChasing = true;
 
@@ -335,52 +344,47 @@ namespace Code.Scripts.SampleScene
                 IsAttacking = true;
 
                 IsGoingToTeritory = false;
-            }                      
+            }
         }
 
         private void AttackingState()
         {
-            EnemySpeed = AttackingSpeed;
-
             FaceTarget();
 
-            if (agent.enabled == true)
+            if (CanCharge)
             {
-                agent.SetDestination(target.position);
-            }          
+                EnemySpeed = ChargingSpeed;
 
-            if (distance <= AttackStateDistance)
+                CanKnockBack = true;
+
+                agent.SetDestination(ChargePosition.transform.position);
+            }
+            else if (WaitingState)
             {
-                //Debug.Log("AttackingState");
-                
-                RaycastHit Hit;
-                if (Physics.Raycast(transform.position, transform.forward, out Hit))
-                {
-                    if (Hit.transform.gameObject.CompareTag("Player"))
-                    {
-                        //Debug.Log("Player In Sight");
-                       
-                        if (CanAttackPlayer)
-                        {
-                            //Debug.Log("CanattackPlayer = " + CanAttackPlayer);
+                IsAttacking = false;
 
-                            //Debug.Log("AlsoGrounded");
-
-                            // Start Coroutine
-                            coroutine = WaitTimeBeforeAttack(TimeWaitBeforeAttack);
-                            StartCoroutine(coroutine);
-
-                            CanAttackPlayer = false;
-                        }                     
-                    }              
-                }
-                else
-                {
-                    //Debug.Log("Player Not In Sight");
-                }
-                
+                WaitingState = true;
             }
             else
+            {
+                EnemySpeed = AttackingSpeed;
+
+                agent.SetDestination(target.position);
+
+                FaceTarget();
+
+                CanCharge = false;
+
+                if (CanStartWaitTimeCoroutine)
+                {
+                    coroutine = WaitTimeBeforeAttack(TimeWaitBeforeAttack);
+                    StartCoroutine(coroutine);
+
+                    CanStartWaitTimeCoroutine = false;
+                }
+            }
+
+            if (distance > AttackStateDistance)
             {
                 if (distance < lookRadius)
                 {
@@ -388,7 +392,9 @@ namespace Code.Scripts.SampleScene
 
                     IsAttacking = false;
 
-                    //Debug.Log("Chasing");
+                    CanCharge = false;
+
+                    CanStartWaitTimeCoroutine = true;
                 }
                 else if (distance > lookRadius)
                 {
@@ -396,38 +402,57 @@ namespace Code.Scripts.SampleScene
 
                     IsAttacking = false;
 
-                    //Debug.Log("Exit Attack");
+                    CanCharge = false;
+
+                    CanStartWaitTimeCoroutine = true;
                 }
             }
         }
 
-        // Grounding must not set enemy to enabled right after the enemy has jumped
-        private void Grounding()
+        private void WaitState()
         {
-            RaycastHit Hit;
-            if (Physics.Raycast(transform.position, Vector3.down, out Hit, DistanceToGround, WhatIsGround))
+            EnemySpeed = 0;
+
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            //rb.constraints = RigidbodyConstraints.FreezePosition;
+
+            //AngularSpeed = 0;
+
+            //agent.SetDestination(ChargePosition.transform.position);
+
+            CanCharge = false;
+        }
+
+        //Check if enemy and player collide
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == "Player")
             {
-                //Debug.Log("Racast Hit ground? Hit = " + Hit.transform.gameObject.name);
+                // Could be cool to deal damage from here.
 
-                agent.enabled = true;
+                // Add KnockBack to the player
+                if (CanKnockBack)
+                {
+                    collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * KnockBackForceBack + transform.up * KnockBackForceUp, ForceMode.Impulse);
+                    Debug.Log("KnockBackForce");
 
-                rb.isKinematic = true;
-
-                rb.constraints = RigidbodyConstraints.None;
-
-                //Debug.Log("agent.enabled = " + agent.enabled);
-
-                CanStartGroundCheck = false;
+                    CanKnockBack = false;
+                }
             }
+
+            if (CanCharge)
+            {
+                WaitChargedCoroutine = WaitTimeAfterCharged(TimeWaitAfterCharged);
+                StartCoroutine(WaitChargedCoroutine);
+                //Debug.Log("Started WaitTimeAfter Charged coroutine");
+            }
+
+            CanCharge = false;
+
+            //Debug.Log("CanChargeFalse? = " + CanCharge);
         }
 
-        void FaceTarget()
-        {
-            Vector3 direction = (target.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3 (direction.x, 0, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);  
-        }
-
+        /*
         // Waiting before checking if the enemy is on the ground after jumping.
         private IEnumerator WaitBeforeGrounding(float TimeToWaitGrounding)
         {
@@ -437,7 +462,9 @@ namespace Code.Scripts.SampleScene
 
             //Debug.Log("CanStartGroundCheck");
         }
+        */
 
+        
         // Waiting before attacking the player
         private IEnumerator WaitTimeBeforeAttack(float TimeWaitBeforeAttack)
         {
@@ -445,26 +472,55 @@ namespace Code.Scripts.SampleScene
 
             print("WaitTimeCoroutine ended: " + Time.time + " seconds");
 
-            //Debug.Log("WaitTimeBeforeAttack Couroutine");
+            CanCharge = true;
 
-            agent.enabled = false;
+            //Debug.Log("CanCharge = " + CanCharge);
+        }
 
-            rb.isKinematic = false;
+        private IEnumerator WaitTimeAfterCharged(float TimeWaitAfterCharged)
+        {
+            WaitingState = true;
 
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            //Debug.Log("Started afterCharged coroutine");
 
-            CanAttackPlayer = true;
+            yield return new WaitForSeconds(TimeWaitAfterCharged);
 
-            GroundingCoroutine = WaitBeforeGrounding(TimeToWaitGrounding);
-            StartCoroutine(GroundingCoroutine);
-            //Debug.Log("StartGroundingCoroutine");
+            rb.constraints = RigidbodyConstraints.None;
 
-            // This should probably only happen if grounded
-            CanAddJumpForce = true;
+            WaitingState = false;
 
-            //Debug.Log("Jumped?");
+            if (distance <= AttackStateDistance)
+            {
+                IsAttacking = true;
 
-            //Debug.Log("CanJump?: " + CanAddJumpForce);
+                WaitingState = false;
+            }
+            else if (distance <= lookRadius)
+            {
+                IsChasing = true;
+
+                WaitingState = false;
+            }
+            else if (agent.velocity == new Vector3(0, 0, 0))
+            {
+                IsWandering = true;
+
+                WaitingState = false;
+            }
+
+            // Just testing
+            CanStartWaitTimeCoroutine = true;
+
+            //Debug.Log("Finished afterCharged coroutine");
+
+            //CanChargeAgain = true;
+        }
+
+        void FaceTarget()
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
 
         //Enemy Enters i'ts territory.
@@ -490,11 +546,14 @@ namespace Code.Scripts.SampleScene
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, lookRadius);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, AttackStateDistance);
         }
 
         //Wait Random amount of time before coroutine can be started again.
         private IEnumerator WanderWaitTimeCoroutine()
-        { 
+        {
             yield return new WaitForSeconds(Random.Range(0, RandomUpperWanderWaitTime));
 
             CanStartCoroutine = true;

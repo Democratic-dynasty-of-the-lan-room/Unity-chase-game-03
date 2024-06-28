@@ -2,7 +2,7 @@ using Code.Scripts.SampleScene;
 using System.Collections;
 using UnityEngine;
 
-public class ScuttlerAttackScript : MonoBehaviour
+public class ChargerAttackBox : MonoBehaviour
 {
     [SerializeField] PlayerHealth playerHealth;
 
@@ -62,6 +62,8 @@ public class ScuttlerAttackScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && CannotAttack == false)
         {
             InRange = true;
+
+            // Try getting component in parent to add force from here maybe?
 
             // TODO - Send a ray to see if the player is behind a wall or not.
 

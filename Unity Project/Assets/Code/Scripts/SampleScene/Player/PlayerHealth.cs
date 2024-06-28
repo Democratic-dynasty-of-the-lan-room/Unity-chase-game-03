@@ -106,6 +106,7 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
             coroutine = RegenWait(RegenHealthWaitTime);
             StopCoroutine(coroutine);
 
+          
             afterHitCoroutine = AfterHitCoroutine(AfterHitWaitTime);
             StartCoroutine(afterHitCoroutine);
 
@@ -124,8 +125,11 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
         if (Health < SetHealthAmount && !BypassRegen && CanRegen && CanStartRegen)
         {
-            coroutine = RegenWait(RegenHealthWaitTime);
-            StartCoroutine(coroutine);
+            if (Health >= 1)
+            {
+                coroutine = RegenWait(RegenHealthWaitTime);
+                StartCoroutine(coroutine);
+            }     
 
             CanRegen = false;
 
