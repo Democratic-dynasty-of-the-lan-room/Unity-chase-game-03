@@ -2261,6 +2261,87 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f33dcc2db2eae6b499c3b8ef8f22f976, type: 3}
+--- !u!1001 &1848828551862542832
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 312199130371938001, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_Name
+      value: FlyingBirdEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -31.772179
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 114.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2462444558176054163, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6573398788500494599, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999336497761981279, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: LookRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999336497761981279, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: MovementPlayer
+      value: 
+      objectReference: {fileID: 1497455335}
+    - target: {fileID: 8999336497761981279, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: WanderDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999336497761981279, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: distanceToTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999336497761981279, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
+      propertyPath: MinimumWanderDistance
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d0e594c0fa617b744aa0686189c33ba5, type: 3}
 --- !u!1001 &4335023255142390765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2507,3 +2588,4 @@ SceneRoots:
   - {fileID: 670401830}
   - {fileID: 779783534}
   - {fileID: 1986662250}
+  - {fileID: 1848828551862542832}
