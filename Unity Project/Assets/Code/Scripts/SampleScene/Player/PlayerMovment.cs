@@ -54,6 +54,8 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     public bool Crouched;
 
+    public bool CanLadderCrouch;
+
     [Header("Speed limiting and adjust")]
 
     public float adjustmentReduction;
@@ -128,6 +130,8 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     private bool SpawnWithU;
 
     PlayerInput playerInput;
+
+    public Vector3 GroundedHit;
 
     private void Awake()
     {
@@ -291,11 +295,11 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
             GroundedHeight = HeightOffset * -1.3f;
         }
 
-        horizontalInput = playerInput.GamePlay.PlayerHorizontal.ReadValue<float>();
-        verticalInput = playerInput.GamePlay.PlayerVertical.ReadValue<float>();
+        //horizontalInput = playerInput.GamePlay.PlayerHorizontal.ReadValue<float>();
+        //verticalInput = playerInput.GamePlay.PlayerVertical.ReadValue<float>();
         // Old method getaxisraw
-        //horizontalInput = Input.GetAxisRaw("Horizontal");
-        //verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
 
 
         // when to jump
@@ -316,12 +320,21 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
     private void TranslateVelocityforSlope()
     {
         if (grounded)
-        {
-            if (Vector3.Angle(lastHitNormal, correctHitNormal) > normalchangeThreshold && Vector3.Angle(lastHitNormal, correctHitNormal) < 40 && correctHitNormal.y > 0.78)
+        { // / surface hit by SphereCast is a ladder /
+            if (hit.collider.CompareTag("Ladder"))
             {
-                rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, correctHitNormal);
+                //rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, hit.normal);
+
+                rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, Vector3.Scale(hit.normal, new Vector3(0.1f, 0.1f, 0.1f)));
             }
-            lastHitNormal = correctHitNormal;
+            else
+            {
+                if (Vector3.Angle(lastHitNormal, correctHitNormal) > normalchangeThreshold && Vector3.Angle(lastHitNormal, correctHitNormal) < 40 && correctHitNormal.y > 0.78)
+                {
+                    rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, correctHitNormal);
+                }
+                lastHitNormal = correctHitNormal;
+            }    
         }
         else
         {
@@ -444,6 +457,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
         // ground check            
         groundedcast = Physics.SphereCast(transform.position + SphereCastPostitionY, SphereCastRadius, Vector3.down, out hit, SphereCastDistance, whatIsGround);
+        //GroundedHit = hit;
 
         //SurfaceNormal = hit.normal;
 
@@ -511,9 +525,9 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
         readyToJump = true;
     }
 
-    private void Crouch()
+    public void Crouch()
     {
-        if (playerInput.GamePlay.Crouch.ReadValue<float>() > 0f)
+        if (playerInput.GamePlay.Crouch.ReadValue<float>() > 0f || CanLadderCrouch)
         {
             // Debug.Log("Crouch");
             Crouched = true;

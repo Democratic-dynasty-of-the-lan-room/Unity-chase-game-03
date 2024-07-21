@@ -25,6 +25,8 @@ public class FlyingEnemyController : MonoBehaviour
     public float FortyFiveDegreRay;
     public float MinusFortyFiveDegreRay;
 
+    public float AccuriteFaceDistance;
+
     [Header("Obstacle avoidance")]
     public float GroundAvoidance;
     public float RoofAvoidance;
@@ -44,6 +46,8 @@ public class FlyingEnemyController : MonoBehaviour
 
 
     [Header("Wander State")]
+
+    [Tooltip("Can only be less than LookRadius")]
     public float WanderDistance;
 
     private float DistanceToWanderPos;
@@ -77,9 +81,20 @@ public class FlyingEnemyController : MonoBehaviour
 
         TargetPosition();
 
+
+        if (distanceToTarget > AccuriteFaceDistance)
+        {
+            FaceTargetThreeDSlow();
+        }
+        else
+        {
+            FaceTargetThreeD();
+        }
         //FaceTarget();
 
-        FaceTargetThreeD();
+        //FaceTargetThreeD();
+
+        //FaceTargetThreeDSlow();
     }
 
     // Update is called once per frame
@@ -125,7 +140,7 @@ public class FlyingEnemyController : MonoBehaviour
         {
             CanFindWanderPos = true;
 
-            Debug.Log("Hit: " + hit.collider.name);
+            //Debug.Log("Hit: " + hit.collider.name);
 
             //Debug.Log("HitWanderPosition?");
         }
@@ -138,11 +153,18 @@ public class FlyingEnemyController : MonoBehaviour
 
                 Target.position = WanderPosition.transform.position;
 
-                Debug.Log("NotHittinganything");
+                //Debug.Log("NotHittinganything");
             }
             else
             {
                 CanFindWanderPos = true;
+            }
+
+            if (distanceToTarget > LookRadius || DistanceToWanderPos > LookRadius)
+            {
+                CanFindWanderPos = true;
+
+                Debug.Log("ItWen't out of view radius finding a new position to go to");
             }
         }
 
@@ -155,6 +177,75 @@ public class FlyingEnemyController : MonoBehaviour
 
         // TODO - set up an algorithm for finding paths that aren't blocked in the air.
 
+    }
+
+    private void HoverState()
+    {
+
+    }
+
+    private void PerchState()
+    {
+
+    }
+
+    private void RunningOnGroundState()
+    {
+        // for this a navmesh agent should suffice.
+    }
+
+    private void SearchingState()
+    {
+        if (CanFindWanderPos == true)
+        {
+            WanderPosition.transform.position = Random.insideUnitSphere * WanderDistance + transform.position;// What is transform.position for here?
+
+            // Limit how far positions can spawn backwards.
+        }
+
+        DistanceToWanderPos = Vector3.Distance(transform.position, WanderPosition.transform.position);
+
+        Vector3 directionNormalized = (WanderPosition.transform.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position, directionNormalized, out hit, DistanceToWanderPos))
+        {
+            CanFindWanderPos = true;
+
+            //Debug.Log("Hit: " + hit.collider.name);
+
+            //Debug.Log("HitWanderPosition?");
+        }
+        else
+        {
+            // Get new position to fly to if Has reached minimum wander distance
+            if (DistanceToWanderPos > MinimumWanderDistance || distanceToTarget > MinimumWanderDistance)
+            {
+                CanFindWanderPos = false;
+
+                Target.position = WanderPosition.transform.position;
+
+                //Debug.Log("NotHittinganything");
+            }
+            else
+            {
+                CanFindWanderPos = true;
+            }
+
+            if (distanceToTarget > LookRadius || DistanceToWanderPos > LookRadius)
+            {
+                CanFindWanderPos = true;
+
+                Debug.Log("ItWen't out of view radius finding a new position to go to");
+            }
+        }
+
+        if (DistanceToWanderPos <= 3)
+        {
+            //CanFindWanderPos = true;
+
+            Debug.Log("CanFindWanderPos = " + CanFindWanderPos);
+        }
+
+        // TODO - set up an algorithm for finding paths that aren't blocked in the air.
     }
 
     private void ChasingState()
@@ -177,7 +268,8 @@ public class FlyingEnemyController : MonoBehaviour
 
 
 
-    // Flying Machinery
+    // Flying Machinery This should probably be in a separate script from the stateMachine controller.
+    // It should probably be an abstract class? That way I can call my functions from there.
     private void ObstacleAvoidance()
     {
 
@@ -272,9 +364,10 @@ public class FlyingEnemyController : MonoBehaviour
 
             Vector3 direction = (Target.position - transform.position).normalized;
 
-            rb.AddForce(direction * Speed, ForceMode.Force);
+            //rb.AddForce(direction * Speed, ForceMode.Force);
 
-   
+            rb.AddForce(transform.forward * Speed, ForceMode.Force);
+
 
 
 
@@ -320,7 +413,17 @@ public class FlyingEnemyController : MonoBehaviour
     {
         Vector3 direction = (Target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+    }
+
+    void FaceTargetThreeDSlow()
+    {
+        Vector3 direction = (Target.position - transform.position).normalized;
+
+        Vector3 DirectionNotNormalized = (Target.position - transform.position);
+
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime);
     }
 
 
