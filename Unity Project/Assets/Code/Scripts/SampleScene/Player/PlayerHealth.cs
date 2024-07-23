@@ -29,6 +29,10 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
 
     public int Health;
 
+    public static PlayerHealth Instance { get; private set; }
+
+    //public int Health = Instance.Health;
+
     [Header("Warning this doesn't work Completely yet. Im not sure how to set the default GameData to SetHealthAmount")]
     public int SetHealthAmount;
 
@@ -54,11 +58,29 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
     private void Awake()
     {
         //Time.timeScale = 1.0f;
+        
+        // Make sure there is only one instance to keep the singleton pattern
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     private void Start()
     {        
         CanPreviousHealth = true;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H) && ShowHealthWithH)
+        {
+            Debug.Log("Health = " + Health);
+        }
     }
 
     private void FixedUpdate()
@@ -94,11 +116,6 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
             PauseMenu.SetActive(false);
             InventoryScript.SetActive(false);
         }  
-        
-        if (Input.GetKeyDown(KeyCode.H) && ShowHealthWithH)
-        {
-            Debug.Log("Health = " + Health);
-        }
 
         // If you where hit Take Time before being able to regen Health.
         if (Health < previousHealth && CanHitWaitTime)
