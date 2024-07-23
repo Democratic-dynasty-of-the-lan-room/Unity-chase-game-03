@@ -65,7 +65,7 @@ public class LadderScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        playermovement.CanLadderCrouch = false;
+        //playermovement.CanLadderCrouch = false;
     }
 
     // Update is called once per frame
@@ -255,13 +255,13 @@ public class LadderScript : MonoBehaviour
 
     private IEnumerator EndLadderCoroutine(float Time)
     {
-        //playermovement.CanLadderCrouch = true;
+        //playermovement.CanLadderCrouch = true;/ I removed Crouched from PlayerMovement if we want to try this method of ladder again it will need to be re added with an or gate in chrouch();
 
         Debug.Log("coroutine started");
 
         yield return new WaitForSeconds(Time);
 
-        playermovement.CanLadderCrouch = false;
+        //playermovement.CanLadderCrouch = false;
 
         Debug.Log("coroutine done");
     }

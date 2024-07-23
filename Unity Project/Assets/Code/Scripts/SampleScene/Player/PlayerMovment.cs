@@ -54,8 +54,6 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     public bool Crouched;
 
-    public bool CanLadderCrouch;
-
     [Header("Speed limiting and adjust")]
 
     public float adjustmentReduction;
@@ -334,7 +332,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
                     rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, correctHitNormal);
                 }
                 lastHitNormal = correctHitNormal;
-            }    
+            }
         }
         else
         {
@@ -527,7 +525,7 @@ public class PlayerMovment : MonoBehaviour, IDataPersistence
 
     public void Crouch()
     {
-        if (playerInput.GamePlay.Crouch.ReadValue<float>() > 0f || CanLadderCrouch)
+        if (playerInput.GamePlay.Crouch.ReadValue<float>() > 0f)
         {
             // Debug.Log("Crouch");
             Crouched = true;

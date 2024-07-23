@@ -2,335 +2,159 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEditor;
 
 public class LadderScript1Test : MonoBehaviour
 {
-    private IEnumerator coroutine;
+    [Header("Ladder Movement")]
 
     [SerializeField] PlayerMovment playermovement;
 
-    //[SerializeField] GameObject PlayerObject;
+    public LayerMask WhatIsGround;
 
-    [Header("Ladder Movement")]
+    public Transform orientation;
 
     Rigidbody rb;
 
     RaycastHit hit;
 
-    float horizontalInput;
-    float verticalInput;
+    public float Ladderspeed;
+    public float MinusHeightOffset;
+    public float RotateAngle;
+    public float SwitchAmountVertical;
 
-    public Transform orientation;
-
-    public float speed;
+    private float horizontalInput;
+    private float verticalInput;
+    private float verticalThreshold = 0.2f;
 
     public bool CanLadderMovement;
 
-    Vector3 moveDirection;
-
-    Vector3 EndLadderMoveDirection;
-
+    Vector3 HorizontalMoveDirection;
+    Vector3 VerticalMoveDirection;
     Vector3 LadderMoveDirection;
 
     Vector3 LadderNormal;
 
-    public LayerMask WhatIsGround;
-
-    public bool Grounded;
-
-    public float Amount;
-
-    public float Amount2;
-
-    public float Time;
-
-    // sphere Cast stuff
-    public float SphereCastRadius;
-    public float MaxDistance;
-    public Vector3 EndLadderNormal;
-
-    public Vector3 LadderMoveDirectionTest;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
-        playermovement.CanLadderCrouch = false;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-       if (CanLadderMovement)
-       {
-           LadderMovement();   
-       }
-
-        GroundCheck();
-
-        //SphereCast();
-
-
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Amount - Amount2, WhatIsGround))// Here if you crouch it thinks you shouldn't be on the ladder.
+        if (CanLadderMovement)
         {
-            CanLadderMovement = false;
+            // Switch to ladder Movement
+            LadderMovement();
 
-            playermovement.enabled = true;
-
-            //Debug.Log("Out of ladder on ground");
-        }
-
-        /*
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, Amount - Amount2) && playermovement.Crouched)
-        {
-            Debug.Log("Crouch");
-
-            if (hit.collider == null)
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, playermovement.HeightOffset - MinusHeightOffset, WhatIsGround))
             {
-                playermovement.enabled = false;
-
-                CanLadderMovement = true;
-
-                Debug.Log("Crouch Ladder");
+                // Switch to player movement
+                CanLadderMovement = false;
+                playermovement.enabled = true;
             }
         }
-        */
     }
 
+    // Enter Ladder Trigger
     private void OnTriggerEnter(Collider other)
     {
-        // When Going down the ladder check if the player has triggered this and then enable ladder movement?
-
-        //Debug.Log("OnTriggerEnter");
-
-        if (other.tag == "Ladder")
+        if (other.tag == "Ladder" && playermovement.Crouched == false || other.CompareTag("CrouchLadderCol") && playermovement.Crouched)
         {
-            Debug.Log("OnTriggerEnter Player");
+            // Switch to ladder movement
+            playermovement.enabled = false;
+            CanLadderMovement = true;
 
-            // to stop speeding up the ladder.
+            // Stop speeding. stop gravity. Add drag.
             rb.linearVelocity = new Vector3(0, 0, 0);
             rb.linearDamping = playermovement.groundDrag;
             rb.useGravity = false;
 
-            playermovement.enabled = false;
-
-            CanLadderMovement = true;
-
-            RaycastHit hit;
+            // Get Ladder Normal.
             if (Physics.Raycast(transform.position, transform.forward, out hit, 1f) ||
                 Physics.Raycast(transform.position, -transform.forward, out hit, 1f) ||
                 Physics.Raycast(transform.position, transform.right, out hit, 1f) ||
                 Physics.Raycast(transform.position, -transform.right, out hit, 1f))
             {
                 LadderNormal = hit.normal.normalized;
-
-                //Debug.Log("Hit LadderNormal");
             }
         }
     }
 
+    // Exit Ladder Trigger
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Ladder")
         {
-            Debug.Log("OnTriggerExit");
-
+            // Switch to player movement
             CanLadderMovement = false;
-
             playermovement.enabled = true;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        /*
-        if (collision.gameObject.CompareTag("Ladder"))
-        {
-            Debug.Log("On Ladder");
-
-            // to stop speeding up the ladder.
-            rb.linearVelocity = new Vector3(0, 0, 0);
-            rb.linearDamping = playermovement.groundDrag;
-            rb.useGravity = false;
-
-            playermovement.enabled = false;
-
-            CanLadderMovement = true;
-
-            // I moved this code here instead of collision exit that would definitely break how it is supposed to work lol.
-
-            //LadderNormal = Vector3.ProjectOnPlane(moveDirection, orientation.right);
-
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 1f) ||
-                Physics.Raycast(transform.position, -transform.forward, out hit, 1f) ||
-                Physics.Raycast(transform.position, transform.right, out hit, 1f) ||
-                Physics.Raycast(transform.position, -transform.right, out hit, 1f))
-            {      
-                LadderNormal = hit.normal.normalized;
-
-                //Debug.Log("Hit LadderNormal");
-            }
-
-
-            //LadderNormal = Vector3.ProjectOnPlane(transform.position, hit.normal).normalized;
-        }
-        */
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ladder"))
-        {
-            /*
-            Debug.Log("Off Ladder");
-
-            CanLadderMovement = false;
-
-            playermovement.enabled = true;
-
-            rb.useGravity = true;
-
-            if (rb.linearVelocity.y > 0)
-            {
-                coroutine = EndLadderCoroutine(Time);
-                StartCoroutine(coroutine);
-            }
-            */
-        }
-    }
-
-
-    private void PressEToInteract()
-    {
-
-        // TODO - lerp player to the start of the ladder.
-
-    }
-
+    // Handle all ladder movement in here.
     private void LadderMovement()
     {
-        // Handle all ladder movement in here.
-
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-
-        Vector3 rightDirection = Vector3.Cross(LadderNormal, Vector3.up);
-        Vector3 movementDirection = rightDirection;
-
-        //Vector3 HorizontalDirection = Vector3.ProjectOnPlane(hit.point, transform.position);
-        //Vector3 NewLadderMoveDirection = HorizontalDirection;
-
-        // TODO - Make the W move you in the direction you are looking. Up or down.
-
-
-        //moveDirection = orientation.up * verticalInput + orientation.right * horizontalInput;
-
-        LadderMoveDirection = orientation.up * verticalInput + movementDirection * horizontalInput;
-
-        Vector3 ProjectedMovement = Vector3.ProjectOnPlane(LadderMoveDirection, hit.normal);
-
-        //LadderMoveDirectionTest = orientation.up * verticalInput + movementDirection * horizontalInput;
-
-        //EndLadderMoveDirection = NewLadderMoveDirection * verticalInput + movementDirection * horizontalInput;
-
-        if (horizontalInput > 0 || horizontalInput < 0 || verticalInput > 0 || verticalInput < 0)
-        {            
-            rb.AddForce(LadderMoveDirection * speed, ForceMode.Force);
-
-            //Debug.Log("Direction" + HorizontalDirection);
-
-            //Debug.Log("Hit Normal" + hit.normal.y);
-        }
-    }
-
-    private void GroundCheck()
-    {
-        RaycastHit hit;
-        if  (Physics.Raycast(transform.position, Vector3.down, out hit, Amount, WhatIsGround))
+        // Calculate Up Down Movement.
+        Vector3 forward = Camera.main.transform.forward;
+        if (forward.y < SwitchAmountVertical)
         {
-            Grounded = true;
-
-            /*
-            if (hit.collider.CompareTag("Ladder"))
-            {
-                CanLadderMovement = true;
-
-                playermovement.enabled = false;
-            }
-            */
-
-            //Debug.Log("Grounded");
+            VerticalMoveDirection = -orientation.up;
         }
         else
         {
-            Grounded = false;
-
-            /*
-            CanLadderMovement = false;
-
-            playermovement.enabled = true;
-            */
-
-            //Debug.Log("Not Grounded");
+            VerticalMoveDirection = orientation.up;
         }
-    }
 
-    /*
-    private void SphereCast()
-    {
-        RaycastHit hit;
-        if (Physics.SphereCast(transform.position, SphereCastRadius, Vector3.down, out hit, MaxDistance))
+        // Calculate Right Left Movement.
+        Vector3 rightDirection = Vector3.Cross(LadderNormal, Vector3.up);
+        Vector3 ladderNormalProjected = new Vector3(LadderNormal.x, 0, LadderNormal.z).normalized;
+        if (Mathf.Abs(forward.y) > verticalThreshold)// Make sure that when you are looking straight up or down right left movement is still calculated correctly.
         {
-            //Debug.Log("SphereCast");
+            Vector3 right = Camera.main.transform.right; 
 
-            if (hit.collider.gameObject.CompareTag("Ladder"))
+            Vector3 forwardHorizontal = new Vector3(right.x, 0, right.z).normalized;
+
+            Vector3 RotateVectorBy90Degrees(Vector3 vector)
             {
-                //EndLadderNormal = hit.normal.normalized;
+                return new Vector3(-vector.z, vector.y, vector.x);
+            }
 
-                //CanLadderMovement = true;
+            Vector3 rotatedForward = RotateVectorBy90Degrees(forwardHorizontal);
 
-                //Debug.Log("CanLadder?" + CanLadderMovement);
+            float dotProduct = Vector3.Dot(rotatedForward, ladderNormalProjected);
+            if (dotProduct > 0)
+            {
+                HorizontalMoveDirection = -rightDirection;
             }
             else
             {
-                //CanLadderMovement = false;
-
-                //Debug.Log("CanLadder?" + CanLadderMovement);
+                HorizontalMoveDirection = rightDirection;
             }
         }
         else
         {
+            Vector3 ForwardProjected = new Vector3(forward.x, 0, forward.z).normalized;
 
+            if (Vector3.Angle(ForwardProjected, ladderNormalProjected) > RotateAngle)
+            {
+                HorizontalMoveDirection = rightDirection;
+            }
+            else
+            {
+                HorizontalMoveDirection = -rightDirection;
+            }
+        }
+
+        // apply Force to LadderMoveDirection
+        LadderMoveDirection = VerticalMoveDirection * verticalInput + HorizontalMoveDirection * horizontalInput;
+
+        if (horizontalInput > 0 || horizontalInput < 0 || verticalInput > 0 || verticalInput < 0)
+        {
+            rb.AddForce(LadderMoveDirection * Ladderspeed, ForceMode.Force);
         }
     }
-    */
-
-    /*
-    private IEnumerator EndLadderCoroutine(float Time)
-    {
-        //playermovement.CanLadderCrouch = true;
-
-        Debug.Log("coroutine started");
-
-        yield return new WaitForSeconds(Time);
-
-        playermovement.CanLadderCrouch = false;
-
-        Debug.Log("coroutine done");
-    }
-    */
-
-    /*
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, SphereCastRadius);
-
-    }
-    */
 }
