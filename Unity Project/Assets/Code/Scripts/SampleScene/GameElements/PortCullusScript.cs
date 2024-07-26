@@ -18,7 +18,7 @@ public class PortCullusScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {           
+    {
         if(anim.isPlaying == false && Lever.IsPressed == true)
         {
             Debug.Log("PortCulluspresed");
@@ -40,10 +40,10 @@ public class PortCullusScript : MonoBehaviour
                 Lever.anim.Play("BoneLeverBackAnim");
 
                 AudioManager.instance.PlayOneShot(FMODEvents.instance.LeverSound, Lever.transform.position);
-            }           
+            }    
         }
         else if (anim.isPlaying == true)
-        {              
+        {
             if (Lever.LeverIsUp && Lever.IsPressed == true)
             {
                 Lever.LeverIsUp = false;
@@ -51,7 +51,7 @@ public class PortCullusScript : MonoBehaviour
             else if (!Lever.LeverIsUp && Lever.IsPressed == true)
             {
                 Lever.LeverIsUp = true;
-            }                
-        }         
+            }
+        }
     }
 }

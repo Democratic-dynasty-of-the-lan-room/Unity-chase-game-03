@@ -50,8 +50,17 @@ public class InteractWithLeverEct : MonoBehaviour
                 {
                     // Why does this run 3 times???
                     //hit.collider.gameObject.GetComponent<LeverScript2Point0>().SwitchLever();
+                    var Script = hit.collider.gameObject.GetComponent<LeverScript2Point0>();
 
-                    hit.collider.gameObject.GetComponent<LeverScript2Point0>().SwitchLever();
+                    if (Script.enabled)
+                    {
+                        Script.SwitchLever();
+                    }
+                    else
+                    {
+                        //Debug.Log("Script Disabled");
+                    }
+                    
 
                     //Collider.IsPressed = true;
                     /*

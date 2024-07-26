@@ -49,7 +49,7 @@ namespace Code.Scripts.SampleScene.Player
             }
             else
             {
-                Debug.Log("LeverLocked");
+                //Debug.Log("LeverLocked");
             }
         }
     }
