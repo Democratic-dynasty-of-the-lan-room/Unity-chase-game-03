@@ -118,14 +118,15 @@ public class PlayerHealth : MonoBehaviour, IDataPersistence
         }  
 
         // If you where hit Take Time before being able to regen Health.
-        if (Health < previousHealth && CanHitWaitTime)
+        if (Health < previousHealth && CanHitWaitTime && Health >= 1)
         {
             coroutine = RegenWait(RegenHealthWaitTime);
             StopCoroutine(coroutine);
 
-          
+
             afterHitCoroutine = AfterHitCoroutine(AfterHitWaitTime);
             StartCoroutine(afterHitCoroutine);
+
 
             previousHealth = Health;
 
