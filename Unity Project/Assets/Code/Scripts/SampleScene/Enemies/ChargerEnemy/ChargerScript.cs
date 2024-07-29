@@ -47,9 +47,17 @@ namespace Code.Scripts.SampleScene
 
         public float EnemySpeed;
 
+   
+
 
 
         [Header("Attacking State")]
+
+        public bool OldKnockBack = false;
+
+        public float KnockBackForce;
+        public float UpwardsModifier;
+        public float KnockBackRadius;
 
         [Tooltip("The distance at which attacking state starts")]
         public float AttackStateDistance = 15;
@@ -433,8 +441,17 @@ namespace Code.Scripts.SampleScene
                 // Add KnockBack to the player
                 if (CanKnockBack)
                 {
-                    collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * KnockBackForceBack + transform.up * KnockBackForceUp, ForceMode.Impulse);
-                    Debug.Log("KnockBackForce");
+                    if (OldKnockBack)
+                    {
+                        collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * KnockBackForceBack + transform.up * KnockBackForceUp, ForceMode.Impulse);
+                    }
+                    else
+                    {
+                        collision.gameObject.GetComponent<Rigidbody>().AddExplosionForce(KnockBackForce, this.transform.position, KnockBackRadius, UpwardsModifier, ForceMode.Impulse);
+                        
+                        Debug.Log("KnockBackForce");
+                    }    
+                 
 
                     CanKnockBack = false;
                 }

@@ -154,7 +154,7 @@ public class AbilityManager : MonoBehaviour, IDataPersistence
                     // Inventory Slot set to full
                     inventory.isFull[i] = true;
 
-                    // sets the instance to be a parent of sloTransform
+                    // sets the instance to be a parent of slotTransform
                     instance.transform.SetParent(slotTransform);
 
                     // sets the instance's position to be 0 0 0.
