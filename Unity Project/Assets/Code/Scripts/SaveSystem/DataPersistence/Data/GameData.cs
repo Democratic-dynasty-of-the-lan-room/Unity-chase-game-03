@@ -16,6 +16,7 @@ public class GameData
     public int PosToSpawn;
     public int SceneNumber;
     public int PlayerHealth;
+    public float Battery;
 
     public bool CanSpawn;
 
@@ -66,6 +67,7 @@ public class GameData
         this.PosToSpawn = 0;
         this.SceneNumber = 1;
         this.PlayerHealth = 100;
+        this.Battery = 100;
 
         this.CanSpawn = true;
 

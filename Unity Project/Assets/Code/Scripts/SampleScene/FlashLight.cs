@@ -1,15 +1,21 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Code.Scripts.SampleScene
 {
     public class FlashLight : MonoBehaviour
     {
-
+        private IEnumerator Coroutine;
 
         bool flash = false;
 
         private Light Torchlight;
+
+        public float batteryTime;
+        public float BatteryDownAmount;
+
+        private bool CanCoroutine;
 
         //private float testLightIntensity = 1;
 
@@ -19,10 +25,27 @@ namespace Code.Scripts.SampleScene
 
         // Start is called before the first frame update
         void Start()
-        {      
-        
+        {
             Torchlight = this.GetComponent<Light>();
-            Torchlight.enabled = false;      
+            Torchlight.enabled = false;
+
+            CanCoroutine = true;
+
+            //CentralBattery.Instance.CurrentCharge = 10;
+            //Debug.Log("Test In start");
+        }
+
+        private void FixedUpdate()
+        {
+            if (flash && CanCoroutine)
+            {
+                Coroutine = CoroutineBattery(batteryTime);
+                StartCoroutine(Coroutine);
+
+                CanCoroutine = false;
+
+                Debug.Log("Start Coroutine");
+            }
         }
 
         // Update is called once per frame
@@ -33,23 +56,27 @@ namespace Code.Scripts.SampleScene
 
             if (Input.GetKeyDown(KeyCode.F)) 
             {
-                Debug.Log("Hello from Flashlight");
+                
                 if(flash == false)
                 {
-                    On();
+                    if (CentralBattery.Instance.CurrentCharge != 0)
+                    {
+                        On();
+
+                        Debug.Log("Hello from Flashlight On");
+                    }      
                 }
                 else
                 {
                     off();
                 }
-        
             }
             if (scrollInput > 0 && Torchlight.range < MaxLightRange)
             {
                 Torchlight.spotAngle --;
                 Torchlight.range++;          
 
-                Debug.Log("MouseWheel");             
+                //Debug.Log("MouseWheel");             
             }
             if (scrollInput < 0 && Torchlight.range > MinLightRange)
             {
@@ -69,6 +96,11 @@ namespace Code.Scripts.SampleScene
             {
                 Torchlight.intensity = DefaultLightIntensity;
             }
+
+            if (CentralBattery.Instance.CurrentCharge <= 0f)
+            {
+                off();
+            }
         }
 
         //Onfunction
@@ -82,7 +114,19 @@ namespace Code.Scripts.SampleScene
         {
             flash = false;
             Torchlight.enabled = false;
+        }
 
-        } 
+        private IEnumerator CoroutineBattery(float batteryTime)
+        {
+            Debug.Log("Start Time Coroutine");
+
+            yield return new WaitForSeconds(batteryTime);
+
+            CentralBattery.Instance.CurrentCharge -= BatteryDownAmount;
+
+            CanCoroutine = true;
+
+            Debug.Log("Remove Battery Amount: " + CentralBattery.Instance.CurrentCharge);
+        }
     }
 }

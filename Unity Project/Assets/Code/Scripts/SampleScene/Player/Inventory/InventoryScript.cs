@@ -63,7 +63,6 @@ namespace Code.Scripts.SampleScene.Player
 
         void Resume()
         {
-
             Inventory.SetActive(false);
 
             // Hides and lock cursor
