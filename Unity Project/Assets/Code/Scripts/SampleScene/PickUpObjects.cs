@@ -10,8 +10,8 @@ namespace Code.Scripts.SampleScene
     {
         public GameObject itemButton;
 
-        public Transform test;
-        public string testName;
+        //public Transform test;
+        //public string testName;
         //public GameObject TestGameObject;
 
         // maybe have a bool for each instantiated ItemButton.
@@ -36,18 +36,18 @@ namespace Code.Scripts.SampleScene
 
                     Destroy(this.gameObject);
 
-                    inventory.isFull[i] = true;         
+                    inventory.isFull[i] = true;
 
                     break;
                 }
             }
         }
-       
 
 
 
-    //Function called for any object with handtag that is picked up
-    public void Hand()
+
+        //Function called for any object with handtag that is picked up
+        public void Hand()
         {
             //Debug.Log("Hand");
 

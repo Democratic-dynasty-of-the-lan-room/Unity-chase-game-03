@@ -44,7 +44,7 @@ namespace Code.Scripts.SampleScene
 
                 CanCoroutine = false;
 
-                Debug.Log("Start Coroutine");
+                //Debug.Log("Start Coroutine");
             }
         }
 
@@ -63,7 +63,7 @@ namespace Code.Scripts.SampleScene
                     {
                         On();
 
-                        Debug.Log("Hello from Flashlight On");
+                        //Debug.Log("Hello from Flashlight On");
                     }      
                 }
                 else
@@ -118,15 +118,24 @@ namespace Code.Scripts.SampleScene
 
         private IEnumerator CoroutineBattery(float batteryTime)
         {
-            Debug.Log("Start Time Coroutine");
+            //Debug.Log("Start Time Coroutine");
 
             yield return new WaitForSeconds(batteryTime);
 
-            CentralBattery.Instance.CurrentCharge -= BatteryDownAmount;
+            if (CentralBattery.Instance.CurrentCharge > 0 && CentralBattery.Instance.CurrentCharge - BatteryDownAmount >= 0)
+            {             
+                CentralBattery.Instance.CurrentCharge -= BatteryDownAmount;
+            }
+            else
+            {
+                CentralBattery.Instance.CurrentCharge = 0f;
+
+                //Debug.Log("Batter Set to:" + CentralBattery.Instance.CurrentCharge);
+            }
 
             CanCoroutine = true;
 
-            Debug.Log("Remove Battery Amount: " + CentralBattery.Instance.CurrentCharge);
+            //Debug.Log("Remove Battery Amount: " + CentralBattery.Instance.CurrentCharge);
         }
     }
 }

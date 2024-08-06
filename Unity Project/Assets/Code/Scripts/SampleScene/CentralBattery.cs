@@ -18,8 +18,19 @@ public class CentralBattery : MonoBehaviour, IDataPersistence
         {
             Instance = this;
         }
-    }
+    }   
+    private void Update()
+    {
+        if (CurrentCharge < 0)
+        {
+            CurrentCharge = 0;
+        }
 
+        if (CurrentCharge > MaxBatteryCharge)
+        {
+            CurrentCharge = MaxBatteryCharge;
+        }
+    }
     public void LoadData(GameData data)
     {
         CurrentCharge = data.Battery;

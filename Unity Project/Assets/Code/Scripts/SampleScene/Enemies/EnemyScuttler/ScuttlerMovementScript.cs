@@ -301,8 +301,7 @@ namespace Code.Scripts.SampleScene
                 else
                 {
                     //Debug.Log("Agent isn't enabled in Wandering state");
-                }
-               
+                }             
             }
         }
 
